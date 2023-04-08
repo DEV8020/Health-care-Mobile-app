@@ -10,16 +10,17 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ToastAndroid } from "react-native";
+import LoginController from "../Controller/LoginController";
 
 const LoginScreen = ({ navigation }) => {
-  const credentials = { email: "abc", password: "abc" };
+  var credentials = {};
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (email === credentials.email) {
-      if (password === credentials.password) {
+  const LoginResponseHandler = (credentials) => {
+    if (credentials) {
+      if (email === credentials.userId && password === credentials.password) {
         console.log("Login successfull !!!!");
         ToastAndroid.show("Login successfull ", ToastAndroid.SHORT);
 
@@ -31,13 +32,30 @@ const LoginScreen = ({ navigation }) => {
 
         navigation.replace("Home");
       } else {
-        ToastAndroid.show("Wrong Password", ToastAndroid.SHORT);
-        console.log("Wrong Password");
+        ToastAndroid.show("Invalid Credentials", ToastAndroid.SHORT);
+        console.log("Invalid Credentials");
       }
     } else {
-      ToastAndroid.show("Wrong Email ID", ToastAndroid.SHORT);
-      console.log("Wrong Email ID");
+      ToastAndroid.show("Network Error", ToastAndroid.SHORT);
+      console.log("Network Error");
     }
+    
+  };
+
+  const handleLogin = () => {
+    const userData = {
+      userType: "FieldWorker",
+      userId: email,
+      password: password,
+    };
+    
+    LoginController.GetUserLoginData({
+      userData: userData,
+      LoginResponseHandler: LoginResponseHandler,
+    });
+
+    console.log(credentials.userId + credentials.password);
+
     setEmail("");
     setPassword("");
     // Handle login logic here
@@ -60,6 +78,7 @@ const LoginScreen = ({ navigation }) => {
             style={styles.inputText}
             placeholder="Email"
             placeholderTextColor="#003f5c"
+            value={email}
             onChangeText={(text) => setEmail(text)}
           />
         </View>
@@ -69,6 +88,7 @@ const LoginScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderTextColor="#003f5c"
             secureTextEntry={true}
+            value={password}
             onChangeText={(text) => setPassword(text)}
           />
         </View>

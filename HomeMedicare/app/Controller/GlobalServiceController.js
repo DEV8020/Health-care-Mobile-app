@@ -17,22 +17,22 @@ const hitCustomResponsePostService = async (props) => {
     });
 
     console.log("Data recieved");
-    console.log(response);
+    console.log(response.status);
 
     if (response.status === 200) {
-      console.log(response);
+      // console.log(response);
       props.responseDataHandler({
         responseData: response,
       });
     } else if (response.status === 404) {
       console.log("404 response");
-      console.log(response);
+
       props.responseDataHandler({
-        responseData: null
+        responseData: response,
       });
     } else {
       console.log("else block");
-      console.log(response);
+      // console.log(response);
       props.responseDataHandler({
         responseData: response,
       });

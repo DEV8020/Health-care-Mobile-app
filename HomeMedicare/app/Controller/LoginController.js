@@ -1,18 +1,18 @@
-import GlobalServiceHandler from "./GlobalServiceHandler";
+import { ToastAndroid } from "react-native";
+import GlobalServiceHandler from "./GlobalServiceController";
 
 const GetUserLoginData = async (props) => {
-    console.log(props.userData);
+  console.log(props.userData);
   await GlobalServiceHandler.hitCustomResponsePostService({
     childURL: "login",
     postData: props.userData,
     responseDataHandler: (loginServiceData) => {
-      console.log(loginServiceData);
       if (loginServiceData.responseData === null) {
         console.log("Entered in error block");
-        }
-        else{
-            props.set
-        }
+        ToastAndroid.show("Network Error");
+      } else {
+        props.LoginResponseHandler(loginServiceData.responseData.data);
+      }
     },
   });
 };

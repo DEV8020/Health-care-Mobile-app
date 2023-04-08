@@ -2,126 +2,52 @@ import { FlatList, StyleSheet, TouchableOpacity, Text } from "react-native";
 //import { DATA } from "../data/dummy-data";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { ToastAndroid } from "react-native";
+import { useEffect } from "react";
+import storeObj from "../Store/storeDataService";
 
-const DATA = [
-  {
-    id: "1",
-    title: "Patient 1",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-03-2023",
-  },
-  {
-    id: "2",
-    title: "Patient 2",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-03-2023",
-  },
-  {
-    id: "3",
-    title: "Patient 3",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-03-2023",
-  },
-  {
-    id: "4",
-    title: "Patient 4",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-03-2023",
-  },
-  {
-    id: "5",
-    title: "Patient 5",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-02-2023",
-  },
-  {
-    id: "6",
-    title: "Patient 6",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-02-2023",
-  },
-  {
-    id: "7",
-    title: "Patient 7",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-02-2023",
-  },
-  {
-    id: "8",
-    title: "Patient 8",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-02-2023",
-  },
-  {
-    id: "9",
-    title: "Patient 9",
-    name: "ABC",
-    address: "ABC",
-    status: "completed",
-    date: "03-02-2023",
-  },
-  {
-    id: "10",
-    title: "Patient 10",
-    name: "ABC",
-    address: "ABC",
-    status: "completed",
-    date: "03-02-2023",
-  },
-  {
-    id: "11",
-    title: "Patient 11",
-    name: "ABC",
-    address: "ABC",
-    status: "cancelled",
-    date: "03-02-2023",
-  },
-  {
-    id: "12",
-    title: "Patient 12",
-    name: "ABC",
-    address: "ABC",
-    status: "completed",
-    date: "03-01-2023",
-  },
-  {
-    id: "13",
-    title: "Patient 13",
-    name: "ABC",
-    address: "ABC",
-    status: "cancelled",
-    date: "03-01-2023",
-  },
-];
-
-function PastFolloup({navigation,selectedStatus}) {
+function PastFolloup({
+  navigation,
+  selectedStatus,
+  showOTPPopUp,
+  setShowOTPPopUp,
+}) {
   const [selectedId, setSelectedId] = useState(null);
-  const SelectedPatientHandler = (PatientSelectedID) => {
-   // setPatientData(PatientSelectedID);
-   navigation.navigate("Followup");
+  const [Data, setData] = useState({});
+  useEffect(() => {
+    storeObj.getData("Followups").then((data) => {
+      if (data !== null) {
+        console.log(data);
+        setData(data);
+        console.log(Data);
+      } else {
+        console.log("empty");
+        return false;
+      }
+    });
+  }, []);
+
+  const SelectedPatientHandler = (item) => {
+    if (item.status === "pending") {
+      setShowOTPPopUp(true);
+      console.log(item.status);
+      ToastAndroid.show("Enter patient OTP", ToastAndroid.SHORT);
+      if (showOTPPopUp) {
+        navigation.navigate("Followup");
+      } else {
+        console.log("OTP failed in Today followup");
+      }
+    } else {
+      console.log("Selected folloup is-" + item.status);
+      ToastAndroid.show(
+        "Selected folloup is " + item.status,
+        ToastAndroid.SHORT
+      );
+    }
   };
 
   const renderItem = ({ item }) => {
-    if (
-      selectedStatus !== "All" &&
-      item.status !== selectedStatus
-    ) {
+    if (selectedStatus !== "All" && item.status !== selectedStatus) {
       return null;
     }
     const backgroundColor = item.status === "pending" ? "#F1948A" : "white";
@@ -156,9 +82,9 @@ function PastFolloup({navigation,selectedStatus}) {
           flexDirection: "row",
           width: 400,
           height: 100,
-          borderRadius:10,
+          borderRadius: 10,
         }}
-        onPress={() => SelectedPatientHandler(item.id)}
+        onPress={() => SelectedPatientHandler(item)}
       >
         <Text style={{ fontSize: 15, padding: 10 }}>{item.title}</Text>
         <Text
@@ -184,7 +110,7 @@ function PastFolloup({navigation,selectedStatus}) {
   return (
     <FlatList
       style={styles.list}
-      data={DATA}
+      data={Data}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       extraData={selectedId}

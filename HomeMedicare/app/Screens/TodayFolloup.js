@@ -3,8 +3,17 @@ import { FlatList, StyleSheet, TouchableOpacity, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import storeObj from "../Store/storeDataService";
+import OTPPopUp from "../Utility/OTPPopUp";
+import { ToastAndroid } from "react-native";
 
-function TodayFolloup({ navigation, selectedStatus }) {
+function TodayFolloup({
+  navigation,
+  selectedStatus,
+  showOTPPopUp,
+  setShowOTPPopUp,
+}) {
+  const [selectedId, setSelectedId] = useState(null);
+
   const [Data, setData] = useState({});
   useEffect(() => {
     storeObj.getData("Followups").then((data) => {
@@ -19,17 +28,30 @@ function TodayFolloup({ navigation, selectedStatus }) {
     });
   }, []);
 
-  const [selectedId, setSelectedId] = useState(null);
-  const SelectedPatientHandler = (PatientSelectedID) => {
+  const SelectedPatientHandler = (item) => {
     // setPatientData(PatientSelectedID);
-    navigation.navigate("Followup");
+  
+    if (item.status === "pending") {
+      setShowOTPPopUp(true);
+      console.log(item.status);
+      ToastAndroid.show("Enter patient OTP", ToastAndroid.SHORT);
+      if (showOTPPopUp) {
+        navigation.navigate("Followup");
+      } else {
+        console.log("OTP failed in Today followup");
+      }
+    } else {
+      console.log("Selected folloup is-" + item.status);
+      ToastAndroid.show("Selected folloup is " +item.status, ToastAndroid.SHORT);
+    }
   };
 
   const renderItem = ({ item }) => {
     if (selectedStatus !== "All" && item.status !== selectedStatus) {
       return null;
     }
-    const backgroundColor = item.id === selectedId ? "#2797F0" : "white";
+    const backgroundColor =
+      item.follow_up_id === selectedId ? "#2797F0" : "white";
 
     let iconColor;
     let iconName;
@@ -63,7 +85,7 @@ function TodayFolloup({ navigation, selectedStatus }) {
           height: 100,
           borderRadius: 10,
         }}
-        onPress={() => SelectedPatientHandler(item.id)}
+        onPress={() => SelectedPatientHandler(item)}
       >
         <Text style={{ fontSize: 15, padding: 10 }}>{item.title}</Text>
         <Text

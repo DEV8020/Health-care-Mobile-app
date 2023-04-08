@@ -110,7 +110,7 @@ const DATA = [
   },
 ];
 
-function UpcomingFolloup({navigation,selectedStatus}) {
+function UpcomingFolloup({navigation,selectedStatus,showOTPPopUp, setShowOTPPopUp }) {
   const [selectedId, setSelectedId] = useState(null);
   const SelectedPatientHandler = (PatientSelectedID) => {
  // setPatientData(PatientSelectedID);

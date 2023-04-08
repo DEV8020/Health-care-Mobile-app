@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  ToastAndroid,
 } from "react-native";
 import AppBar from "../Utility/AppBar";
 
-const FollowupScreen = ({navigation}) => {
+const FollowupScreen = ({ navigation }) => {
   const [patientID, setPatientID] = useState("");
   const [patientName, setPatientName] = useState("");
   const [patientAddress, setPatientAddress] = useState("");
@@ -18,14 +19,14 @@ const FollowupScreen = ({navigation}) => {
 
   // setPatientID(props.selectedID);
   const handlePrintPrescription = () => {
+    ToastAndroid.show("Prescription downloaded", ToastAndroid.SHORT);
     // Add logic to print prescription here
   };
 
   const handleMarkComplete = () => {
+    navigation.replace("Home");
     // Add logic to mark as complete here
   };
-  
-
 
   return (
     <ImageBackground
@@ -75,7 +76,6 @@ const styles = StyleSheet.create({
     left: 0,
     marginStart: "5%",
     marginEnd: "5%",
-    
 
     height: 550,
     width: "90%",

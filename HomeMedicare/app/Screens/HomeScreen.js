@@ -14,19 +14,21 @@ import AppBar from "../Utility/AppBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FollowupScreen from "./FollowUpScreen";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Picker } from "@react-native-picker/picker";
+// import { Picker } from "@react-native-picker/picker";
 import TodayFolloup from "./TodayFolloup";
 import PastFolloup from "./PastFollowup";
 import UpcomingFolloup from "./UpcomingFollowup";
-import FilterFollowups from "../Utility/FilterFollowups";
+// import FilterFollowups from "../Utility/FilterFollowups";
 
 import { useRoute } from "@react-navigation/native";
 import IconButton from "../Utility/IconButton";
 import FilterHeader from "../Utility/FilterHeader";
+import OTPPopUp from "../Utility/OTPPopUp";
 
 const HomeScreen = ({ navigation }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
+  const [showOTPPopUp, setShowOTPPopUp] = useState(false);
 
   const profileButtonHandler = () => {
     navigation.navigate("Profile");
@@ -72,6 +74,11 @@ const HomeScreen = ({ navigation }) => {
       style={styles.container_Home}
       source={require("../assets/bgimg.jpg")}
     >
+      <OTPPopUp
+        visible={showOTPPopUp}
+        onVerify={() => setShowOTPPopUp(false)}
+      />
+
       {/* <AppBar
         title="Home Medicare"
         handleLogout={LogoutHandler}
@@ -79,8 +86,11 @@ const HomeScreen = ({ navigation }) => {
       /> */}
 
       <View style={styles.container_list}>
-      <FilterHeader selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/>
-        
+        <FilterHeader
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
+        />
+
         <Header />
         {folloupTypeScreen === "Today" && (
           <TodayFolloup
@@ -88,6 +98,8 @@ const HomeScreen = ({ navigation }) => {
             // setUser={props.setUser}
             // setPatientData={props.setPatientData}
             selectedStatus={selectedStatus}
+            showOTPPopUp={showOTPPopUp}
+            setShowOTPPopUp={setShowOTPPopUp}
           />
         )}
         {folloupTypeScreen === "Past" && (
@@ -96,6 +108,8 @@ const HomeScreen = ({ navigation }) => {
             // setUser={props.setUser}
             // setPatientData={props.setPatientData}
             selectedStatus={selectedStatus}
+            showOTPPopUp={showOTPPopUp}
+            setShowOTPPopUp={setShowOTPPopUp}
           />
         )}
         {folloupTypeScreen === "Upcoming" && (
@@ -104,6 +118,8 @@ const HomeScreen = ({ navigation }) => {
             // setUser={props.setUser}
             // setPatientData={props.setPatientData}
             selectedStatus={selectedStatus}
+            showOTPPopUp={showOTPPopUp}
+            setShowOTPPopUp={setShowOTPPopUp}
           />
         )}
       </View>

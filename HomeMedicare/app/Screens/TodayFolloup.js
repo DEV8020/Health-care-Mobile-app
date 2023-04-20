@@ -1,48 +1,38 @@
 import { FlatList, StyleSheet, TouchableOpacity, Text } from "react-native";
 //import { DATA } from "../data/dummy-data";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import storeObj from "../Store/storeDataService";
-import OTPPopUp from "../Utility/OTPPopUp";
 import { ToastAndroid } from "react-native";
+import { useEffect } from "react";
+import storeObj from "../Store/storeDataService";
 
 function TodayFolloup({
+  followupList,
   navigation,
   selectedStatus,
+  followupData,
+  setFollowupData,
   showOTPPopUp,
   setShowOTPPopUp,
 }) {
   const [selectedId, setSelectedId] = useState(null);
 
-  const [Data, setData] = useState({});
-  useEffect(() => {
-    storeObj.getData("Followups").then((data) => {
-      if (data !== null) {
-        console.log(data);
-        setData(data);
-        console.log(Data);
-      } else {
-        console.log("empty");
-        return false;
-      }
-    });
-  }, []);
-
   const SelectedPatientHandler = (item) => {
     // setPatientData(PatientSelectedID);
-  
+
     if (item.status === "pending") {
       setShowOTPPopUp(true);
       console.log(item.status);
       ToastAndroid.show("Enter patient OTP", ToastAndroid.SHORT);
-      if (showOTPPopUp) {
-        navigation.navigate("Followup");
-      } else {
-        console.log("OTP failed in Today followup");
-      }
+
+      setFollowupData(item);
+      console.log(followupData);
     } else {
       console.log("Selected folloup is-" + item.status);
-      ToastAndroid.show("Selected folloup is " +item.status, ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Selected folloup is " + item.status,
+        ToastAndroid.SHORT
+      );
     }
   };
 
@@ -106,9 +96,9 @@ function TodayFolloup({
   return (
     <FlatList
       style={styles.list}
-      data={Data}
+      data={followupList}
       renderItem={renderItem}
-      keyExtractor={(followup) => followup.follow_up_id}
+      keyExtractor={(item) => item.follow_up_id}
       extraData={selectedId}
     />
   );

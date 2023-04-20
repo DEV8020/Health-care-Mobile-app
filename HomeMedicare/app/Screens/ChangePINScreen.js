@@ -73,6 +73,8 @@ const ChangePINScreen = ({ route, navigation }) => {
         <Text style={styles.logo}>Pin Change</Text>
         <View style={styles.inputView}>
           <TextInput
+            maxLength={4}
+            minLength={4}
             keyboardType="number-pad"
             style={styles.inputText}
             placeholder="Enter New PIN"
@@ -82,6 +84,8 @@ const ChangePINScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.inputView}>
           <TextInput
+          maxLength={4}
+          minLength={4}
             keyboardType="number-pad"
             style={styles.inputText}
             placeholder="Confirm PIN"

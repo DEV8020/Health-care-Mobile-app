@@ -7,36 +7,26 @@ import { useEffect } from "react";
 import storeObj from "../Store/storeDataService";
 
 function PastFolloup({
+  followupList,
   navigation,
   selectedStatus,
+  followupData,
+  setFollowupData,
   showOTPPopUp,
   setShowOTPPopUp,
 }) {
   const [selectedId, setSelectedId] = useState(null);
-  const [Data, setData] = useState({});
-  useEffect(() => {
-    storeObj.getData("Followups").then((data) => {
-      if (data !== null) {
-        console.log(data);
-        setData(data);
-        console.log(Data);
-      } else {
-        console.log("empty");
-        return false;
-      }
-    });
-  }, []);
 
   const SelectedPatientHandler = (item) => {
+    // setPatientData(PatientSelectedID);
+
     if (item.status === "pending") {
       setShowOTPPopUp(true);
       console.log(item.status);
       ToastAndroid.show("Enter patient OTP", ToastAndroid.SHORT);
-      if (showOTPPopUp) {
-        navigation.navigate("Followup");
-      } else {
-        console.log("OTP failed in Today followup");
-      }
+
+      setFollowupData(item);
+      console.log(followupData);
     } else {
       console.log("Selected folloup is-" + item.status);
       ToastAndroid.show(
@@ -110,9 +100,9 @@ function PastFolloup({
   return (
     <FlatList
       style={styles.list}
-      data={Data}
+      data={followupList}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.follow_up_id}
       extraData={selectedId}
     />
   );

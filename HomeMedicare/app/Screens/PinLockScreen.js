@@ -38,10 +38,7 @@ const PinLock = ({ route, navigation }) => {
 
   const handleForgotPIN = () => {
     // Handle forgot password logic here
-    ToastAndroid.show(
-      "Please Contact your supervisor",
-      ToastAndroid.LONG 
-    );
+    ToastAndroid.show("Please Contact your supervisor", ToastAndroid.LONG);
     console.log("Forgot PIN");
   };
 
@@ -54,6 +51,8 @@ const PinLock = ({ route, navigation }) => {
         <Text style={styles.logo}>Enter PIN</Text>
         <View style={styles.inputView}>
           <TextInput
+            maxLength={4}
+            minLength={4}
             style={styles.inputText}
             placeholder="PIN"
             keyboardType="number-pad"

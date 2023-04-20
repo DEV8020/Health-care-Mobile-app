@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,24 +9,73 @@ import {
   ToastAndroid,
 } from "react-native";
 import AppBar from "../Utility/AppBar";
+import { useNavigation } from "@react-navigation/native";
+import storeObj from "../Store/storeDataService";
+import UpcomingFolloup from "./UpcomingFollowup";
+// import jsPDF from "jspdf";
+// import "jspdf-autotable";
 
-const FollowupScreen = ({ navigation }) => {
-  const [patientID, setPatientID] = useState("");
-  const [patientName, setPatientName] = useState("");
-  const [patientAddress, setPatientAddress] = useState("");
-  const [doctorRemark, setDoctorRemark] = useState("");
+const FollowupScreen = ({ route }) => {
+  const navigation = useNavigation();
+
+  const { selectedFollowup } = route.params;
+
+  console.log(selectedFollowup);
+
   const [fieldWorkerRemark, setFieldWorkerRemark] = useState("");
 
   // setPatientID(props.selectedID);
   const handlePrintPrescription = () => {
+    // const doc = new jsPDF();
+    // const jsonData = [
+    //   { id: 1, name: "John Doe", email: "example@example.com" },
+    //   { id: 2, name: "Jane Doe", email: "example@example.com" },
+    //   { id: 3, name: "Bob Smith", email: "example@example.com" },
+    // ];
+    // doc.autoTable({
+    //   head: [["ID", "Name", "Email"]],
+    //   body: jsonData.map(({ id, name, email }) => [id, name, email]),
+    // });
+    // doc.save("table.pdf");
     ToastAndroid.show("Prescription downloaded", ToastAndroid.SHORT);
     // Add logic to print prescription here
   };
 
   const handleMarkComplete = () => {
-    navigation.replace("Home");
+    storeObj.getData("Followups").then((data) => {
+      if (data !== null) {
+        // console.log(data);
+        console.log(selectedFollowup);
+        const UpdateFollowupList = data;
+        const updateFollowUpIndex = UpdateFollowupList.findIndex(
+          (item) => item.follow_up_id === selectedFollowup.follow_up_id
+        );
+        console.log(updateFollowUpIndex);
+        console.log(selectedFollowup);
+        const Followup = UpdateFollowupList[updateFollowUpIndex];
+        console.log(Followup);
+        Followup.fieldWorker_remark = fieldWorkerRemark;
+        Followup.status = "completed";
+        console.log(Followup);
+        UpdateFollowupList[updateFollowUpIndex] = Followup;
+        storeObj.storeData("Followups", UpdateFollowupList);
+        console.log("Success");
+        navigation.replace("Home");
+      } else {
+        console.log("empty");
+      }
+    });
+
     // Add logic to mark as complete here
   };
+
+  // follow_up_id: "11",
+  // title: "Patient 11",
+  // name: "ABC",
+  // address: "ABC",
+  // status: "cancelled",
+  // date: "03-04-2023",
+  // last_sync_date:"03-04-2023",
 
   return (
     <ImageBackground
@@ -37,13 +86,17 @@ const FollowupScreen = ({ navigation }) => {
         <AppBar title="Home Medicare"  />
         </View> */}
       <View style={styles.container_Followup}>
-        <Text style={styles.label}>Patient ID: 1</Text>
+        <Text style={styles.label}>Patient ID: {selectedFollowup.title}</Text>
 
-        <Text style={styles.label}>Patient Name:abc</Text>
+        <Text style={styles.label}>Patient Name:{selectedFollowup.name}</Text>
 
-        <Text style={styles.label}>Patient Address: ABC</Text>
+        <Text style={styles.label}>
+          Patient Address:{selectedFollowup.address}
+        </Text>
 
-        <Text style={styles.label}>Doctor Remark: ABC</Text>
+        <Text style={styles.label}>
+          Doctor Remark:{selectedFollowup.doctor_remark}
+        </Text>
 
         <Text style={styles.label}>Field Worker Remark:</Text>
         <TextInput

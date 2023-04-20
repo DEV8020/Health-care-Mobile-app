@@ -1,7 +1,14 @@
-import { FlatList, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ToastAndroid,
+} from "react-native";
 //import { DATA } from "../data/dummy-data";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import storeObj from "../Store/storeDataService";
 
 const DATA = [
   {
@@ -110,18 +117,56 @@ const DATA = [
   },
 ];
 
-function UpcomingFolloup({navigation,selectedStatus,showOTPPopUp, setShowOTPPopUp }) {
+function UpcomingFolloup({
+  navigation,
+  selectedStatus,
+  followupData,
+  setFollowupData,
+  showOTPPopUp,
+  setShowOTPPopUp,
+  followupList,
+}) {
   const [selectedId, setSelectedId] = useState(null);
-  const SelectedPatientHandler = (PatientSelectedID) => {
- // setPatientData(PatientSelectedID);
- navigation.navigate("Followup");
+  // const SelectedPatientHandler = () => {
+  //   // setPatientData(PatientSelectedID);
+  //   ToastAndroid.show("Followup will be available on registered date");
+  // };
+  // const [Data, setData] = useState({});
+  // useEffect(() => {
+  //   storeObj.getData("Followups").then((data) => {
+  //     if (data !== null) {
+  //       console.log(data);
+  //       setData(data);
+  //       console.log(Data);
+  //     } else {
+  //       console.log("empty");
+  //       return false;
+  //     }
+  //   });
+  // }, []);
+
+  const SelectedPatientHandler = (item) => {
+    // setPatientData(PatientSelectedID);
+
+    if (item.status === "pending") {
+      ToastAndroid.show(
+        "Followup is unavailable currently",
+        ToastAndroid.SHORT
+      );
+
+      setFollowupData(item);
+      console.log(followupData);
+    } else {
+      console.log("Selected folloup is-" + item.status);
+      ToastAndroid.show(
+        "Selected folloup is " + item.status,
+        ToastAndroid.SHORT
+      );
+    }
   };
 
   const renderItem = ({ item }) => {
-    if (
-     selectedStatus !== "All" &&
-      item.status !== selectedStatus
-    ) {
+    if (selectedStatus !== "All" && item.status !== selectedStatus) {
       return null;
     }
     const backgroundColor = item.id === selectedId ? "#2797F0" : "white";
@@ -148,44 +193,63 @@ function UpcomingFolloup({navigation,selectedStatus,showOTPPopUp, setShowOTPPopU
     }
 
     return (
-      <TouchableOpacity
-        style={{
-          backgroundColor,
-          padding: 20,
-          marginVertical: 4,
-          flexDirection: "row",
-          width: 400,
-          height: 100,
-        }}
-        onPress={() => SelectedPatientHandler(item.id)}
-      >
-        <Text style={{ fontSize: 15, padding: 10 }}>{item.title}</Text>
-        <Text
-          style={{ marginLeft: 10, marginRight: 10, fontSize: 15, padding: 10 }}
-        >
-          {item.name}
-        </Text>
-        <Text
-          style={{ marginLeft: 10, marginRight: 10, fontSize: 15, padding: 10 }}
-        >
-          {item.address}
-        </Text>
-        <Text
-          style={{ marginLeft: 10, marginRight: 20, fontSize: 15, padding: 10 }}
-        >
-          {item.date}
-        </Text>
-        <Icon name={iconName} size={25} color={iconColor} />
-      </TouchableOpacity>
+      <>
+        {item.status === "pending" && (
+          <TouchableOpacity
+            style={{
+              backgroundColor,
+              padding: 20,
+              marginVertical: 4,
+              flexDirection: "row",
+              width: 400,
+              height: 100,
+            }}
+            onPress={() => SelectedPatientHandler(item)}
+          >
+            <Text style={{ fontSize: 15, padding: 10 }}>{item.title}</Text>
+            <Text
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                fontSize: 15,
+                padding: 10,
+              }}
+            >
+              {item.name}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                fontSize: 15,
+                padding: 10,
+              }}
+            >
+              {item.address}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 10,
+                marginRight: 20,
+                fontSize: 15,
+                padding: 10,
+              }}
+            >
+              {item.date}
+            </Text>
+            <Icon name={iconName} size={25} color={iconColor} />
+          </TouchableOpacity>
+        )}
+      </>
     );
   };
 
   return (
     <FlatList
       style={styles.list}
-      data={DATA}
+      data={followupList}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.follow_up_id}
       extraData={selectedId}
     />
   );

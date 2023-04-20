@@ -18,6 +18,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import TodayFolloup from "./TodayFolloup";
 import PastFolloup from "./PastFollowup";
 import UpcomingFolloup from "./UpcomingFollowup";
+import FetchFollowup from "../Controller/FetchFollowupByDateController";
 // import FilterFollowups from "../Utility/FilterFollowups";
 
 import { useRoute } from "@react-navigation/native";
@@ -29,11 +30,22 @@ const HomeScreen = ({ navigation }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
   const [showOTPPopUp, setShowOTPPopUp] = useState(false);
+  const [followupData, setFollowupData] = useState({});
+  const [followupList, setFollowupList] = useState([]);
 
   const profileButtonHandler = () => {
     navigation.navigate("Profile");
   };
+
+  // useEffect(() => {
+  //   if (!FetchFollowup(followupList, setFollowupList, "Today")) {
+  //     setFollowupList(followupList);
+  //     console.log(followupList);
+  //   }
+  // }, []);
+
   useEffect(() => {
+    FetchFollowup(followupList, setFollowupList, folloupTypeScreen);
     if (navigation && navigation.setOptions) {
       navigation.setOptions({
         title: folloupTypeScreen + " Follow-ups",
@@ -65,9 +77,6 @@ const HomeScreen = ({ navigation }) => {
       </View>
     );
   };
-  const LogoutHandler = () => {
-    navigation.goBack();
-  };
 
   return (
     <ImageBackground
@@ -77,6 +86,8 @@ const HomeScreen = ({ navigation }) => {
       <OTPPopUp
         visible={showOTPPopUp}
         onVerify={() => setShowOTPPopUp(false)}
+        followupData={followupData}
+        setFollowupData={setFollowupData}
       />
 
       {/* <AppBar
@@ -97,8 +108,11 @@ const HomeScreen = ({ navigation }) => {
             navigation={navigation}
             // setUser={props.setUser}
             // setPatientData={props.setPatientData}
+            followupList={followupList}
             selectedStatus={selectedStatus}
             showOTPPopUp={showOTPPopUp}
+            setFollowupData={setFollowupData}
+            followupData={followupData}
             setShowOTPPopUp={setShowOTPPopUp}
           />
         )}
@@ -107,8 +121,11 @@ const HomeScreen = ({ navigation }) => {
             navigation={navigation}
             // setUser={props.setUser}
             // setPatientData={props.setPatientData}
+            followupList={followupList}
             selectedStatus={selectedStatus}
             showOTPPopUp={showOTPPopUp}
+            setFollowupData={setFollowupData}
+            followupData={followupData}
             setShowOTPPopUp={setShowOTPPopUp}
           />
         )}
@@ -117,8 +134,11 @@ const HomeScreen = ({ navigation }) => {
             navigation={navigation}
             // setUser={props.setUser}
             // setPatientData={props.setPatientData}
+            followupList={followupList}
             selectedStatus={selectedStatus}
             showOTPPopUp={showOTPPopUp}
+            setFollowupData={setFollowupData}
+            followupData={followupData}
             setShowOTPPopUp={setShowOTPPopUp}
           />
         )}

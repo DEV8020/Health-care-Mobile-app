@@ -1,7 +1,8 @@
 import axios from "axios";
 
 //const serverURL = `http://192.168.9.225:9191/`;
-const serverURL = `http://172.16.140.248:9191/`;
+// http://localhost:9494/login/helloWorld
+const serverURL = `http://192.168.219.255:9494/login/`;
 
 const hitCustomResponsePostService = async (props) => {
   try {
@@ -9,6 +10,7 @@ const hitCustomResponsePostService = async (props) => {
 
     console.log("URL Hitting in GlobalServiceHandler");
     console.log(url);
+    console.log(props.postData);
 
     const response = await axios.post(url, props.postData, {
       validateStatus: function (status) {

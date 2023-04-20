@@ -1,38 +1,38 @@
 import storeObj from "../Store/storeDataService";
 
-
-
 const DATA = [
   {
     follow_up_id: "1",
     title: "Patient 1",
-    name: "ABC",
+    name: "A",
     address: "ABC",
     status: "pending",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
-    doctor_remark:"Check Sugar"
-    
+    date: "13-04-2023",
+    last_sync_date: "13-04-2023",
+    doctor_remark: "Check Sugar",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "2",
     title: "Patient 2",
-    name: "ABC",
+    name: "B",
     address: "ABC",
     status: "pending",
     date: "03-04-2023",
-    last_sync_date:"03-04-2023",
-    doctor_remark:"Check Sugar"
+    last_sync_date: "03-04-2023",
+    doctor_remark: "Check Blood Pressure",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "3",
     title: "Patient 3",
-    name: "ABC",
+    name: "C",
     address: "ABC",
     status: "pending",
     date: "03-04-2023",
-    last_sync_date:"03-04-2023",
-    doctor_remark:"Check Sugar"
+    last_sync_date: "03-04-2023",
+    doctor_remark: "Check temprature",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "4",
@@ -41,8 +41,9 @@ const DATA = [
     address: "ABC",
     status: "pending",
     date: "03-04-2023",
-    last_sync_date:"03-04-2023",
-    doctor_remark:"Check Sugar"
+    last_sync_date: "03-04-2023",
+    doctor_remark: "Check Sugar",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "5",
@@ -51,8 +52,9 @@ const DATA = [
     address: "ABC",
     status: "pending",
     date: "03-04-2023",
-    last_sync_date:"03-04-2023",
-    doctor_remark:"Check Sugar"
+    last_sync_date: "03-04-2023",
+    doctor_remark: "Check Sugar",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "6",
@@ -60,8 +62,10 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "pending",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "23-04-2023",
+    doctor_remark: "check Sugar",
+    last_sync_date: "03-04-2023",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "7",
@@ -69,8 +73,10 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "pending",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "20-04-2023",
+    doctor_remark: "check Sugar",
+    last_sync_date: "13-04-2023",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "8",
@@ -78,8 +84,10 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "pending",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "18-04-2023",
+    doctor_remark: "check Sugar",
+    last_sync_date: "03-04-2023",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "9",
@@ -88,7 +96,9 @@ const DATA = [
     address: "ABC",
     status: "completed",
     date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    doctor_remark: "check Sugar",
+    last_sync_date: "03-04-2023",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "10",
@@ -96,8 +106,10 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "completed",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "11-04-2023",
+    doctor_remark: "check Sugar",
+    last_sync_date: "03-04-2023",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "11",
@@ -105,8 +117,10 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "cancelled",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "16-04-2023",
+    doctor_remark: "check Sugar",
+    last_sync_date: "03-04-2023",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "12",
@@ -114,8 +128,10 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "completed",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "16-04-2023",
+    last_sync_date: "03-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
   },
   {
     follow_up_id: "13",
@@ -123,8 +139,65 @@ const DATA = [
     name: "ABC",
     address: "ABC",
     status: "cancelled",
-    date: "03-04-2023",
-    last_sync_date:"03-04-2023",
+    date: "16-04-2023",
+    last_sync_date: "13-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
+  },
+  {
+    follow_up_id: "14",
+    title: "Patient 12",
+    name: "ABC",
+    address: "ABC",
+    status: "completed",
+    date: "16-04-2023",
+    last_sync_date: "03-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
+  },
+  {
+    follow_up_id: "15",
+    title: "Patient 12",
+    name: "ABC",
+    address: "ABC",
+    status: "completed",
+    date: "16-04-2023",
+    last_sync_date: "03-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
+  },
+  {
+    follow_up_id: "16",
+    title: "Patient 12",
+    name: "ABC",
+    address: "ABC",
+    status: "completed",
+    date: "16-04-2023",
+    last_sync_date: "03-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
+  },
+  {
+    follow_up_id: "17",
+    title: "Patient 12",
+    name: "ABC",
+    address: "ABC",
+    status: "completed",
+    date: "16-04-2023",
+    last_sync_date: "03-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
+  },
+  {
+    follow_up_id: "18",
+    title: "Patient 12",
+    name: "ABC",
+    address: "ABC",
+    status: "completed",
+    date: "16-04-2023",
+    last_sync_date: "03-04-2023",
+    doctor_remark: "check Sugar",
+    fieldWorker_remark: "ABC",
   },
 ];
 
@@ -133,7 +206,7 @@ const StoreDataController = () => {
 
   storeObj.getData("Followups").then((data) => {
     if (data !== null) {
-      console.log(data);
+      // console.log(data);
       return true;
     } else {
       console.log("empty");

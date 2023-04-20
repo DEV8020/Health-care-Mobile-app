@@ -10,7 +10,7 @@ import {
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useNavigation } from "@react-navigation/native";
 
-const OTPPopUp = ({ visible, onVerify }) => {
+const OTPPopUp = ({ visible, setFollowupData,followupData,onVerify }) => {
   const [otp, setOTP] = useState("");
   const [timerKey, setTimerKey] = useState(0);
   const navigation = useNavigation();
@@ -19,8 +19,9 @@ const OTPPopUp = ({ visible, onVerify }) => {
     // Verify the OTP
     const ServerOTP = "1234";
     if (ServerOTP === otp) {
-      onVerify();
-      navigation.replace("Followup");
+        onVerify();
+      navigation.replace("Followup",{selectedFollowup:followupData});
+
       setOTP("");
       setTimerKey(timerKey + 1);
     } else {

@@ -1,25 +1,25 @@
-import sendDataToServer from "./SendFollowupController";
+import sendUpdatedFollowupsToServer from "./SendUpdatedFollowupToServerController";
 import FetchCompletedFollowups from "../UtilityModules/FetchCompletedFollowups";
 import { useState } from "react";
 
-const batchSize = 5;
+//set Batch size of followups here ...
+var batchSize = 5;
 
 const FetchFollowupToSend = async () => {
-  // const [sendFollowupResponse, setSendFollowupResponse] = useState(null);
-
+  //Fetch completed followups from Local Storage
   const completedFollowupsList = await FetchCompletedFollowups();
+  console.log(completedFollowupsList.length);
 
+  //Server Response Handler
   const SendFollowupsResponseHandler = (response) => {
     if (response) {
-      // setSendFollowupResponse(true);
       console.log(response.data);
     } else {
       console.log("response Error");
-
-      // setSendFollowupResponse(false);
     }
   };
-  console.log(completedFollowupsList.length);
+
+  //variable to get server response
   var sendFollowupResponse = { data: true };
   for (let i = 0; i < completedFollowupsList.length; i += batchSize) {
     if (sendFollowupResponse) {
@@ -28,7 +28,7 @@ const FetchFollowupToSend = async () => {
       batchesOfFollowups.push(batch);
       console.log(batchesOfFollowups);
       //SEND FOLLOWUPS TO SERVER CODE HERE
-      sendFollowupResponse = await sendDataToServer({
+      sendFollowupResponse = await sendUpdatedFollowupsToServer({
         followupListData: batchesOfFollowups,
         SendFollowupsResponseHandler: SendFollowupsResponseHandler,
       });
@@ -36,6 +36,7 @@ const FetchFollowupToSend = async () => {
     } else {
       console.log("Response Error block sending again ");
       i = i - 1;
+      //batch size =
     }
   }
 };

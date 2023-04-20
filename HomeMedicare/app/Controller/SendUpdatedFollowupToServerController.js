@@ -1,9 +1,9 @@
 // import { sendItemsToServer } from "../Store/Redux/actions";
 import GlobalServiceHandler from "./GlobalServiceController";
 
-const sendDataToServer = async (props) => {
+const sendUpdatedFollowupsToServer = async (props) => {
   console.log(props.followupListData);
-  await GlobalServiceHandler.hitCustomResponsePostService({
+  await GlobalServiceHandler.hitPostService({
     childURL: "helloWorld",
     postData: props.followupListData,
     responseDataHandler: (sendFollowupData) => {
@@ -18,4 +18,4 @@ const sendDataToServer = async (props) => {
   });
 };
 
-export default sendDataToServer;
+export default sendUpdatedFollowupsToServer;

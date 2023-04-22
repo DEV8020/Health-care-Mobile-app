@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,9 @@ import { ToastAndroid } from "react-native";
 
 const PinLock = ({ route, navigation }) => {
   const [PIN, setPIN] = useState("");
+  useEffect(() => {
+    setPIN("");
+  }, [navigation]);
 
   const handlePinCheck = () => {
     AsyncStorage.getItem("isPinSet")
@@ -20,8 +23,10 @@ const PinLock = ({ route, navigation }) => {
           AsyncStorage.getItem("isLoggedIn")
             .then((value) => {
               if (value !== null) {
+                setPIN("");
                 navigation.navigate("Home");
               } else {
+                setPIN("");
                 navigation.navigate("Login");
               }
             })
@@ -58,6 +63,7 @@ const PinLock = ({ route, navigation }) => {
             keyboardType="number-pad"
             placeholderTextColor="#003f5c"
             secureTextEntry={true}
+            value={PIN}
             onChangeText={(text) => setPIN(text)}
           />
         </View>

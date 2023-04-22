@@ -8,7 +8,14 @@ const FetchCompletedFollowups = async (props) => {
         const completedFollowups = data.filter(
           (followup) => followup.status === "completed"
         );
+
         console.log(completedFollowups.length);
+
+        //Delete Completed Followups from Storage
+
+        // const NotCompletedFollowups = data.filter((followup) => followup.status !== "completed")
+        // storeObj.storeData("Followups", NotCompletedFollowups);
+
         return completedFollowups;
       } else {
         console.log("empty");

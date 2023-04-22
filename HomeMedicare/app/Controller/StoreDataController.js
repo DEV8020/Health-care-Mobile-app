@@ -11,6 +11,7 @@ const DATA = [
     last_sync_date: "13-04-2023",
     doctor_remark: "Check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "2",
@@ -22,6 +23,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "Check Blood Pressure",
     fieldWorker_remark: "ABC",
+    otp: "4321",
   },
   {
     follow_up_id: "3",
@@ -33,6 +35,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "Check temprature",
     fieldWorker_remark: "ABC",
+    otp: "1235",
   },
   {
     follow_up_id: "4",
@@ -44,6 +47,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "Check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "5432",
   },
   {
     follow_up_id: "5",
@@ -55,6 +59,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "Check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "6",
@@ -66,6 +71,7 @@ const DATA = [
     doctor_remark: "check Sugar",
     last_sync_date: "03-04-2023",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "7",
@@ -77,6 +83,7 @@ const DATA = [
     doctor_remark: "check Sugar",
     last_sync_date: "13-04-2023",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "8",
@@ -88,6 +95,7 @@ const DATA = [
     doctor_remark: "check Sugar",
     last_sync_date: "03-04-2023",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "9",
@@ -99,6 +107,7 @@ const DATA = [
     doctor_remark: "check Sugar",
     last_sync_date: "03-04-2023",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "10",
@@ -110,6 +119,7 @@ const DATA = [
     doctor_remark: "check Sugar",
     last_sync_date: "03-04-2023",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "11",
@@ -121,6 +131,7 @@ const DATA = [
     doctor_remark: "check Sugar",
     last_sync_date: "03-04-2023",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "12",
@@ -132,6 +143,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "13",
@@ -143,6 +155,7 @@ const DATA = [
     last_sync_date: "13-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "14",
@@ -154,6 +167,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "15",
@@ -165,6 +179,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "16",
@@ -176,6 +191,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "17",
@@ -187,6 +203,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
   {
     follow_up_id: "18",
@@ -198,6 +215,7 @@ const DATA = [
     last_sync_date: "03-04-2023",
     doctor_remark: "check Sugar",
     fieldWorker_remark: "ABC",
+    otp: "1234",
   },
 ];
 

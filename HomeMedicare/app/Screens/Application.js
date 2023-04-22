@@ -13,27 +13,42 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StoreDataController from "../Controller/StoreDataController";
-import FetchFollowupToSend from "../Controller/FetchFollowupToSendController";
+import SendCompletedFollowups from "../Controller/FetchFollowupToSendController";
 import axios from "axios";
 import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
+import StoreNewFollowupsInStorage from "../Controller/StoreNewFollowupsInStorage";
 
 const Application = () => {
-  // const [user, setUser] = useState(false);
-  const [patientData, setPatientData] = useState("");
+  // const [patientData, setPatientData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const NetworkCheck = await checkNetworkConnection();
-      console.log("NetWork Connection => " + NetworkCheck);
-      if (NetworkCheck) {
-        FetchFollowupToSend();
-      }
-    }, 20000);
+  //Checks for network connection in every 20 sec and send followups to server...
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     const NetworkCheck = await checkNetworkConnection();
+  //     console.log("NetWork Connection => " + NetworkCheck);
+  //     if (NetworkCheck) {
+  //       SendCompletedFollowups();
+  //     }
+  //   }, 20000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  //Checks for network connection in every 30 sec and send followups to server...
+
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     const NetworkCheck = await checkNetworkConnection();
+  //     console.log("NetWork Connection => " + NetworkCheck);
+  //     if (NetworkCheck) {
+  //       StoreNewFollowupsInStorage();
+  //     }
+  //   }, 30000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
 
   useEffect(() => {
     AsyncStorage.getItem("isPinset")

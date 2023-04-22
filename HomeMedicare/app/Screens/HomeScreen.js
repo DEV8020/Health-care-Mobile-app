@@ -25,6 +25,7 @@ import { useRoute } from "@react-navigation/native";
 import IconButton from "../Utility/IconButton";
 import FilterHeader from "../Utility/FilterHeader";
 import OTPPopUp from "../Utility/OTPPopUp";
+import { requestIdleCallback } from "react-native-idle-callback";
 
 const HomeScreen = ({ navigation }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -37,12 +38,29 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate("Profile");
   };
 
-  // useEffect(() => {
-  //   if (!FetchFollowup(followupList, setFollowupList, "Today")) {
-  //     setFollowupList(followupList);
-  //     console.log(followupList);
-  //   }
-  // }, []);
+  useEffect(() => {
+    let idleTimeoutId;
+
+    // Set the idle time to 5 minutes (300000 milliseconds)
+    const timeoutId = setTimeout(() => {
+      // Navigate to the lock screen here
+    }, 300000);
+
+    // Set up the requestIdleCallback to clear the timeout when the app becomes idle
+    const requestIdleCallbackId = requestIdleCallback(() => {
+      clearTimeout(timeoutId);
+    });
+
+    // Store the timeout and requestIdleCallback IDs to clear them on unmount
+    idleTimeoutId = timeoutId;
+    const listener = () => clearTimeout(idleTimeoutId);
+    document.addEventListener("click", listener);
+    return () => {
+      clearTimeout(idleTimeoutId);
+      document.removeEventListener("click", listener);
+      cancelIdleCallback(requestIdleCallbackId);
+    };
+  }, []);
 
   useEffect(() => {
     FetchFollowup(followupList, setFollowupList, folloupTypeScreen);

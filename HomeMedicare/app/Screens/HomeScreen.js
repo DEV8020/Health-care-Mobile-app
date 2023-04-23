@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   FlatList,
   View,
@@ -19,13 +19,15 @@ import TodayFolloup from "./TodayFolloup";
 import PastFolloup from "./PastFollowup";
 import UpcomingFolloup from "./UpcomingFollowup";
 import FetchFollowup from "../Controller/FetchFollowupByDateController";
+import { TouchableWithoutFeedback } from "react-native";
 // import FilterFollowups from "../Utility/FilterFollowups";
 
 import { useRoute } from "@react-navigation/native";
 import IconButton from "../Utility/IconButton";
 import FilterHeader from "../Utility/FilterHeader";
 import OTPPopUp from "../Utility/OTPPopUp";
-import { requestIdleCallback } from "react-native-idle-callback";
+import IdleTimer from "react-native-idle-timer";
+import IdleTimerContainer from "../UtilityModules/IdleTimer";
 
 const HomeScreen = ({ navigation }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -33,34 +35,48 @@ const HomeScreen = ({ navigation }) => {
   const [showOTPPopUp, setShowOTPPopUp] = useState(false);
   const [followupData, setFollowupData] = useState({});
   const [followupList, setFollowupList] = useState([]);
+  //....
+  // const hasInteractedRef = useRef(false);
+  // const timeoutRef = useRef();
+
+  // const resetTimeout = useCallback(() => {
+  //   clearTimeout(timeoutRef.current);
+
+  //   if (!hasInteractedRef.current) {
+  //     timeoutRef.current = setTimeout(() => {
+  //       hasInteractedRef.current = false;
+  //       navigation.navigate("PIN Lock");
+  //     }, 5000);
+  //   }
+  // }, [navigation]);
+
+  // useEffect(() => {
+  //   resetTimeout();
+
+  //   return () => {
+  //     clearTimeout(timeoutRef.current);
+  //   };
+  // }, [resetTimeout]);
+
+  // const interactionHandler = useCallback(() => {
+  //   console.log("Intereacted");
+  //   hasInteractedRef.current = true;
+  //   resetTimeout();
+  // }, [resetTimeout]);
+
+  //....
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigation.navigate("PIN Lock");
+    }, 7000); // Set the timeout duration to 5 seconds (5000 milliseconds)
+
+    return () => clearTimeout(timeout); // Clear the timeout if the component unmounts
+  }, [navigation]);
 
   const profileButtonHandler = () => {
     navigation.navigate("Profile");
   };
-
-  useEffect(() => {
-    let idleTimeoutId;
-
-    // Set the idle time to 5 minutes (300000 milliseconds)
-    const timeoutId = setTimeout(() => {
-      // Navigate to the lock screen here
-    }, 300000);
-
-    // Set up the requestIdleCallback to clear the timeout when the app becomes idle
-    const requestIdleCallbackId = requestIdleCallback(() => {
-      clearTimeout(timeoutId);
-    });
-
-    // Store the timeout and requestIdleCallback IDs to clear them on unmount
-    idleTimeoutId = timeoutId;
-    const listener = () => clearTimeout(idleTimeoutId);
-    document.addEventListener("click", listener);
-    return () => {
-      clearTimeout(idleTimeoutId);
-      document.removeEventListener("click", listener);
-      cancelIdleCallback(requestIdleCallbackId);
-    };
-  }, []);
 
   useEffect(() => {
     FetchFollowup(followupList, setFollowupList, folloupTypeScreen);

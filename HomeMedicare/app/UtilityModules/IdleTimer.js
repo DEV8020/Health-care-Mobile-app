@@ -1,19 +1,16 @@
-import React from "react";
-import IdleTimer from "react-idle-timer";
+// import IdleTimer from "react-idle-timer";
+// import { useRef } from "react";
 
-function IdleTimerContainer() {
-  const idleTimerRef = useRef(null);
+// function IdleTimerContainer({ onUserIdle }) {
+//   const idleTimerRef = useRef(null);
 
-  const onIdle = () => {
-    console.log("User is Idle");
-  };
-  return (
-    <IdleTimer
-      ref={idleTimerRef}
-      timeout={5 * 1000}
-      onIdle={onIdle}
-    ></IdleTimer>
-  );
-}
+//   const onIdle = () => {
+//     console.log("User is Idle");
+//     onUserIdle();
+//   };
+//   return (
+//     <IdleTimer ref={idleTimerRef} timeout={10000} onIdle={onIdle}></IdleTimer>
+//   );
+// }
 
-export default IdleTimerContainer;
+// export default IdleTimerContainer;

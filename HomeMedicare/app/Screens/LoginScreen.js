@@ -22,27 +22,20 @@ const LoginScreen = ({ navigation }) => {
   // errorMessage: loginServiceData.responseError.message,
   const LoginResponseHandler = (loginResponseData) => {
     console.log("Login Response Data");
-    console.log(loginResponseData);
+    console.log(loginResponseData.loggedInUserData);
     if (loginResponseData.isLoginFlag) {
       console.log("Login successfull !!!!");
       ToastAndroid.show("Login successfull ", ToastAndroid.SHORT);
 
       AsyncStorage.setItem(
-        "AuthToken",
-        loginResponseData.loggedInUserData.token
+        "LoggedInData",
+        JSON.stringify(loginResponseData.loggedInUserData)
       )
         .then(() => {
           console.log("User login token stored successfully!");
         })
         .catch((error) => console.log(error));
-      AsyncStorage.setItem(
-        "userName",
-        loginResponseData.loggedInUserData.username
-      )
-        .then(() => {
-          console.log("User login userName stored successfully!");
-        })
-        .catch((error) => console.log(error));
+
       setEmail("");
       setPassword("");
       navigation.replace("PIN Change");

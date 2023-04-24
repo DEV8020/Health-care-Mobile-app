@@ -20,6 +20,7 @@ import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isFollowUpDownloadFlag, setIsFollowUpDownload] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
   // const [initialScreen, setInitialScreen] = useState("Login");
 
@@ -38,38 +39,45 @@ const Application = () => {
 
   //Checks for network connection in every 30 sec and send followups to server...
 
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     const NetworkCheck = await checkNetworkConnection();
-  //     console.log("NetWork Connection => " + NetworkCheck);
-  //     if (NetworkCheck) {
-  //       StoreNewFollowupsInStorage();
-  //     }
-  //   }, 30000);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const NetworkCheck = await checkNetworkConnection();
+      console.log("NetWork Connection => " + NetworkCheck);
+      if (NetworkCheck) {
+        StoreNewFollowupsInStorage({
+          followUpDownLoadResponseHandler: followUpDownLoadResponseHandler,
+        });
+      }
+    }, 10000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, [isFollowUpDownloadFlag]);
 
-  const initialScreen = () => {
-    return AsyncStorage.getItem("isPinset")
-      .then((value) => {
-        if (value !== null) {
-          console.log("PIN Lock");
-          return "PIN Lock";
-        } else {
-          console.log("Pin Change");
-          return "PIN Change";
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        return "PIN Change";
-      });
+  const followUpDownLoadResponseHandler = (followUpDownloadData) => {
+    console.log("****************************");
+    console.log(followUpDownloadData);
   };
 
+  // const initialScreen = () => {
+  //   return AsyncStorage.getItem("isPinset")
+  //     .then((value) => {
+  //       if (value !== null) {
+  //         console.log("PIN Lock");
+  //         return "PIN Lock";
+  //       } else {
+  //         console.log("Pin Change");
+  //         return "PIN Change";
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       return "PIN Change";
+  //     });
+  // };
+
   const getInitialScreen = () => {
-    console.log("********************************88");
-    console.log(initialScreen());
+    // console.log("********************************88");
+    // console.log(initialScreen());
 
     AsyncStorage.getItem("AuthToken")
       .then((value) => {

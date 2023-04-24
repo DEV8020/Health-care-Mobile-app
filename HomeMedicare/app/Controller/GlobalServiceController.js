@@ -1,13 +1,25 @@
 import axios from "axios";
+import APIURLUtilities from "./APIUrlUtilities";
 
 //const serverURL = `http://192.168.9.225:9191/`;
 // http://localhost:9494/login/helloWorld
 const serverURL = `http://192.168.233.225:9191/`;
 
-const getHeaderConfigurationsList = () => {
+const getHeaderConfigurationsList = async () => {
+  var Token;
+
+  try {
+    const token = await APIURLUtilities.getAuthToken();
+    console.log("getHeaderConfigurationsList for auth token");
+    console.log(token); // "arshdeepworker"
+    Token = token;
+  } catch (error) {
+    console.log(error);
+  }
+
   return {
     headers: {
-      Authorization: "Bearer " + UtilitiesMethods.getAuthTokenForLoggedInUser(),
+      Authorization: "Bearer " + Token,
     },
     validateStatus: function (status) {
       return (
@@ -101,14 +113,35 @@ const hitGetService = async (props) => {
   try {
     const url = serverURL + props.childURL;
 
-    console.log("URL Hitting in GlobalServiceHandler in Get Service Call");
     console.log(url);
-    console.log(UtilitiesMethods.getAuthTokenForLoggedInUser());
 
-    const response = await axios.get(
-      url,
-      GlobalServiceHandler.getHeaderConfigurationsList()
-    );
+    console.log("URL Hitting in GlobalServiceHandler in Get Service Call");
+    // console.log(url);
+    // console.log(UtilitiesMethods.getAuthTokenForLoggedInUser());
+
+    console.log(GlobalServiceHandler.getHeaderConfigurationsList());
+    var Token;
+
+    try {
+      const token = await APIURLUtilities.getAuthToken();
+      console.log("getHeaderConfigurationsList for auth token");
+      console.log(token); // "arshdeepworker"
+      Token = token;
+    } catch (error) {
+      console.log(error);
+    }
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: "Bearer " + Token,
+      },
+      validateStatus: function (status) {
+        return (
+          status === 200 || status === 404 || status === 403 || status === 500
+        );
+        // Resolve only if the status code is 202 or 404...
+      },
+    });
 
     console.log("Data recieved");
     console.log(response);

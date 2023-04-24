@@ -220,9 +220,10 @@ const DATA = [
 ];
 
 const StoreDataController = () => {
-  storeObj.storeData("Followups", DATA);
+  // const InitialData = null;
+  // storeObj.storeData("FollowupData", InitialData);
 
-  storeObj.getData("Followups").then((data) => {
+  storeObj.getData("FollowupData").then((data) => {
     if (data !== null) {
       // console.log(data);
       return true;

@@ -1,5 +1,6 @@
 import storeObj from "../Store/storeDataService";
 import GetNewFollowups from "./GetNewFollowups";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import FetchLastStoredFollowupId from "../UtilityModules/FetchLastStoredFollowup";
 
 const StoreNewFollowupsInStorage = async (props) => {
@@ -9,14 +10,40 @@ const StoreNewFollowupsInStorage = async (props) => {
   });
 };
 
+// isFollowUpListSuccessfully: true,
+//           followUpData: followUpData.responseData.data,
+//           errorMessage: null,
+
 const GetFollowupsResponseHandler = (response) => {
-  console.log("*******************************");
+  // console.log("*******************************");
+
+  // console.log(response);
   if (response) {
-    console.log(response.data);
+    // console.log(response.followUpData);
 
     //Sync Logic Here
 
-    //   storeObj.storeData("Followups", getRequestFollowupResponse);
+    AsyncStorage.getItem("FollowupData").then((list) => {
+      // parse the retrieved list to a JavaScript object
+      if (list !== null) {
+        // console.log("----------------------1");
+        const parsedList = JSON.parse(list);
+        // console.log("----------------------2");
+        // add the new objects to the list
+        const updatedList = [...parsedList, ...response.followUpData];
+        // console.log("----------------------3");
+        // convert the updated list back to a string
+        const updatedListString = JSON.stringify(updatedList);
+
+        // save the updated list to AsyncStorage
+        AsyncStorage.setItem("FollowupData", updatedListString);
+      } else {
+        AsyncStorage.setItem(
+          "FollowupData",
+          JSON.stringify(response.followUpData)
+        );
+      }
+    });
   } else {
     console.log("response Error");
   }

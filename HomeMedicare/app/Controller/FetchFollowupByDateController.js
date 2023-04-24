@@ -4,7 +4,7 @@ import moment from "moment";
 
 const FetchFollowup = (followupList, setFollowupList, followupType) => {
   const today = moment(new Date()).format("DD-MM-YYYY");
-  storeObj.getData("Followups").then((data) => {
+  storeObj.getData("FollowupData").then((data) => {
     if (data !== null) {
       // console.log(data.length);
 

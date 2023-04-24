@@ -5,30 +5,30 @@ import APIURLUtilities from "./APIUrlUtilities";
 // http://localhost:9494/login/helloWorld
 const serverURL = `http://192.168.233.225:9191/`;
 
-const getHeaderConfigurationsList = async () => {
-  var Token;
+// const getHeaderConfigurationsList = async () => {
+//   var Token;
 
-  try {
-    const token = await APIURLUtilities.getAuthToken();
-    console.log("getHeaderConfigurationsList for auth token");
-    console.log(token); // "arshdeepworker"
-    Token = token;
-  } catch (error) {
-    console.log(error);
-  }
+//   try {
+//     const token = await APIURLUtilities.getAuthToken();
+//     console.log("getHeaderConfigurationsList for auth token");
+//     console.log(token); // "arshdeepworker"
+//     Token = token;
+//   } catch (error) {
+//     console.log(error);
+//   }
 
-  return {
-    headers: {
-      Authorization: "Bearer " + Token,
-    },
-    validateStatus: function (status) {
-      return (
-        status === 200 || status === 404 || status === 403 || status === 500
-      );
-      // Resolve only if the status code is 202 or 404...
-    },
-  };
-};
+//   return {
+//     headers: {
+//       Authorization: "Bearer " + Token,
+//     },
+//     validateStatus: function (status) {
+//       return (
+//         status === 200 || status === 404 || status === 403 || status === 500
+//       );
+//       // Resolve only if the status code is 202 or 404...
+//     },
+//   };
+// };
 
 //Method to handle the response of the API Calls...
 const handleAPICallReponseData = (prop) => {
@@ -119,7 +119,7 @@ const hitGetService = async (props) => {
     // console.log(url);
     // console.log(UtilitiesMethods.getAuthTokenForLoggedInUser());
 
-    console.log(GlobalServiceHandler.getHeaderConfigurationsList());
+    // console.log(GlobalServiceHandler.getHeaderConfigurationsList());
     var Token;
 
     try {
@@ -162,7 +162,7 @@ const hitGetService = async (props) => {
 const GlobalServiceHandler = {
   hitPostService,
   hitGetService,
-  getHeaderConfigurationsList,
+  // getHeaderConfigurationsList,
   handleAPICallReponseData,
 };
 export default GlobalServiceHandler;

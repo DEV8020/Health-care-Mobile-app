@@ -78,7 +78,8 @@ const Application = () => {
   const getInitialScreen = () => {
     // console.log("********************************88");
     // console.log(initialScreen());
-
+    // AsyncStorage.removeItem("FollowupData");
+    // console.log("kkkkkkkkkkkkkkkkkkkk");
     AsyncStorage.getItem("AuthToken")
       .then((value) => {
         if (value !== null) {

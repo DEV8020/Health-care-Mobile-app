@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ToastAndroid } from "react-native";
+import OTPInput from "../Utility/OTPTextInputs";
 
 const PinLock = ({ route, navigation }) => {
   const [PIN, setPIN] = useState("");
+  const [PINInputDefault, setPINInputDefault] = useState(false);
   useEffect(() => {
     setPIN("");
   }, [navigation]);
@@ -20,17 +22,9 @@ const PinLock = ({ route, navigation }) => {
     AsyncStorage.getItem("isPinSet")
       .then((value) => {
         if (value === PIN) {
-          AsyncStorage.getItem("isLoggedIn")
-            .then((value) => {
-              if (value !== null) {
-                setPIN("");
-                navigation.navigate("Home");
-              } else {
-                setPIN("");
-                navigation.navigate("Login");
-              }
-            })
-            .catch((error) => console.log(error));
+          setPIN("");
+          navigation.navigate("Home");
+
           ToastAndroid.show("PIN login successfully", ToastAndroid.SHORT);
           console.log("PIN Login successful");
         } else {
@@ -55,7 +49,7 @@ const PinLock = ({ route, navigation }) => {
       <View style={styles.container}>
         <Text style={styles.logo}>Enter PIN</Text>
         <View style={styles.inputView}>
-          <TextInput
+          {/* <TextInput
             maxLength={4}
             minLength={4}
             style={styles.inputText}
@@ -65,6 +59,13 @@ const PinLock = ({ route, navigation }) => {
             secureTextEntry={true}
             value={PIN}
             onChangeText={(text) => setPIN(text)}
+          /> */}
+          <OTPInput
+            length={4}
+            value={PIN}
+            onChange={setPIN}
+            setOtpInputDefault={setPINInputDefault}
+            otpInputDefault={PINInputDefault}
           />
         </View>
         <TouchableOpacity style={styles.loginBtn} onPress={handlePinCheck}>
@@ -107,12 +108,11 @@ const styles = StyleSheet.create({
   },
   inputView: {
     width: "80%",
-    backgroundColor: "#F2F2F2",
+
     borderRadius: 25,
-    height: 50,
+    height: 60,
     marginBottom: 20,
-    justifyContent: "center",
-    padding: 20,
+    justifyContent: "flex-end",
   },
   inputText: {
     height: 50,

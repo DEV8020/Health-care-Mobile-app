@@ -1,16 +1,31 @@
 // import { sendItemsToServer } from "../Store/Redux/actions";
 import GlobalServiceHandler from "./GlobalServiceController";
+import APIURLUtilities from "./APIUrlUtilities";
 
 const GetNewFollowups = async (props) => {
-  await GlobalServiceHandler.hitPostService({
-    childURL: "helloWorld",
-    getData: props.followupListData,
-    responseDataHandler: (getFollowupData) => {
-      if (getFollowupData.responseData === null) {
-        console.log("Entered in error block");
-        return null;
-      } else {
-        return getFollowupData.responseData.data;
+  console.log("GetSuperAdminAllRegisteredUserList");
+
+  var folloupID = props.followupID;
+
+  await GlobalServiceHandler.hitCustomResponseGetService({
+    childURL:
+      APIURLUtilities.getFrontDeskAPIChildURLKeys()
+        .frontDeskGetPatientsDetailAPIKey + patientID,
+    responseDataHandler: (getPatientDetailsServiceData) => {
+      console.log("getPatientDetailsServiceData");
+      console.log(getPatientDetailsServiceData);
+      if (getPatientDetailsServiceData.responseError === null) {
+        props.getPatientDetailsResponseHandler({
+          isPatientDetailsRecievedSuccessFully: true,
+          patientDetailsData: getPatientDetailsServiceData.responseData.data,
+          errorMessage: null,
+        });
+      } else if (getPatientDetailsServiceData.responseData === null) {
+        props.getPatientDetailsResponseHandler({
+          isPatientDetailsRecievedSuccessFully: false,
+          patientDetailsData: null,
+          errorMessage: getPatientDetailsServiceData.responseError.message,
+        });
       }
     },
   });

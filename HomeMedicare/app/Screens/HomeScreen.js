@@ -29,6 +29,7 @@ import OTPPopUp from "../Utility/OTPPopUp";
 import IdleTimer from "react-native-idle-timer";
 import IdleTimerContainer from "../UtilityModules/IdleTimer";
 
+const IDLE_SCREEN_TIME = 70000;
 const HomeScreen = ({ navigation }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
@@ -69,7 +70,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigation.navigate("PIN Lock");
-    }, 7000); // Set the timeout duration to 5 seconds (5000 milliseconds)
+    }, IDLE_SCREEN_TIME); // Set the timeout duration to 5 seconds (5000 milliseconds)
 
     return () => clearTimeout(timeout); // Clear the timeout if the component unmounts
   }, [navigation]);

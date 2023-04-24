@@ -8,20 +8,20 @@ import FieldWorkerProfile from "./ProfileScreen";
 import FollowupScreen from "./FollowUpScreen";
 import ChangePINScreen from "./ChangePINScreen";
 import PinLock from "./PinLockScreen";
-import OTPLoginScreen from "./OTPbasedLogin";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StoreDataController from "../Controller/StoreDataController";
-import SendCompletedFollowups from "../Controller/FetchFollowupToSendController";
-import axios from "axios";
-import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
 import StoreNewFollowupsInStorage from "../Controller/StoreNewFollowupsInStorage";
+// import SendCompletedFollowups from "../Controller/FetchFollowupToSendController";
+// import axios from "axios";
+import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
 
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
+  // const [initialScreen, setInitialScreen] = useState("Login");
 
   //Checks for network connection in every 20 sec and send followups to server...
   // useEffect(() => {
@@ -50,15 +50,40 @@ const Application = () => {
   //   return () => clearInterval(interval);
   // }, []);
 
-  useEffect(() => {
-    AsyncStorage.getItem("isPinset")
+  const initialScreen = () => {
+    return AsyncStorage.getItem("isPinset")
       .then((value) => {
         if (value !== null) {
-          setIsPin(true);
+          console.log("PIN Lock");
+          return "PIN Lock";
+        } else {
+          console.log("Pin Change");
+          return "PIN Change";
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return "PIN Change";
+      });
+  };
+
+  const getInitialScreen = () => {
+    console.log("********************************88");
+    console.log(initialScreen());
+
+    AsyncStorage.getItem("AuthToken")
+      .then((value) => {
+        if (value !== null) {
+          console.log("Storage has token stored ... ");
+          // AsyncStorage.removeItem("isPinset");
+        } else {
+          return "PIN Change";
         }
       })
       .catch((error) => console.log(error));
-  }, []);
+
+    return "Login";
+  };
   useEffect(() => {
     if (!StoreDataController()) {
       console.log("Data Stored in Mobile Storage");
@@ -77,7 +102,7 @@ const Application = () => {
             headerStyle: { backgroundColor: "#2B79E3" },
             headerTintColor: "white",
           }}
-          initialRouteName={isPinSet ? "PIN Lock" : "PIN Change"}
+          initialRouteName={getInitialScreen()}
         >
           {/* <Stack.Screen name="OTPLogin" component={OTPLoginScreen} /> */}
 

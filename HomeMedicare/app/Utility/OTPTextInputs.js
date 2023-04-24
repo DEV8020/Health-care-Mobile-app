@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
 const OTPInput = ({
@@ -8,6 +8,7 @@ const OTPInput = ({
   otpInputDefault,
   setOtpInputDefault,
 }) => {
+  const [isFocused, setIsFocused] = useState(-1);
   const inputRefs = useRef([]);
   useEffect(() => {
     if (otpInputDefault === true) {
@@ -32,14 +33,23 @@ const OTPInput = ({
         handleOnChange(index, "");
       } else if (inputRefs.current[index - 1]) {
         inputRefs.current[index - 1].focus();
+        setIsFocused(false);
         handleOnChange(index - 1, "");
       }
     } else if (/^\d+$/.test(key)) {
       handleOnChange(index, key);
       if (inputRefs.current[index + 1]) {
         inputRefs.current[index + 1].focus();
+        // setIsFocused(true);
       }
     }
+  };
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
   };
 
   const renderInputs = () => {
@@ -48,7 +58,12 @@ const OTPInput = ({
       otpInputs.push(
         <TextInput
           key={i}
-          style={styles.OTP_textInput}
+          secureTextEntry={true}
+          onFocus={() => setIsFocused(i)}
+          style={[
+            styles.OTP_textInput,
+            { borderColor: isFocused ? "blue" : "gray" },
+          ]}
           keyboardType="numeric"
           value={value[i]}
           onChangeText={(text) => handleOnChange(i, text)}
@@ -69,16 +84,18 @@ const styles = StyleSheet.create({
   otp_pin_type_Container: {
     flexDirection: "row",
     marginHorizontal: 20,
+    marginLeft: 30,
   },
   OTP_textInput: {
     textAlign: "center",
-    width: 40,
+    width: 45,
     marginHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderWidth: 1,
 
+    backgroundColor: "#F2F2F2",
+    borderRadius: 5,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
 

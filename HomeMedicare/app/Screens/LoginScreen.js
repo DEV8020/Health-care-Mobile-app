@@ -17,47 +17,53 @@ const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // isLoginFlag: false,
+  // loggedInUserData: null,
+  // errorMessage: loginServiceData.responseError.message,
+  const LoginResponseHandler = (loginResponseData) => {
+    console.log("Login Response Data");
+    console.log(loginResponseData);
+    if (loginResponseData.isLoginFlag) {
+      console.log("Login successfull !!!!");
+      ToastAndroid.show("Login successfull ", ToastAndroid.SHORT);
 
-  const LoginResponseHandler = (credentials) => {
-    if (credentials) {
-      if (email === credentials.userId && password === credentials.password) {
-        console.log("Login successfull !!!!");
-        ToastAndroid.show("Login successfull ", ToastAndroid.SHORT);
-
-        AsyncStorage.setItem("isLoggedIn", "true")
-          .then(() => {
-            console.log("User logged in successfully!");
-          })
-          .catch((error) => console.log(error));
-
-        navigation.replace("Home");
-      } else {
-        ToastAndroid.show("Invalid Credentials", ToastAndroid.SHORT);
-        console.log("Invalid Credentials");
-      }
+      AsyncStorage.setItem(
+        "AuthToken",
+        loginResponseData.loggedInUserData.token
+      )
+        .then(() => {
+          console.log("User login token stored successfully!");
+        })
+        .catch((error) => console.log(error));
+      AsyncStorage.setItem(
+        "userName",
+        loginResponseData.loggedInUserData.username
+      )
+        .then(() => {
+          console.log("User login userName stored successfully!");
+        })
+        .catch((error) => console.log(error));
+      setEmail("");
+      setPassword("");
+      navigation.replace("PIN Change");
     } else {
-      ToastAndroid.show("Network Error", ToastAndroid.SHORT);
-      console.log("Network Error");
+      ToastAndroid.show(loginResponseData.errorMessage, ToastAndroid.SHORT);
+      console.log(loginResponseData.errorMessage);
     }
-    
   };
 
   const handleLogin = () => {
     const userData = {
-      userType: "FieldWorker",
-      userId: email,
+      role: "ROLE_FIELD_WORKER",
+      username: email,
       password: password,
     };
-    
+
     LoginController.GetUserLoginData({
       userData: userData,
-      LoginResponseHandler: LoginResponseHandler,
+      userLoginResponseHandler: LoginResponseHandler,
     });
 
-    console.log(credentials.userId + credentials.password);
-
-    setEmail("");
-    setPassword("");
     // Handle login logic here
   };
   const handleForgotPassword = () => {

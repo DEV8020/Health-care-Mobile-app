@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   StyleSheet,
@@ -15,48 +15,45 @@ import { ToastAndroid } from "react-native";
 const ChangePINScreen = ({ route, navigation }) => {
   const [PIN, setPIN] = useState("");
   const [confirmPIN, setConfirmPIN] = useState("");
+  const [isPINSet, setIsPINSet] = useState(false);
+  // const [secure, setSecure] = React.useState(props.secure);
+
+  useEffect(() => {
+    AsyncStorage.getItem("isPinset")
+      .then((value) => {
+        if (value !== null) {
+          setIsPINSet(true);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleChangePIN = () => {
-    if (PIN === confirmPIN) {
-      AsyncStorage.getItem("isPinset")
-        .then((value) => {
-          if (value !== null) {
-            AsyncStorage.setItem("isPinSet", PIN)
-              .then(() => {
-                ToastAndroid.show(
-                  "PIN changed successfully",
-                  ToastAndroid.SHORT
-                );
-                console.log("User has Changed PIN successfully!");
-              })
-              .catch((error) => {
-                ToastAndroid.show(error, ToastAndroid.SHORT);
-                console.log(error);
-              });
-            navigation.goBack();
-          } else {
-            AsyncStorage.setItem("isPinSet", PIN)
-              .then(() => {
-                ToastAndroid.show(
-                  "PIN changed successfully",
-                  ToastAndroid.SHORT
-                );
-                console.log("User has Changed PIN successfully!");
-              })
-              .catch((error) => {
-                ToastAndroid.show(error, ToastAndroid.SHORT);
-                console.log(error);
-              });
-            navigation.replace("PIN Lock");
-          }
-        })
-        .catch((error) => console.log(error));
+    if (PIN.length !== 4) {
+      ToastAndroid.show("PIN length should be 4 digit", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show(
-        "Pin and Confirm Pin are different",
-        ToastAndroid.SHORT
-      );
-      console.log("pin and confirm_pin are different");
+      if (PIN === confirmPIN) {
+        AsyncStorage.setItem("isPinSet", PIN)
+          .then(() => {
+            ToastAndroid.show("PIN changed successfully", ToastAndroid.SHORT);
+            console.log("User has Changed PIN successfully!");
+          })
+          .catch((error) => {
+            ToastAndroid.show(error, ToastAndroid.SHORT);
+            console.log(error);
+          });
+        if (isPINSet === true) {
+          navigation.goBack();
+        } else {
+          navigation.replace("PIN Lock");
+        }
+      } else {
+        ToastAndroid.show(
+          "Pin and Confirm Pin are different",
+          ToastAndroid.SHORT
+        );
+        console.log("pin and confirm_pin are different");
+      }
     }
   };
 
@@ -70,11 +67,11 @@ const ChangePINScreen = ({ route, navigation }) => {
       source={require("../assets/bgimg.jpg")}
     >
       <View style={styles.container}>
-        <Text style={styles.logo}>Pin Change</Text>
+        <Text style={styles.logo}>CHANGE PIN</Text>
         <View style={styles.inputView}>
           <TextInput
             maxLength={4}
-            minLength={4}
+            secureTextEntry={true}
             keyboardType="number-pad"
             style={styles.inputText}
             placeholder="Enter New PIN"
@@ -84,8 +81,8 @@ const ChangePINScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.inputView}>
           <TextInput
-          maxLength={4}
-          minLength={4}
+            secureTextEntry={true}
+            maxLength={4}
             keyboardType="number-pad"
             style={styles.inputText}
             placeholder="Confirm PIN"
@@ -96,9 +93,11 @@ const ChangePINScreen = ({ route, navigation }) => {
         <TouchableOpacity style={styles.loginBtn} onPress={handleChangePIN}>
           <Text style={styles.loginText}>Update</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn} onPress={handleCancelPIN}>
-          <Text style={styles.loginText}>Cancel</Text>
-        </TouchableOpacity>
+        {isPINSet === true && (
+          <TouchableOpacity style={styles.loginBtn} onPress={handleCancelPIN}>
+            <Text style={styles.loginText}>Cancel</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ImageBackground>
   );
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: "absolute",
-    top: 200,
+    top: 100,
     left: 20,
     borderRadius: 15,
     width: 380,
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontWeight: "bold",
-    fontSize: 40,
+    fontSize: 35,
     color: "#2B79E3",
     marginBottom: 40,
   },

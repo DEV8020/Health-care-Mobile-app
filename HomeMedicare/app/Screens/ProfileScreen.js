@@ -55,48 +55,58 @@ const FieldWorkerProfile = (props) => {
     >
       <View style={styles.container_profile}>
         <View style={styles.allfield_view}>
-          <Text style={{ fontSize: 20 }}>Name : {name}</Text>
+          <Text style={{ fontSize: 20 }}>Name:</Text>
+          <Text
+            style={styles.input}
+            onChangeText={handleNameChange}
+            placeholder="Email"
+          >
+            {name}
+          </Text>
         </View>
 
         <View style={styles.allfield_view}>
           <Text style={{ fontSize: 20 }}>Contact Number</Text>
-          <TextInput
+          <Text
             style={styles.input}
-            value={contactNumber}
             onChangeText={handleContactNumberChange}
             placeholder="Contact Number"
-          />
-          <TouchableOpacity
+          >
+            {contactNumber}
+          </Text>
+          {/* <TouchableOpacity
             onPress={handleContactNumberPress}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Change Contact Number</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View style={styles.allfield_view}>
           <Text style={{ fontSize: 20 }}>Email</Text>
-          <TextInput
+          <Text
             style={styles.input}
-            value={email}
             onChangeText={handleEmailChange}
             placeholder="Email"
-          />
-          <TouchableOpacity onPress={handleEmailPress} style={styles.button}>
+          >
+            {email}
+          </Text>
+          {/* <TouchableOpacity onPress={handleEmailPress} style={styles.button}>
             <Text style={styles.buttonText}>Change Email</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View style={styles.allfield_view}>
           <Text style={{ fontSize: 20 }}>Address</Text>
-          <TextInput
+          <Text
             style={styles.input}
-            value={address}
             onChangeText={handleAddressChange}
             placeholder="Address"
-          />
-          <TouchableOpacity onPress={handleAddressPress} style={styles.button}>
+          >
+            {address}
+          </Text>
+          {/* <TouchableOpacity onPress={handleAddressPress} style={styles.button}>
             <Text style={styles.buttonText}>Change Address</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {/* <View style={styles.allfield_view}>
             <Text style={{ fontSize: 20 }}>Password</Text>
@@ -123,9 +133,9 @@ const FieldWorkerProfile = (props) => {
           >
             <Text style={styles.buttonText}>Change PIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={logout} style={styles.buttonChangePIN}>
+          {/* <TouchableOpacity onPress={logout} style={styles.buttonChangePIN}>
             <Text style={styles.buttonText}>logout</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </ImageBackground>

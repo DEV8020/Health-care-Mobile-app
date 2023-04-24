@@ -20,9 +20,7 @@ import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isFollowUpDownloadFlag, setIsFollowUpDownload] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
-  // const [initialScreen, setInitialScreen] = useState("Login");
 
   //Checks for network connection in every 20 sec and send followups to server...
   // useEffect(() => {
@@ -38,6 +36,10 @@ const Application = () => {
   // }, []);
 
   //Checks for network connection in every 30 sec and send followups to server...
+  // var isAPICallActive = false;
+  const [timer, setTimer] = useState(10000);
+  const sucessTimerDuration = 10000;
+  const idleTimerDuration = 60000;
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -47,15 +49,32 @@ const Application = () => {
         StoreNewFollowupsInStorage({
           followUpDownLoadResponseHandler: followUpDownLoadResponseHandler,
         });
+      } else {
+        setTimer(idleTimerDuration);
       }
-    }, 10000);
+    }, timer);
 
     return () => clearInterval(interval);
-  }, [isFollowUpDownloadFlag]);
+  }, [timer]);
 
   const followUpDownLoadResponseHandler = (followUpDownloadData) => {
     console.log("****************************");
     console.log(followUpDownloadData);
+    if (followUpDownloadData.isFollowUpListSuccessfully === true) {
+      // isFollowUpListSuccessfully: true,
+      //           followUpData: followUpData.responseData.data,
+      //           errorMessage: null,
+      console.log("Data reciebe=ved in app.js");
+      if (followUpDownloadData.followUpData.length === 5) {
+        setTimer(sucessTimerDuration);
+      } else {
+        console.log("5 min timer");
+        setTimer(idleTimerDuration);
+      }
+    } else {
+      setTimer(idleTimerDuration);
+      console.log("error reciebe=ved in app.js");
+    }
   };
 
   // const initialScreen = () => {
@@ -74,22 +93,40 @@ const Application = () => {
   //       return "PIN Change";
   //     });
   // };
+  useEffect(() => {
+    AsyncStorage.removeItem("FollowupData");
+    console.log("kkkkkkkkkkkkkkkkkkkk");
+    AsyncStorage.getItem("LoggedInData")
+      .then((value) => {
+        if (value !== null) {
+          console.log("Storage has token stored ... ");
+          // downloadFollowUpData();
+          // setIsFollowUpDownloadFlag((isEnabled) => {
+          //   return !isEnabled;
+          // });
+          // AsyncStorage.removeItem("isPinset");
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const getInitialScreen = () => {
     // console.log("********************************88");
     // console.log(initialScreen());
-    // AsyncStorage.removeItem("FollowupData");
-    // console.log("kkkkkkkkkkkkkkkkkkkk");
-    AsyncStorage.getItem("AuthToken")
-      .then((value) => {
-        if (value !== null) {
-          console.log("Storage has token stored ... ");
-          // AsyncStorage.removeItem("isPinset");
-        } else {
-          return "PIN Change";
-        }
-      })
-      .catch((error) => console.log(error));
+
+    // AsyncStorage.getItem("LoggedInData")
+    //   .then((value) => {
+    //     if (value !== null) {
+    //       console.log("Storage has token stored ... ");
+    //       setIsFollowUpDownloadFlag((isEnabled) => {
+    //         return !isEnabled;
+    //       });
+    //       // AsyncStorage.removeItem("isPinset");
+    //     } else {
+    //       return "PIN Change";
+    //     }
+    //   })
+    //   .catch((error) => console.log(error));
 
     return "Login";
   };

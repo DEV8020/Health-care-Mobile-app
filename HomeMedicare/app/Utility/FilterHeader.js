@@ -26,14 +26,14 @@ const FilterHeader = ({ selectedStatus, setSelectedStatus }) => {
       <TouchableOpacity
         style={[
           styles.filterOption,
-          selectedStatus === "pending" && styles.selectedFilterOption,
+          selectedStatus === false && styles.selectedFilterOption,
         ]}
-        onPress={() => handleFilterPress("pending")}
+        onPress={() => handleFilterPress(false)}
       >
         <Text
           style={[
             styles.filterOptionText,
-            selectedStatus === "pending" && styles.selectedFilterOptionText,
+            selectedStatus === false && styles.selectedFilterOptionText,
           ]}
         >
           Pending
@@ -42,20 +42,20 @@ const FilterHeader = ({ selectedStatus, setSelectedStatus }) => {
       <TouchableOpacity
         style={[
           styles.filterOption,
-          selectedStatus === "completed" && styles.selectedFilterOption,
+          selectedStatus === true && styles.selectedFilterOption,
         ]}
-        onPress={() => handleFilterPress("completed")}
+        onPress={() => handleFilterPress(true)}
       >
         <Text
           style={[
             styles.filterOptionText,
-            selectedStatus === "completed" && styles.selectedFilterOptionText,
+            selectedStatus === true && styles.selectedFilterOptionText,
           ]}
         >
           Completed
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={[
           styles.filterOption,
           selectedStatus === "cancelled" && styles.selectedFilterOption,
@@ -70,7 +70,7 @@ const FilterHeader = ({ selectedStatus, setSelectedStatus }) => {
         >
           Cancelled
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -92,7 +92,6 @@ styles = StyleSheet.create({
     borderColor: "#2B79E3",
     marginRight: 10,
     backgroundColor: "white",
-   
   },
   selectedFilterOption: {
     backgroundColor: "#2B79E3",

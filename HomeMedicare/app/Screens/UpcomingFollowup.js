@@ -148,7 +148,7 @@ function UpcomingFolloup({
   const SelectedPatientHandler = (item) => {
     // setPatientData(PatientSelectedID);
 
-    if (item.status === "pending") {
+    if (item.flag === false) {
       ToastAndroid.show(
         "Followup is unavailable currently",
         ToastAndroid.SHORT
@@ -157,35 +157,32 @@ function UpcomingFolloup({
       setFollowupData(item);
       console.log(followupData);
     } else {
-      console.log("Selected folloup is-" + item.status);
-      ToastAndroid.show(
-        "Selected folloup is " + item.status,
-        ToastAndroid.SHORT
-      );
+      console.log("Selected folloup is-" + item.flag);
+      ToastAndroid.show("Selected folloup is " + item.flag, ToastAndroid.SHORT);
     }
   };
 
   const renderItem = ({ item }) => {
-    if (selectedStatus !== "All" && item.status !== selectedStatus) {
+    if (selectedStatus !== "All" && item.flag !== selectedStatus) {
       return null;
     }
     const backgroundColor = item.id === selectedId ? "#2797F0" : "white";
 
     let iconColor;
     let iconName;
-    switch (item.status) {
-      case "pending":
+    switch (item.flag) {
+      case false:
         iconName = "hourglass-empty";
         iconColor = "gray";
         break;
-      case "completed":
+      case true:
         iconName = "check-circle";
         iconColor = "green";
         break;
-      case "cancelled":
-        iconName = "cancel";
-        iconColor = "red";
-        break;
+      // case "cancelled":
+      //   iconName = "cancel";
+      //   iconColor = "red";
+      //   break;
       default:
         iconName = "info";
         iconColor = "gray";
@@ -194,7 +191,7 @@ function UpcomingFolloup({
 
     return (
       <>
-        {item.status === "pending" && (
+        {item.flag === false && (
           <TouchableOpacity
             style={{
               backgroundColor,
@@ -206,36 +203,26 @@ function UpcomingFolloup({
             }}
             onPress={() => SelectedPatientHandler(item)}
           >
-            <Text style={{ fontSize: 15, padding: 10 }}>{item.title}</Text>
+            <Text style={{ fontSize: 15, padding: 10 }}>{item.followUpId}</Text>
             <Text
               style={{
-                marginLeft: 10,
-                marginRight: 10,
-                fontSize: 15,
-                padding: 10,
-              }}
-            >
-              {item.name}
-            </Text>
-            <Text
-              style={{
-                marginLeft: 10,
-                marginRight: 10,
-                fontSize: 15,
-                padding: 10,
-              }}
-            >
-              {item.address}
-            </Text>
-            <Text
-              style={{
-                marginLeft: 10,
+                marginLeft: 40,
                 marginRight: 20,
                 fontSize: 15,
                 padding: 10,
               }}
             >
-              {item.date}
+              {item.patient.name}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 40,
+                marginRight: 50,
+                fontSize: 15,
+                padding: 10,
+              }}
+            >
+              {item.patient.address}
             </Text>
             <Icon name={iconName} size={25} color={iconColor} />
           </TouchableOpacity>
@@ -249,7 +236,7 @@ function UpcomingFolloup({
       style={styles.list}
       data={followupList}
       renderItem={renderItem}
-      keyExtractor={(item) => item.follow_up_id}
+      keyExtractor={(item) => item.followUpId}
       extraData={selectedId}
     />
   );

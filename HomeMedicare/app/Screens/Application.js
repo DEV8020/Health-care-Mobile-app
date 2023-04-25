@@ -159,7 +159,7 @@ const Application = () => {
             headerStyle: { backgroundColor: "#2B79E3" },
             headerTintColor: "white",
           }}
-          initialRouteName="Login"
+          initialRouteName="PIN Lock"
         >
           {/* <Stack.Screen name="OTPLogin" component={OTPLoginScreen} /> */}
 

@@ -102,7 +102,7 @@ function PastFolloup({
       style={styles.list}
       data={followupList}
       renderItem={renderItem}
-      keyExtractor={(item) => item.follow_up_id}
+      keyExtractor={(item) => item.followUpId}
       extraData={selectedId}
     />
   );

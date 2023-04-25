@@ -30,7 +30,7 @@ import IdleTimer from "react-native-idle-timer";
 import IdleTimerContainer from "../UtilityModules/IdleTimer";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
 
-const IDLE_SCREEN_TIME = 70000;
+const IDLE_SCREEN_TIME = 70000000;
 const HomeScreen = ({ navigation }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
@@ -103,9 +103,9 @@ const HomeScreen = ({ navigation }) => {
     return (
       <View style={styles.header}>
         {/* <FilterFollowups selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/> */}
-        <Text style={styles.headerText}> PID </Text>
+        <Text style={styles.headerText}> FID </Text>
         <Text style={styles.headerText}> Name</Text>
-        <Text style={styles.headerText}> Address</Text>
+        {/* <Text style={styles.headerText}> Address</Text> */}
         {folloupTypeScreen !== "Today" && (
           <Text style={styles.headerText}> Date</Text>
         )}

@@ -1,4 +1,10 @@
-import { FlatList, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  View,
+} from "react-native";
 //import { DATA } from "../data/dummy-data";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -20,43 +26,42 @@ function PastFolloup({
   const SelectedPatientHandler = (item) => {
     // setPatientData(PatientSelectedID);
 
-    if (item.status === "pending") {
+    if (item.flag === false) {
       setShowOTPPopUp(true);
-      console.log(item.status);
+      console.log(item.flag);
       ToastAndroid.show("Enter patient OTP", ToastAndroid.SHORT);
 
       setFollowupData(item);
       console.log(followupData);
     } else {
-      console.log("Selected folloup is-" + item.status);
-      ToastAndroid.show(
-        "Selected folloup is " + item.status,
-        ToastAndroid.SHORT
-      );
+      console.log("Selected folloup is-" + item.flag);
+      ToastAndroid.show("Selected folloup is " + item.flag, ToastAndroid.SHORT);
     }
   };
 
   const renderItem = ({ item }) => {
-    if (selectedStatus !== "All" && item.status !== selectedStatus) {
+    const isSelected = item.followUpId === selectedId;
+    if (selectedStatus !== "All" && item.flag !== selectedStatus) {
       return null;
     }
-    const backgroundColor = item.status === "pending" ? "#F1948A" : "white";
 
+    const backgroundColor = item.flag === false ? "#F1948A" : "white";
+    const height = isSelected ? 200 : 90;
     let iconColor;
     let iconName;
-    switch (item.status) {
-      case "pending":
+    switch (item.flag) {
+      case false:
         iconName = "hourglass-empty";
         iconColor = "gray";
         break;
-      case "completed":
+      case true:
         iconName = "check-circle";
         iconColor = "green";
         break;
-      case "cancelled":
-        iconName = "cancel";
-        iconColor = "red";
-        break;
+      // case "cancelled":
+      //   iconName = "cancel";
+      //   iconColor = "red";
+      //   break;
       default:
         iconName = "info";
         iconColor = "gray";
@@ -66,33 +71,85 @@ function PastFolloup({
     return (
       <TouchableOpacity
         style={{
-          backgroundColor,
+          backgroundColor: "white",
           padding: 20,
+
           marginVertical: 4,
-          flexDirection: "row",
           width: 400,
-          height: 100,
+          height,
           borderRadius: 10,
         }}
         onPress={() => SelectedPatientHandler(item)}
       >
-        <Text style={{ fontSize: 15, padding: 10 }}>{item.title}</Text>
-        <Text
-          style={{ marginLeft: 10, marginRight: 10, fontSize: 15, padding: 10 }}
-        >
-          {item.name}
-        </Text>
-        <Text
-          style={{ marginLeft: 10, marginRight: 10, fontSize: 15, padding: 10 }}
-        >
-          {item.address}
-        </Text>
-        <Text
-          style={{ marginLeft: 10, marginRight: 20, fontSize: 15, padding: 10 }}
-        >
-          {item.date}
-        </Text>
-        <Icon name={iconName} size={25} color={iconColor} />
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={{ fontSize: 16, padding: 10 }}>{item.followUpId}</Text>
+          <Text
+            style={{
+              fontSize: 16,
+
+              padding: 10,
+            }}
+          >
+            {item.patient.name}
+          </Text>
+
+          <Icon name={iconName} size={25} color={iconColor} />
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#2B79E3",
+              padding: 10,
+              borderRadius: 15,
+            }}
+            onPress={() => setSelectedId(isSelected ? null : item.followUpId)}
+          >
+            <Text style={{ fontSize: 14, fontWeight: "bold", color: "white" }}>
+              {isSelected ? "Hide details" : "Show details"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {isSelected && (
+          <View
+            style={{
+              justifyContent: "space-between",
+              backgroundColor: "wheat",
+              borderRadius: 10,
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                marginLeft: 15,
+                marginRight: 15,
+                fontSize: 16,
+                padding: 10,
+              }}
+            >
+              Address : {item.patient.address}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 15,
+                marginRight: 15,
+                fontSize: 16,
+                padding: 10,
+              }}
+            >
+              pin code : {item.patient.pincode}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 15,
+                marginRight: 15,
+                fontSize: 16,
+                padding: 10,
+              }}
+            >
+              Contact No : {item.patient.contact}
+            </Text>
+            {/* additional fields... */}
+          </View>
+        )}
       </TouchableOpacity>
     );
   };
@@ -112,13 +169,15 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     width: "90%",
+
+    borderColor: "white",
   },
   item: {
     padding: 20,
     marginVertical: 4,
 
     width: 400,
-    height: 90,
+    height: 200,
   },
 });
 

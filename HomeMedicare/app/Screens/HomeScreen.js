@@ -102,14 +102,18 @@ const HomeScreen = ({ navigation }) => {
   const Header = () => {
     return (
       <View style={styles.header}>
-        {/* <FilterFollowups selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/> */}
-        <Text style={styles.headerText}> FID </Text>
-        <Text style={styles.headerText}> Name</Text>
-        {/* <Text style={styles.headerText}> Address</Text> */}
-        {folloupTypeScreen !== "Today" && (
-          <Text style={styles.headerText}> Date</Text>
-        )}
-        <Text style={styles.headerText}> status</Text>
+        <Text style={styles.headerText_Middle}> Followup List </Text>
+        <Text style={styles.headerText}> (click any to proceed)</Text>
+        <View style={styles.header_row}>
+          {/* <FilterFollowups selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/> */}
+          <Text style={styles.headerText}> FID </Text>
+          <Text style={styles.headerText}> Name</Text>
+          {/* <Text style={styles.headerText}> Address</Text> */}
+          {folloupTypeScreen !== "Today" && (
+            <Text style={styles.headerText}> Date</Text>
+          )}
+          <Text style={styles.headerText}> status</Text>
+        </View>
       </View>
     );
   };
@@ -121,6 +125,7 @@ const HomeScreen = ({ navigation }) => {
     >
       <OTPPopUp
         visible={showOTPPopUp}
+        setShowOTPPopUp={setShowOTPPopUp}
         onVerify={() => setShowOTPPopUp(false)}
         followupData={followupData}
         setFollowupData={setFollowupData}
@@ -198,22 +203,36 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   header: {
-    flexDirection: "row",
-    height: 70,
-    width: 400,
+    alignItems: "center",
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     borderColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#2B79E3",
+    height: 100,
+    width: 400,
+    padding: 5,
+  },
+  header_row: {
+    flexDirection: "row",
+    height: 50,
+    width: 400,
+    marginTop: 15,
+    justifyContent: "flex-start",
+    marginBottom: 10,
   },
   headerText: {
     color: "white",
     marginLeft: 20,
-    marginRight: 15,
+    marginRight: 40,
     fontSize: 15,
+  },
+  headerText_Middle: {
+    color: "white",
+    marginLeft: 20,
+    marginRight: 40,
+    fontSize: 20,
     fontWeight: "bold",
+    marginTop: 5,
   },
   container_list: {
     position: "relative",
@@ -224,7 +243,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 30,
-    marginTop: 5,
+    marginTop: 2,
   },
 });
 export default HomeScreen;

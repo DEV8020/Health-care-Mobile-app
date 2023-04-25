@@ -7,17 +7,47 @@ import {
   View,
   ImageBackground,
   ToastAndroid,
+  ScrollView,
 } from "react-native";
 import AppBar from "../Utility/AppBar";
 import { useNavigation } from "@react-navigation/native";
 import storeObj from "../Store/storeDataService";
 import UpcomingFolloup from "./UpcomingFollowup";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 // import jsPDF from "jspdf";
 // import "jspdf-autotable";
 
 const FollowupScreen = ({ route }) => {
   const navigation = useNavigation();
+  // const readings = JSON.stringify(selectedFollowup.readings);
+  const [readingInputValues, setReadingInputValues] = useState({});
+
+  const handleReadingInputChange = (key, value) => {
+    setReadingInputValues({
+      ...readingInputValues,
+      [key]: value,
+    });
+  };
+  // const handleUpdateData = () => {
+  //   onDataChange({
+  //     readings: formData,
+  //   });
+  // };
+
+  useEffect(() => {
+    // setReadingInputValues(selectedFollowup.readings);
+    // console.log(selectedFollowup);
+    // const readings = selectedFollowup.readings;
+    const readings = {
+      bloodPressure: "TRUE",
+      temperature: "TRUE",
+      sugar: "TRUE",
+      Heart: "False",
+    };
+    setReadingInputValues(readings);
+  }, []);
 
   const { selectedFollowup } = route.params;
 
@@ -43,23 +73,28 @@ const FollowupScreen = ({ route }) => {
   };
 
   const handleMarkComplete = () => {
-    storeObj.getData("Followups").then((data) => {
+    AsyncStorage.getItem(APIURLUtilities.getStorageKey()).then((list) => {
+      const data = JSON.parse(list);
       if (data !== null) {
         // console.log(data);
         console.log(selectedFollowup);
         const UpdateFollowupList = data;
         const updateFollowUpIndex = UpdateFollowupList.findIndex(
-          (item) => item.follow_up_id === selectedFollowup.follow_up_id
+          (item) => item.followUpId === selectedFollowup.followUpId
         );
         console.log(updateFollowUpIndex);
         console.log(selectedFollowup);
         const Followup = UpdateFollowupList[updateFollowUpIndex];
         console.log(Followup);
-        Followup.fieldWorker_remark = fieldWorkerRemark;
-        Followup.status = "completed";
+        Followup.fieldWorkerRemarks = fieldWorkerRemark;
+        Followup.flag = true;
+        Followup.readings = readingInputValues;
         console.log(Followup);
         UpdateFollowupList[updateFollowUpIndex] = Followup;
-        storeObj.storeData("Followups", UpdateFollowupList);
+        AsyncStorage.setItem(
+          APIURLUtilities.getStorageKey(),
+          JSON.stringify(UpdateFollowupList)
+        );
         console.log("Success");
         navigation.replace("Home");
       } else {
@@ -87,16 +122,18 @@ const FollowupScreen = ({ route }) => {
         <AppBar title="Home Medicare"  />
         </View> */}
       <View style={styles.container_Followup}>
-        <Text style={styles.label}>Patient ID: {selectedFollowup.title}</Text>
-
-        <Text style={styles.label}>Patient Name:{selectedFollowup.name}</Text>
-
         <Text style={styles.label}>
-          Patient Address:{selectedFollowup.address}
+          Patient ID: {selectedFollowup.patient.patientId}
         </Text>
 
         <Text style={styles.label}>
-          Doctor Remark:{selectedFollowup.doctor_remark}
+          Patient Name:{selectedFollowup.patient.name}
+        </Text>
+
+        <Text style={styles.label}>Gender:{selectedFollowup.patient.sex}</Text>
+
+        <Text style={styles.label}>
+          Doctor Remark:{selectedFollowup.doctorRemarks}
         </Text>
 
         <Text style={styles.label}>Field Worker Remark:</Text>
@@ -108,6 +145,53 @@ const FollowupScreen = ({ route }) => {
           multiline
           numberOfLines={4}
         />
+
+        {/* {Object.keys(readingInputValues).map((key) => (
+            <TextInput
+              style={styles.readings}
+              key={key}
+              value={readingInputValues[key] || ""}
+              onChangeText={(value) => handleReadingInputChange(key, value)}
+            />
+          ))} */}
+        <ScrollView
+          style={{
+            width: 320,
+            height: 100,
+            backgroundColor: "wheat",
+            marginTop: 10,
+            borderRadius: 10,
+            marginLeft: 10,
+          }}
+        >
+          {Object.entries(readingInputValues).map(([field, value]) => (
+            <>
+              {value !== "False" && (
+                <View
+                  key={field}
+                  style={{
+                    paddingVertical: 40,
+
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <Text style={{ marginRight: 10 }}>{field}:</Text>
+                  <TextInput
+                    style={styles.readings}
+                    key={field}
+                    value={value}
+                    keyboardType="number-pad"
+                    onChangeText={(text) =>
+                      handleReadingInputChange(field, text)
+                    }
+                  />
+                  <Text style={{ marginRight: 10 }}>unit</Text>
+                </View>
+              )}
+            </>
+          ))}
+        </ScrollView>
         <TouchableOpacity
           style={styles.button}
           onPress={handlePrintPrescription}
@@ -131,7 +215,7 @@ const styles = StyleSheet.create({
     marginStart: "5%",
     marginEnd: "5%",
 
-    height: 550,
+    height: 750,
     width: "90%",
 
     backgroundColor: "white",
@@ -163,6 +247,15 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 8,
     minHeight: 100,
+  },
+  readings: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 8,
+    padding: 8,
+
+    height: 50,
+    width: 80,
   },
   button: {
     backgroundColor: "#2797F0",

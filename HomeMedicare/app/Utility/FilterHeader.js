@@ -78,13 +78,13 @@ const FilterHeader = ({ selectedStatus, setSelectedStatus }) => {
 styles = StyleSheet.create({
   filterHeader: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    justifyContent: "space-evenly",
+    padding: 10,
     width: 400,
-    height: 55,
+    height: 65,
   },
   filterOption: {
+    width: 110,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -92,11 +92,14 @@ styles = StyleSheet.create({
     borderColor: "#2B79E3",
     marginRight: 10,
     backgroundColor: "white",
+    alignContent: "center",
+    justifyContent: "center",
   },
   selectedFilterOption: {
     backgroundColor: "#2B79E3",
   },
   filterOptionText: {
+    textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
     color: "#2B79E3",

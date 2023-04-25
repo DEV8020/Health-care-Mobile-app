@@ -45,7 +45,7 @@ function TodayFolloup({
       return null;
     }
     // const backgroundColor = item.followupId === selectedId ? "blue" : "white";
-    const height = isSelected ? 150 : 90;
+    const height = isSelected ? 200 : 90;
     let iconColor;
     let iconName;
     switch (item.flag) {
@@ -72,6 +72,7 @@ function TodayFolloup({
         style={{
           backgroundColor: "white",
           padding: 20,
+
           marginVertical: 4,
           width: 400,
           height,
@@ -107,7 +108,14 @@ function TodayFolloup({
         </View>
 
         {isSelected && (
-          <View>
+          <View
+            style={{
+              justifyContent: "space-between",
+              backgroundColor: "wheat",
+              borderRadius: 10,
+              marginTop: 10,
+            }}
+          >
             <Text
               style={{
                 marginLeft: 15,
@@ -116,17 +124,27 @@ function TodayFolloup({
                 padding: 10,
               }}
             >
-              Address : {item.patient.address} (pincode: {item.patient.pincode})
+              Address : {item.patient.address}
             </Text>
             <Text
               style={{
-                marginLeft: 5,
-                marginRight: 5,
+                marginLeft: 15,
+                marginRight: 15,
                 fontSize: 16,
                 padding: 10,
               }}
             >
-              Contact No:{item.patient.contact}
+              pin code : {item.patient.pincode}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 15,
+                marginRight: 15,
+                fontSize: 16,
+                padding: 10,
+              }}
+            >
+              Contact No : {item.patient.contact}
             </Text>
             {/* additional fields... */}
           </View>

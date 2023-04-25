@@ -8,19 +8,20 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  ImageBackground,
 } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useNavigation } from "@react-navigation/native";
 import OTPInput from "./OTPTextInputs";
 
-const OTPPopUp = ({ visible, setFollowupData, followupData, onVerify }) => {
+const OTPPopUp = ({ visible, setShowOTPPopUp, followupData, onVerify }) => {
   const [otp, setOTP] = useState("");
   const [timerKey, setTimerKey] = useState(0);
   const navigation = useNavigation();
   const [otpInputDefault, setOtpInputDefault] = useState(false);
 
   //OTP timer
-  const OTP_TIMER = 2000;
+  // const OTP_TIMER = 2000;
 
   const secondTextInput = useRef(null);
   const thirdTextInput = useRef(null);
@@ -31,12 +32,12 @@ const OTPPopUp = ({ visible, setFollowupData, followupData, onVerify }) => {
   //handle verify button
   const handleVerifyOTP = () => {
     // Verify the OTP
-    const ServerOTP = followupData.otp;
-    // const ServerOTP = "1234";
+    // const ServerOTP = followupData.otp;
+    const ServerOTP = "1234";
     setOtpInputDefault(true);
     if (ServerOTP === otp) {
       onVerify();
-      navigation.replace("Followup", { selectedFollowup: followupData });
+      navigation.navigate("Followup", { selectedFollowup: followupData });
 
       setOTP("");
       setTimerKey(timerKey + 1);
@@ -48,7 +49,8 @@ const OTPPopUp = ({ visible, setFollowupData, followupData, onVerify }) => {
 
   const handleCancelOTP = () => {
     setOtpInputDefault(true);
-    navigation.goBack();
+    // navigation.replace("Home");
+    setShowOTPPopUp(false);
   };
 
   return (
@@ -63,7 +65,7 @@ const OTPPopUp = ({ visible, setFollowupData, followupData, onVerify }) => {
             setOtpInputDefault={setOtpInputDefault}
             otpInputDefault={otpInputDefault}
           />
-          <CountdownCircleTimer
+          {/* <CountdownCircleTimer
             key={timerKey}
             isPlaying={visible}
             duration={OTP_TIMER}
@@ -76,27 +78,29 @@ const OTPPopUp = ({ visible, setFollowupData, followupData, onVerify }) => {
               );
               navigation.goBack();
             }}
-          >
-            {({ remainingTime, animatedColor }) => (
+          > */}
+          {/* {({ remainingTime, animatedColor }) => (
               <Text
                 style={[styles.OTP_timeRemaining_txt, { color: animatedColor }]}
               >
                 {remainingTime}s
               </Text>
             )}
-          </CountdownCircleTimer>
-          <TouchableOpacity
-            style={styles.OTP_buttons}
-            onPress={handleVerifyOTP}
-          >
-            <Text style={styles.OTP_buttons_txt}>SUBMIT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.OTP_buttons}
-            onPress={handleCancelOTP}
-          >
-            <Text style={styles.OTP_buttons_txt}>CANCEL</Text>
-          </TouchableOpacity>
+          </CountdownCircleTimer> */}
+          <View style={{ flexDirection: "column" }}>
+            <TouchableOpacity
+              style={styles.OTP_buttons}
+              onPress={handleVerifyOTP}
+            >
+              <Text style={styles.OTP_buttons_txt}>SUBMIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.OTP_buttons}
+              onPress={handleCancelOTP}
+            >
+              <Text style={styles.OTP_buttons_txt}>CANCEL</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -108,12 +112,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#2C3E50",
+    opacity: 0.85,
   },
   OTP_inner_container: {
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 5,
+    backgroundColor: "white",
+    borderRadius: 20,
     padding: 20,
+    opacity: 1,
     alignItems: "center",
   },
   OTP_header_txt: {
@@ -122,7 +138,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   OTP_buttons: {
-    width: 130,
+    width: 180,
     height: 50,
     backgroundColor: "#007AFF",
     borderRadius: 5,
@@ -144,95 +160,3 @@ const styles = StyleSheet.create({
 });
 
 export default OTPPopUp;
-
-{
-  /*  <TextInput
-            style={styles.OTP_textInput}
-            placeholder="OTP"
-            keyboardType="numeric"
-            value={otp}
-            onChangeText={setOTP}
-            maxLength={4}
-          /> 
-       
-            <TextInput
-              style={styles.OTP_textInput}
-              placeholder="-"
-              keyboardType="numeric"
-              value={otp[0]}
-              onChangeText={(text) => {
-                setOTP(text + otp.slice(1));
-                if (text.length === 1) {
-                  secondTextInput.current.focus();
-                }
-              }}
-              maxLength={1}
-            />
-            <TextInput
-              style={styles.OTP_textInput}
-              placeholder="-"
-              keyboardType="numeric"
-              value={otp[1]}
-              onChangeText={(text) => {
-                setOTP(otp.slice(0, 1) + text + otp.slice(2));
-                if (text.length === 1) {
-                  thirdTextInput.current.focus();
-                }
-              }}
-              maxLength={1}
-              ref={secondTextInput}
-            />
-            <TextInput
-              style={styles.OTP_textInput}
-              placeholder="-"
-              keyboardType="numeric"
-              value={otp[2]}
-              onChangeText={(text) => {
-                setOTP(otp.slice(0, 2) + text + otp.slice(3));
-                if (text.length === 1) {
-                  fourthTextInput.current.focus();
-                }
-              }}
-              maxLength={1}
-              ref={thirdTextInput}
-            />
-            <TextInput
-              style={styles.OTP_textInput}
-              placeholder="-"
-              keyboardType="numeric"
-              value={otp[3]}
-              onChangeText={(text) => {
-                setOTP(otp.slice(0, 3) + text + otp.slice(4));
-                // if (text.length === 1) {
-                //   fifthTextInput.current.focus();
-                // }
-              }}
-              maxLength={1}
-              ref={fourthTextInput}
-            />
-            {/* <TextInput
-            style={styles.OTP_textInput}
-            placeholder="-"
-            keyboardType="numeric"
-            value={otp[4]}
-            onChangeText={(text) => {
-              setOTP(otp.slice(0, 4) + text + otp.slice(5));
-              if (text.length === 1) {
-                sixthTextInput.current.focus();
-              }
-            }}
-            maxLength={1}
-            ref={fifthTextInput}
-          />
-          <TextInput
-            style={styles.OTP_textInput}
-            placeholder="-"
-            keyboardType="numeric"
-            value={otp[5]}
-            onChangeText={(text) => {
-              setOTP(otp.slice(0, 5) + text + otp.slice(6));
-            }}
-            maxLength={1}
-            ref={sixthTextInput}
-          /> */
-}

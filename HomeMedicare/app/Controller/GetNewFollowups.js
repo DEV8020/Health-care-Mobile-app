@@ -6,14 +6,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GetNewFollowups = async (props) => {
   var lastFollowupId;
-  await AsyncStorage.getItem("FollowupData").then((data) => {
+  await AsyncStorage.getItem(APIURLUtilities.getStorageKey()).then((data) => {
     if (data !== null) {
       const dataArray = JSON.parse(data);
-      dataArray.sort((a, b) => a.followUpId - b.followUpId);
-      const lastItem = dataArray.pop();
-      // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-      // console.log(lastItem.followUpId);
-      lastFollowupId = lastItem.followUpId;
+      console.log("777777777777777777777777777777777777777777777777777");
+      console.log(data);
+      if (dataArray === null) {
+        lastFollowupId = -1;
+      } else {
+        dataArray.sort((a, b) => a.followUpId - b.followUpId);
+        const lastItem = dataArray.pop();
+        // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        // console.log(lastItem.followUpId);
+        lastFollowupId = lastItem.followUpId;
+      }
     } else {
       lastFollowupId = -1;
     }

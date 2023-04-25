@@ -222,15 +222,14 @@ const DATA = [
 const StoreDataController = () => {
   // const InitialData = null;
   // storeObj.storeData("FollowupData", InitialData);
-
-  storeObj.getData("FollowupData").then((data) => {
-    if (data !== null) {
-      // console.log(data);
-      return true;
-    } else {
-      console.log("empty");
-      return false;
-    }
-  });
+  // storeObj.getData("FollowupData").then((data) => {
+  //   if (data !== null) {
+  //     // console.log(data);
+  //     return true;
+  //   } else {
+  //     console.log("empty");
+  //     return false;
+  //   }
+  // });
 };
 export default StoreDataController;

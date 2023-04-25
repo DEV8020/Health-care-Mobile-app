@@ -28,6 +28,7 @@ import FilterHeader from "../Utility/FilterHeader";
 import OTPPopUp from "../Utility/OTPPopUp";
 import IdleTimer from "react-native-idle-timer";
 import IdleTimerContainer from "../UtilityModules/IdleTimer";
+import APIURLUtilities from "../Controller/APIUrlUtilities";
 
 const IDLE_SCREEN_TIME = 70000;
 const HomeScreen = ({ navigation }) => {

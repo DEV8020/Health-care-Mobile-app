@@ -1,8 +1,9 @@
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import storeObj from "../Store/storeDataService";
+import APIURLUtilities from "../Controller/APIUrlUtilities";
 const FetchCompletedFollowups = async (props) => {
   const completedFollowupsList = await storeObj
-    .getData("Followups")
+    .getData(APIURLUtilities.getStorageKey())
     .then((data) => {
       if (data !== null) {
         const completedFollowups = data.filter(

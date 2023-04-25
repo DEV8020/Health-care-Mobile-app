@@ -9,6 +9,10 @@ const getFieldWorkerAPIChildURLKeys = () => {
   };
 };
 
+const getStorageKey = () => {
+  return "FolloupList";
+};
+
 const getLoggedInUserName = () => {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem("LoggedInData")
@@ -41,6 +45,7 @@ const APIURLUtilities = {
   getFieldWorkerAPIChildURLKeys,
   getLoggedInUserName,
   getAuthToken,
+  getStorageKey,
 };
 
 export default APIURLUtilities;

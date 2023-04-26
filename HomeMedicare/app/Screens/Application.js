@@ -27,7 +27,7 @@ const Application = () => {
   const idleTimerDuration = 6000000;
 
   const sucessTimerUploadDuration = 30000; //1 Minute .... 60 * 1000 msec
-  const idleTimerUploadDuration = 60000 * 1; //5 Minute ....  5 * 60 * 1000 msec
+  const idleTimerUploadDuration = 60000 * 2; //5 Minute ....  5 * 60 * 1000 msec
 
   // Checks for network connection in every 20 sec and send followups to server...
   const [sendTimer, setSendTimer] = useState(sucessTimerUploadDuration);

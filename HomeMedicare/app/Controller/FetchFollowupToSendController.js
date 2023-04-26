@@ -73,7 +73,7 @@ const SendCompletedFollowups = async (props) => {
         );
 
         //Send the value through the props to set the timer for success minutes...
-        props.setFollowUpSendResponse(true);
+        // props.setFollowUpSendResponse(true);
         props.setTimerHandler(true);
 
         console.log("Success");

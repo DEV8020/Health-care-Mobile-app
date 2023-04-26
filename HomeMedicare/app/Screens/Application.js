@@ -97,50 +97,23 @@ const Application = () => {
   useEffect(() => {
     // AsyncStorage.removeItem("LoggedInData");
     console.log("kkkkkkkkkkkkkkkkkkkk");
-    firstScreen = getInitialScreen();
-    // AsyncStorage.getItem("LoggedInData")
-    //   .then((value) => {
-    //     if (value !== null) {
-    //       console.log("Storage has token stored ... ");
-    //       // downloadFollowUpData();
-    //       // setIsFollowUpDownloadFlag((isEnabled) => {
-    //       //   return !isEnabled;
-    //       // });
-    //       // AsyncStorage.removeItem("isPinset");
-    //     }
-    //   })
-    //   .catch((error) => console.log(error));
+
+    const checkLoggedInUser = async () => {
+      try {
+        const value = await AsyncStorage.getItem("LoggedInData");
+        if (value !== null) {
+          setIsLoggedIn(true);
+          console.log(isLoggedIn);
+        }
+      } catch (e) {
+        console.log("Failed to load user token from AsyncStorage:", e);
+      }
+      // setIsLoading(false);
+    };
+
+    checkLoggedInUser();
   }, []);
 
-  const getInitialScreen = () => {
-    var initialScreen;
-
-    AsyncStorage.getItem("LoggedInData")
-      .then((value) => {
-        if (value !== null) {
-          console.log("Storage has token stored ... ");
-
-          AsyncStorage.getItem("isPinset")
-            .then((value) => {
-              if (value !== null) {
-                console.log("PIN Lock");
-                initialScreen = "PIN Lock";
-              } else {
-                console.log("Pin Change");
-                initialScreen = "PIN Change";
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          initialScreen = "Login";
-        }
-      })
-      .catch((error) => console.log(error));
-
-    return initialScreen;
-  };
   // useEffect(() => {
   //   if (!StoreDataController()) {
   //     console.log("Data Stored in Mobile Storage");
@@ -159,7 +132,7 @@ const Application = () => {
             headerStyle: { backgroundColor: "#2B79E3" },
             headerTintColor: "white",
           }}
-          initialRouteName="PIN Lock"
+          initialRouteName={isLoggedIn ? "Home" : "Login"}
         >
           {/* <Stack.Screen name="OTPLogin" component={OTPLoginScreen} /> */}
 

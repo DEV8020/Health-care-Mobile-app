@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { ToastAndroid } from "react-native";
 import { useEffect } from "react";
-import storeObj from "../Store/storeDataService";
+import moment from "moment";
 
 function TodayFolloup({
   followupList,
@@ -34,8 +34,8 @@ function TodayFolloup({
       setFollowupData(item);
       console.log(followupData);
     } else {
-      console.log("Selected folloup is-" + item.flag);
-      ToastAndroid.show("Selected folloup is " + item.flag, ToastAndroid.SHORT);
+      console.log("Selected folloup is completed");
+      ToastAndroid.show("Selected folloup is completed ", ToastAndroid.SHORT);
     }
   };
 
@@ -85,25 +85,36 @@ function TodayFolloup({
           <Text
             style={{
               fontSize: 16,
-
               padding: 10,
             }}
           >
             {item.patient.name}
           </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              padding: 10,
+            }}
+          >
+            {moment(item.date).format("DD-MM-YYYY")}
+          </Text>
 
           <Icon name={iconName} size={25} color={iconColor} />
           <TouchableOpacity
-            style={{
-              backgroundColor: "#2B79E3",
-              padding: 10,
-              borderRadius: 15,
-            }}
+            style={{ height: 35, width: 30, backgroundColor: "white" }}
             onPress={() => setSelectedId(isSelected ? null : item.followUpId)}
           >
-            <Text style={{ fontSize: 14, fontWeight: "bold", color: "white" }}>
-              {isSelected ? "Hide details" : "Show details"}
-            </Text>
+            {/* <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "white" }}
+                >
+                  {isSelected ? "Hide details" : "Show details"}
+                </Text> */}
+            <Icon
+              name={isSelected ? "arrow-drop-up" : "arrow-drop-down"}
+              size={40}
+              color="#2B79E3"
+              style={{ flex: 1 }}
+            />
           </TouchableOpacity>
         </View>
 

@@ -4,118 +4,12 @@ import {
   TouchableOpacity,
   Text,
   ToastAndroid,
+  View,
 } from "react-native";
 //import { DATA } from "../data/dummy-data";
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import storeObj from "../Store/storeDataService";
-
-const DATA = [
-  {
-    id: "1",
-    title: "Patient 1",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "2",
-    title: "Patient 2",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "3",
-    title: "Patient 3",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "4",
-    title: "Patient 4",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "5",
-    title: "Patient 5",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "6",
-    title: "Patient 6",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "7",
-    title: "Patient 7",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "8",
-    title: "Patient 8",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "9",
-    title: "Patient 9",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "10",
-    title: "Patient 10",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "11",
-    title: "Patient 11",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "12",
-    title: "Patient 12",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-  {
-    id: "13",
-    title: "Patient 13",
-    name: "ABC",
-    address: "ABC",
-    status: "pending",
-    date: "03-04-2023",
-  },
-];
+import moment from "moment";
 
 function UpcomingFolloup({
   navigation,
@@ -163,10 +57,13 @@ function UpcomingFolloup({
   };
 
   const renderItem = ({ item }) => {
+    const isSelected = item.followUpId === selectedId;
     if (selectedStatus !== "All" && item.flag !== selectedStatus) {
       return null;
     }
-    const backgroundColor = item.id === selectedId ? "#2797F0" : "white";
+    // const backgroundColor = item.id === selectedId ? "#2797F0" : "white";
+    // const backgroundColor = item.followupId === selectedId ? "blue" : "white";
+    const height = isSelected ? 200 : 90;
 
     let iconColor;
     let iconName;
@@ -194,37 +91,103 @@ function UpcomingFolloup({
         {item.flag === false && (
           <TouchableOpacity
             style={{
-              backgroundColor,
+              backgroundColor: "white",
               padding: 20,
+
               marginVertical: 4,
-              flexDirection: "row",
               width: 400,
-              height: 100,
+              height,
+              borderRadius: 10,
             }}
             onPress={() => SelectedPatientHandler(item)}
           >
-            <Text style={{ fontSize: 15, padding: 10 }}>{item.followUpId}</Text>
-            <Text
-              style={{
-                marginLeft: 40,
-                marginRight: 20,
-                fontSize: 15,
-                padding: 10,
-              }}
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              {item.patient.name}
-            </Text>
-            <Text
-              style={{
-                marginLeft: 40,
-                marginRight: 50,
-                fontSize: 15,
-                padding: 10,
-              }}
-            >
-              {item.patient.address}
-            </Text>
-            <Icon name={iconName} size={25} color={iconColor} />
+              <Text style={{ fontSize: 16, padding: 10 }}>
+                {item.followUpId}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+
+                  padding: 10,
+                }}
+              >
+                {item.patient.name}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+
+                  padding: 10,
+                }}
+              >
+                {moment(item.date).format("DD-MM-YYYY")}
+              </Text>
+              <Icon name={iconName} size={25} color={iconColor} />
+              <TouchableOpacity
+                style={{ height: 35, width: 30, backgroundColor: "white" }}
+                onPress={() =>
+                  setSelectedId(isSelected ? null : item.followUpId)
+                }
+              >
+                {/* <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "white" }}
+                >
+                  {isSelected ? "Hide details" : "Show details"}
+                </Text> */}
+                <Icon
+                  name={isSelected ? "arrow-drop-up" : "arrow-drop-down"}
+                  size={40}
+                  color="#2B79E3"
+                  style={{ flex: 1 }}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {isSelected && (
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  backgroundColor: "wheat",
+                  borderRadius: 10,
+                  marginTop: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    fontSize: 16,
+                    padding: 10,
+                  }}
+                >
+                  Address : {item.patient.address}
+                </Text>
+                <Text
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    fontSize: 16,
+                    padding: 10,
+                  }}
+                >
+                  pin code : {item.patient.pincode}
+                </Text>
+                <Text
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    fontSize: 16,
+                    padding: 10,
+                  }}
+                >
+                  Contact No : {item.patient.contact}
+                </Text>
+                {/* additional fields... */}
+              </View>
+            )}
           </TouchableOpacity>
         )}
       </>

@@ -20,6 +20,25 @@ const LoginScreen = ({ navigation }) => {
   // isLoginFlag: false,
   // loggedInUserData: null,
   // errorMessage: loginServiceData.responseError.message,
+  useEffect(() => {
+    // AsyncStorage.removeItem("LoggedInData");
+    console.log("kkkkkkkkkkkkkkkkkkkk");
+
+    const checkLoggedInUser = async () => {
+      try {
+        const value = await AsyncStorage.getItem("LoggedInData");
+        if (value !== null) {
+          // console.log(isLoggedIn);
+          navigation.replace("PIN Change");
+        }
+      } catch (e) {
+        console.log("Failed to load user token from AsyncStorage:", e);
+      }
+      // setIsLoading(false);
+    };
+
+    checkLoggedInUser();
+  }, []);
   const LoginResponseHandler = (loginResponseData) => {
     console.log("Login Response Data");
     console.log(loginResponseData.loggedInUserData);

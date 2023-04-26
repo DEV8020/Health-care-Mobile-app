@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   },
   container: {
     position: "absolute",
-    top: 200,
-    left: 20,
+    top: 100,
+    left: 18,
     borderRadius: 15,
     width: 380,
     height: 450,

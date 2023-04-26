@@ -4,13 +4,14 @@ import {
   TouchableOpacity,
   Text,
   View,
+  ScrollView,
 } from "react-native";
 //import { DATA } from "../data/dummy-data";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { ToastAndroid } from "react-native";
 import { useEffect } from "react";
-import storeObj from "../Store/storeDataService";
+import moment from "moment";
 
 function PastFolloup({
   followupList,
@@ -34,8 +35,8 @@ function PastFolloup({
       setFollowupData(item);
       console.log(followupData);
     } else {
-      console.log("Selected folloup is-" + item.flag);
-      ToastAndroid.show("Selected folloup is " + item.flag, ToastAndroid.SHORT);
+      console.log("Selected folloup is completed");
+      ToastAndroid.show("Selected folloup is completed ", ToastAndroid.SHORT);
     }
   };
 
@@ -86,43 +87,56 @@ function PastFolloup({
           <Text
             style={{
               fontSize: 16,
-
               padding: 10,
             }}
           >
             {item.patient.name}
           </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              padding: 10,
+            }}
+          >
+            {moment(item.date).format("DD-MM-YYYY")}
+          </Text>
 
           <Icon name={iconName} size={25} color={iconColor} />
           <TouchableOpacity
-            style={{
-              backgroundColor: "#2B79E3",
-              padding: 10,
-              borderRadius: 15,
-            }}
+            style={{ height: 35, width: 30, backgroundColor: "white" }}
             onPress={() => setSelectedId(isSelected ? null : item.followUpId)}
           >
-            <Text style={{ fontSize: 14, fontWeight: "bold", color: "white" }}>
-              {isSelected ? "Hide details" : "Show details"}
-            </Text>
+            {/* <Text
+                  style={{ fontSize: 14, fontWeight: "bold", color: "white" }}
+                >
+                  {isSelected ? "Hide details" : "Show details"}
+                </Text> */}
+            <Icon
+              name={isSelected ? "arrow-drop-up" : "arrow-drop-down"}
+              size={40}
+              color="#2B79E3"
+              style={{ flex: 1 }}
+            />
           </TouchableOpacity>
         </View>
 
         {isSelected && (
           <View
             style={{
-              justifyContent: "space-between",
               backgroundColor: "wheat",
               borderRadius: 10,
-              marginTop: 10,
+              marginTop: 7,
+              justifyContent: "flex-start",
+              flexDirection: "column",
+              padding: 15,
             }}
           >
             <Text
               style={{
                 marginLeft: 15,
                 marginRight: 15,
-                fontSize: 16,
-                padding: 10,
+                fontSize: 14,
+                padding: 5,
               }}
             >
               Address : {item.patient.address}
@@ -131,8 +145,8 @@ function PastFolloup({
               style={{
                 marginLeft: 15,
                 marginRight: 15,
-                fontSize: 16,
-                padding: 10,
+                fontSize: 14,
+                padding: 5,
               }}
             >
               pin code : {item.patient.pincode}
@@ -141,12 +155,13 @@ function PastFolloup({
               style={{
                 marginLeft: 15,
                 marginRight: 15,
-                fontSize: 16,
-                padding: 10,
+                fontSize: 14,
+                padding: 5,
               }}
             >
               Contact No : {item.patient.contact}
             </Text>
+
             {/* additional fields... */}
           </View>
         )}

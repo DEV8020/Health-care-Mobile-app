@@ -109,9 +109,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.headerText}> FID </Text>
           <Text style={styles.headerText}> Name</Text>
           {/* <Text style={styles.headerText}> Address</Text> */}
-          {folloupTypeScreen !== "Today" && (
-            <Text style={styles.headerText}> Date</Text>
-          )}
+          <Text style={styles.headerText}> Date</Text>
           <Text style={styles.headerText}> status</Text>
         </View>
       </View>
@@ -222,8 +220,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: "white",
-    marginLeft: 20,
-    marginRight: 40,
+    marginLeft: 23,
+    marginRight: 35,
     fontSize: 15,
   },
   headerText_Middle: {

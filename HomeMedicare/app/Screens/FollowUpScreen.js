@@ -165,31 +165,31 @@ const FollowupScreen = ({ route }) => {
           }}
         >
           {Object.entries(readingInputValues).map(([field, value]) => (
-            <>
-              {value !== "False" && (
-                <View
-                  key={field}
-                  style={{
-                    paddingVertical: 40,
+            <View
+              key={field}
+              style={{
+                paddingVertical: 40,
 
-                    flexDirection: "row",
-                    justifyContent: "space-evenly",
-                  }}
-                >
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+              }}
+            >
+              {value !== "False" && (
+                <>
                   <Text style={{ marginRight: 10 }}>{field}:</Text>
                   <TextInput
                     style={styles.readings}
                     key={field}
-                    value={value}
+                    defaultValue={value}
                     keyboardType="number-pad"
                     onChangeText={(text) =>
                       handleReadingInputChange(field, text)
                     }
                   />
                   <Text style={{ marginRight: 10 }}>unit</Text>
-                </View>
+                </>
               )}
-            </>
+            </View>
           ))}
         </ScrollView>
         <TouchableOpacity
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
 
-    height: 50,
+    height: 60,
     width: 80,
   },
   button: {

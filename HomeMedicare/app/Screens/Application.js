@@ -13,33 +13,55 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StoreDataController from "../Controller/StoreDataController";
 import StoreNewFollowupsInStorage from "../Controller/StoreNewFollowupsInStorage";
-// import SendCompletedFollowups from "../Controller/FetchFollowupToSendController";
+import SendCompletedFollowups from "../Controller/FetchFollowupToSendController";
 // import axios from "axios";
 import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
+import APIURLUtilities from "../Controller/APIUrlUtilities";
 
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
 
-  //Checks for network connection in every 20 sec and send followups to server...
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     const NetworkCheck = await checkNetworkConnection();
-  //     console.log("NetWork Connection => " + NetworkCheck);
-  //     if (NetworkCheck) {
-  //       SendCompletedFollowups();
-  //     }
-  //   }, 20000);
+  const sucessTimerDuration = 50000000;
+  const idleTimerDuration = 6000000;
 
-  //   return () => clearInterval(interval);
-  // }, []);
+  const sucessTimerUploadDuration = 30000; //1 Minute .... 60 * 1000 msec
+  const idleTimerUploadDuration = 60000 * 1; //5 Minute ....  5 * 60 * 1000 msec
+
+  // Checks for network connection in every 20 sec and send followups to server...
+  const [sendTimer, setSendTimer] = useState(sucessTimerUploadDuration);
+
+  // const [followUpSendResponse, setFollowUpSendResponse] = useState(true);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const NetworkCheck = await checkNetworkConnection();
+      console.log("NetWork Connection => " + NetworkCheck);
+      if (NetworkCheck) {
+        SendCompletedFollowups({ setTimerHandler: setTimerHandler });
+      } else {
+        setTimer(idleTimerUploadDuration);
+      }
+    }, sendTimer);
+
+    return () => clearInterval(interval);
+  }, [sendTimer]);
+
+  const setTimerHandler = (isSuccessTimer) => {
+    console.log("#%^$%^$%^$^$^$^$");
+    console.log(isSuccessTimer);
+
+    if (isSuccessTimer) {
+      setSendTimer(sucessTimerUploadDuration);
+    } else {
+      setSendTimer(idleTimerUploadDuration);
+    }
+  };
 
   //Checks for network connection in every 30 sec and send followups to server...
   // var isAPICallActive = false;
   const [timer, setTimer] = useState(10000);
-  const sucessTimerDuration = 10000;
-  const idleTimerDuration = 60000;
+  // const sucessTimerDuration = 10000;
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -95,23 +117,24 @@ const Application = () => {
   // };
   var firstScreen;
   useEffect(() => {
-    // AsyncStorage.removeItem("LoggedInData");
+    // AsyncStorage.removeItem(APIURLUtilities.getStorageKey());
     console.log("kkkkkkkkkkkkkkkkkkkk");
+    // AsyncStorage.removeItem("LoggedInData");
 
-    const checkLoggedInUser = async () => {
-      try {
-        const value = await AsyncStorage.getItem("LoggedInData");
-        if (value !== null) {
-          setIsLoggedIn(true);
-          console.log(isLoggedIn);
-        }
-      } catch (e) {
-        console.log("Failed to load user token from AsyncStorage:", e);
-      }
-      // setIsLoading(false);
-    };
+    // const checkLoggedInUser = async () => {
+    //   try {
+    //     const value = await AsyncStorage.getItem("LoggedInData");
+    //     if (value !== null) {
+    //       setIsLoggedIn(true);
+    //       console.log(isLoggedIn);
+    //     }
+    //   } catch (e) {
+    //     console.log("Failed to load user token from AsyncStorage:", e);
+    //   }
+    //   // setIsLoading(false);
+    // };
 
-    checkLoggedInUser();
+    // checkLoggedInUser();
   }, []);
 
   // useEffect(() => {
@@ -132,7 +155,7 @@ const Application = () => {
             headerStyle: { backgroundColor: "#2B79E3" },
             headerTintColor: "white",
           }}
-          initialRouteName={isLoggedIn ? "Home" : "Login"}
+          initialRouteName="Login"
         >
           {/* <Stack.Screen name="OTPLogin" component={OTPLoginScreen} /> */}
 

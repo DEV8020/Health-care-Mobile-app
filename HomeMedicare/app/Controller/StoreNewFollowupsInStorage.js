@@ -3,6 +3,7 @@ import GetNewFollowups from "./GetNewFollowups";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FetchLastStoredFollowupId from "../UtilityModules/FetchLastStoredFollowup";
 import APIURLUtilities from "./APIUrlUtilities";
+import AppendUpdatedFlagInList from "../UtilityModules/AppendUpdatedFlag";
 
 var responseHandler;
 
@@ -22,21 +23,27 @@ const GetFollowupsResponseHandler = (response) => {
     // console.log(response.followUpData);
 
     //Sync Logic Here
+    const appendedList = AppendUpdatedFlagInList(response.followUpData);
 
+    console.log("AppendUpdatedFlagInList(response.followUpData");
+    console.log(appendedList);
+
+    console.log(appendedList);
     AsyncStorage.getItem(APIURLUtilities.getStorageKey()).then((list) => {
       // parse the retrieved list to a JavaScript object
       if (list === null) {
         console.log("----------------------4");
+
         AsyncStorage.setItem(
           APIURLUtilities.getStorageKey(),
-          JSON.stringify(response.followUpData)
+          JSON.stringify(appendedList)
         );
       } else {
         console.log("----------------------1");
         const parsedList = JSON.parse(list);
         console.log("----------------------2");
         // add the new objects to the list
-        const updatedList = [...parsedList, ...response.followUpData];
+        const updatedList = [...parsedList, ...appendedList];
         console.log("----------------------3");
         // convert the updated list back to a string
         const updatedListString = JSON.stringify(updatedList);

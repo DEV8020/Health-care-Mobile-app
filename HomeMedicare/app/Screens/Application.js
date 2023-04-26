@@ -23,8 +23,8 @@ const Application = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
 
-  const sucessTimerDuration = 50000000;
-  const idleTimerDuration = 6000000;
+  const sucessTimerDuration = 20000; // 20 seconds in case of success//50000000;
+  const idleTimerDuration = 20000 * 3; // 60 seconds in case of failure or no data
 
   const sucessTimerUploadDuration = 30000; //1 Minute .... 60 * 1000 msec
   const idleTimerUploadDuration = 60000 * 2; //5 Minute ....  5 * 60 * 1000 msec
@@ -60,7 +60,7 @@ const Application = () => {
 
   //Checks for network connection in every 30 sec and send followups to server...
   // var isAPICallActive = false;
-  const [timer, setTimer] = useState(10000);
+  const [timer, setTimer] = useState(sucessTimerDuration);
   // const sucessTimerDuration = 10000;
 
   useEffect(() => {
@@ -117,7 +117,7 @@ const Application = () => {
   // };
   var firstScreen;
   useEffect(() => {
-    // AsyncStorage.removeItem(APIURLUtilities.getStorageKey());
+    AsyncStorage.removeItem(APIURLUtilities.getStorageKey());
     console.log("kkkkkkkkkkkkkkkkkkkk");
     // AsyncStorage.removeItem("LoggedInData");
 

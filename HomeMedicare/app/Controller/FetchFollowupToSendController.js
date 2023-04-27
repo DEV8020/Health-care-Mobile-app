@@ -38,7 +38,7 @@ const SendCompletedFollowups = async (props) => {
       return;
     }
 
-    if (prop.SendFollowupData.length === 0) {
+    if (prop.SendFollowupData === null || prop.SendFollowupData.length === 0) {
       //Send the value through the props to set the timer for 5 minutes...
       console.log("10 MIn hello");
       props.setTimerHandler(false);

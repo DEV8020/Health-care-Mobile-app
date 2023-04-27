@@ -23,6 +23,8 @@ const FollowupScreen = ({ route }) => {
   const navigation = useNavigation();
   // const readings = JSON.stringify(selectedFollowup.readings);
   const [readingInputValues, setReadingInputValues] = useState({});
+  const [fieldWorkerRemark, setFieldWorkerRemark] = useState("");
+  const [isAllFieldsSet, setIsAllFieldsSet] = useState(true);
 
   const handleReadingInputChange = (key, value) => {
     setReadingInputValues({
@@ -37,23 +39,21 @@ const FollowupScreen = ({ route }) => {
   // };
 
   useEffect(() => {
-    // setReadingInputValues(selectedFollowup.readings);
-    // console.log(selectedFollowup);
-    // const readings = selectedFollowup.readings;
-    const readings = {
-      bloodPressure: "TRUE",
-      temperature: "TRUE",
-      sugar: "TRUE",
-      Heart: "False",
-    };
+    setReadingInputValues(selectedFollowup.readings);
+    console.log(selectedFollowup);
+    const readings = selectedFollowup.readings;
+    // const readings = {
+    //   bloodPressure: "TRUE",
+    //   temperature: "TRUE",
+    //   sugar: "TRUE",
+    //   Heart: "TRUE",
+    // };
     setReadingInputValues(readings);
   }, []);
 
   const { selectedFollowup } = route.params;
 
   console.log(selectedFollowup);
-
-  const [fieldWorkerRemark, setFieldWorkerRemark] = useState("");
 
   // setPatientID(props.selectedID);
   const handlePrintPrescription = () => {
@@ -73,6 +73,10 @@ const FollowupScreen = ({ route }) => {
   };
 
   const handleMarkComplete = () => {
+    if (isAllFieldsSet) {
+      ToastAndroid.show("Fill all required fields", ToastAndroid.SHORT);
+      return;
+    }
     AsyncStorage.getItem(APIURLUtilities.getStorageKey()).then((list) => {
       const data = JSON.parse(list);
       if (data !== null) {
@@ -165,29 +169,28 @@ const FollowupScreen = ({ route }) => {
           }}
         >
           {Object.entries(readingInputValues).map(([field, value]) => (
-            <View
-              key={field}
-              style={{
-                paddingVertical: 40,
-
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-              }}
-            >
+            <View key={field} style={{ paddingHorizontal: 20 }}>
               {value !== "False" && (
-                <>
-                  <Text style={{ marginRight: 10 }}>{field}:</Text>
+                <View
+                  style={{
+                    paddingVertical: 20,
+
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <Text style={{ marginRight: 10, width: 100 }}>{field}:</Text>
                   <TextInput
                     style={styles.readings}
                     key={field}
-                    defaultValue={value}
+                    defaultValue={value === "TRUE" ? "" : value}
                     keyboardType="number-pad"
                     onChangeText={(text) =>
                       handleReadingInputChange(field, text)
                     }
                   />
-                  <Text style={{ marginRight: 10 }}>unit</Text>
-                </>
+                  {/* <Text style={{ marginRight: 10 }}>unit</Text> */}
+                </View>
               )}
             </View>
           ))}
@@ -198,7 +201,14 @@ const FollowupScreen = ({ route }) => {
         >
           <Text style={styles.buttonText}>Print Prescription</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleMarkComplete}>
+        <TouchableOpacity
+          style={[
+            styles.button_mark_complete,
+            { backgroundColor: isAllFieldsSet ? "#2C79B6" : "#2797F0" },
+          ]}
+          onPress={handleMarkComplete}
+          disabled={isAllFieldsSet}
+        >
           <Text style={styles.buttonText}>Mark Complete</Text>
         </TouchableOpacity>
       </View>
@@ -254,11 +264,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
 
-    height: 60,
-    width: 80,
+    height: 40,
+    width: 60,
   },
   button: {
     backgroundColor: "#2797F0",
+    borderRadius: 8,
+    padding: 16,
+    marginTop: 16,
+  },
+  button_mark_complete: {
     borderRadius: 8,
     padding: 16,
     marginTop: 16,

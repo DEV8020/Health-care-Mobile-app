@@ -11,7 +11,7 @@ const GetNewFollowups = async (props) => {
       const dataArray = JSON.parse(data);
       console.log("777777777777777777777777777777777777777777777777777");
       console.log(data);
-      if (dataArray === null) {
+      if (dataArray === null || dataArray.length === 0) {
         lastFollowupId = -1;
       } else {
         dataArray.sort((a, b) => a.followUpId - b.followUpId);

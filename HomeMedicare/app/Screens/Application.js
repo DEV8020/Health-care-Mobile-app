@@ -117,7 +117,7 @@ const Application = () => {
   // };
   var firstScreen;
   useEffect(() => {
-    AsyncStorage.removeItem(APIURLUtilities.getStorageKey());
+    // AsyncStorage.clear();
     console.log("kkkkkkkkkkkkkkkkkkkk");
     // AsyncStorage.removeItem("LoggedInData");
 

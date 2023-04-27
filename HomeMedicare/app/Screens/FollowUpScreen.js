@@ -7,7 +7,7 @@ import {
   View,
   ImageBackground,
   ToastAndroid,
-  ScrollView,
+  FlatList,
 } from "react-native";
 import AppBar from "../Utility/AppBar";
 import { useNavigation } from "@react-navigation/native";
@@ -24,9 +24,10 @@ const FollowupScreen = ({ route }) => {
   // const readings = JSON.stringify(selectedFollowup.readings);
   const [readingInputValues, setReadingInputValues] = useState({});
   const [fieldWorkerRemark, setFieldWorkerRemark] = useState("");
-  const [isAllFieldsSet, setIsAllFieldsSet] = useState(true);
+  const [isAllFieldsSet, setIsAllFieldsSet] = useState(false);
 
   const handleReadingInputChange = (key, value) => {
+    // const NumValue = parseFloat(value);
     setReadingInputValues({
       ...readingInputValues,
       [key]: value,
@@ -39,8 +40,29 @@ const FollowupScreen = ({ route }) => {
   // };
 
   useEffect(() => {
+    // value.replace(/\D/g, "");
+    console.log("called%555555555555555555555555555555555");
+    const hasNumericValue = Object.entries(readingInputValues)
+      .map(([key, value]) => {
+        if (value === "False") {
+          return null;
+        }
+        const numericValue = parseFloat(value);
+        return isNaN(numericValue) ? null : numericValue;
+      })
+      .every((value) => typeof value === "number");
+
+    console.log(hasNumericValue);
+    if (fieldWorkerRemark !== "" && hasNumericValue) {
+      setIsAllFieldsSet(true);
+    } else {
+      setIsAllFieldsSet(false);
+    }
+  }, [readingInputValues, fieldWorkerRemark]);
+
+  useEffect(() => {
     setReadingInputValues(selectedFollowup.readings);
-    console.log(selectedFollowup);
+    // console.log(selectedFollowup);
     const readings = selectedFollowup.readings;
     // const readings = {
     //   bloodPressure: "TRUE",
@@ -53,7 +75,7 @@ const FollowupScreen = ({ route }) => {
 
   const { selectedFollowup } = route.params;
 
-  console.log(selectedFollowup);
+  // console.log(selectedFollowup);
 
   // setPatientID(props.selectedID);
   const handlePrintPrescription = () => {
@@ -73,33 +95,29 @@ const FollowupScreen = ({ route }) => {
   };
 
   const handleMarkComplete = () => {
-    if (isAllFieldsSet) {
-      ToastAndroid.show("Fill all required fields", ToastAndroid.SHORT);
-      return;
-    }
     AsyncStorage.getItem(APIURLUtilities.getStorageKey()).then((list) => {
       const data = JSON.parse(list);
       if (data !== null) {
         // console.log(data);
-        console.log(selectedFollowup);
+        // console.log(selectedFollowup);
         const UpdateFollowupList = data;
         const updateFollowUpIndex = UpdateFollowupList.findIndex(
           (item) => item.followUpId === selectedFollowup.followUpId
         );
-        console.log(updateFollowUpIndex);
-        console.log(selectedFollowup);
+        // console.log(updateFollowUpIndex);
+        // console.log(selectedFollowup);
         const Followup = UpdateFollowupList[updateFollowUpIndex];
-        console.log(Followup);
+        // console.log(Followup);
         Followup.fieldWorkerRemarks = fieldWorkerRemark;
         Followup.flag = true;
         Followup.readings = readingInputValues;
-        console.log(Followup);
+        // console.log(Followup);
         UpdateFollowupList[updateFollowUpIndex] = Followup;
         AsyncStorage.setItem(
           APIURLUtilities.getStorageKey(),
           JSON.stringify(UpdateFollowupList)
         );
-        console.log("Success");
+        // console.log("Success");
         navigation.replace("Home");
       } else {
         console.log("empty");
@@ -116,6 +134,22 @@ const FollowupScreen = ({ route }) => {
   // status: "cancelled",
   // date: "03-04-2023",
   // last_sync_date:"03-04-2023",
+  // const sortByProperty = (property) => {
+  //   return function (a, b) {
+  //     if (a[property] < b[property]) {
+  //       return -1;
+  //     }
+  //     if (a[property] > b[property]) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   };
+  // };
+
+  // useEffect(() => {
+  //   const sortedData = data.sort(sortByProperty('propertyName'));
+  //   setReadingInputValues(sortedData);
+  // }, [data]);
 
   return (
     <ImageBackground
@@ -131,23 +165,23 @@ const FollowupScreen = ({ route }) => {
         </Text>
 
         <Text style={styles.label}>
-          Patient Name:{selectedFollowup.patient.name}
+          Patient Name: {selectedFollowup.patient.name}
         </Text>
 
-        <Text style={styles.label}>Gender:{selectedFollowup.patient.sex}</Text>
+        <Text style={styles.label}>Gender: {selectedFollowup.patient.sex}</Text>
 
         <Text style={styles.label}>
-          Doctor Remark:{selectedFollowup.doctorRemarks}
+          Doctor Remark: {selectedFollowup.doctorRemarks}
         </Text>
 
-        <Text style={styles.label}>Field Worker Remark:</Text>
+        <Text style={styles.label}>Field Worker Remark: </Text>
         <TextInput
           style={styles.textArea}
           value={fieldWorkerRemark}
           onChangeText={setFieldWorkerRemark}
-          placeholder="Enter field worker remark"
+          placeholder="Enter your remark"
           multiline
-          numberOfLines={4}
+          numberOfLines={5}
         />
 
         {/* {Object.keys(readingInputValues).map((key) => (
@@ -158,43 +192,96 @@ const FollowupScreen = ({ route }) => {
               onChangeText={(value) => handleReadingInputChange(key, value)}
             />
           ))} */}
-        <ScrollView
+
+        {/* <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.field}
           style={{
-            width: 320,
-            height: 100,
+            flex: 1,
+            width: 330,
+            height: 250,
             backgroundColor: "wheat",
             marginTop: 10,
             borderRadius: 10,
-            marginLeft: 10,
           }}
-        >
-          {Object.entries(readingInputValues).map(([field, value]) => (
-            <View key={field} style={{ paddingHorizontal: 20 }}>
-              {value !== "False" && (
-                <View
-                  style={{
-                    paddingVertical: 20,
+          keyboardDismissMode="on-drag"
+        /> */}
+        <FlatList
+          data={Object.entries(readingInputValues).sort((a, b) =>
+            a[0].localeCompare(b[0])
+          )}
+          style={{
+            flex: 1,
+            marginTop: 10,
+            borderRadius: 15,
+            backgroundColor: "wheat",
+            padding: 10,
+          }}
+          keyExtractor={(item) => item[0]}
+          renderItem={({ item }) => {
+            const [field, value] = item;
+            if (value === "False") {
+              return null;
+            }
+            return (
+              <View
+                style={{
+                  paddingVertical: 20,
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <Text style={{ marginRight: 10, width: 120, fontSize: 16 }}>
+                  {field}:
+                </Text>
+                <TextInput
+                  style={styles.readings}
+                  defaultValue={value === "TRUE" ? "" : value}
+                  keyboardType="numeric"
+                  onChangeText={(text) => handleReadingInputChange(field, text)}
+                />
+                {/* <Text style={{ marginRight: 10 }}>unit</Text> */}
+              </View>
+            );
+          }}
+        />
+        {/*         
+          {/* <ScrollView style={{ flexGrow: 1 }}>
+            {Object.entries(readingInputValues).map(([field, value]) => (
+              <View key={field} style={{ paddingHorizontal: 20, flex: 1 }}>
+                {value !== "False" && (
+                  <View
+                    style={{
+                      position: "relative",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      paddingVertical: 20,
 
-                    flexDirection: "row",
-                    justifyContent: "space-evenly",
-                  }}
-                >
-                  <Text style={{ marginRight: 10, width: 100 }}>{field}:</Text>
-                  <TextInput
-                    style={styles.readings}
-                    key={field}
-                    defaultValue={value === "TRUE" ? "" : value}
-                    keyboardType="number-pad"
-                    onChangeText={(text) =>
-                      handleReadingInputChange(field, text)
-                    }
-                  />
-                  {/* <Text style={{ marginRight: 10 }}>unit</Text> */}
-                </View>
-              )}
-            </View>
-          ))}
-        </ScrollView>
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <Text style={{ marginRight: 10, width: 120, fontSize: 16 }}>
+                      {field}:
+                    </Text>
+                    <TextInput
+                      style={styles.readings}
+                      key={field}
+                      defaultValue={value === "TRUE" ? "" : value}
+                      keyboardType="number-pad"
+                      onChangeText={(text) =>
+                        handleReadingInputChange(field, text)
+                      }
+                    />
+                    {/* <Text style={{ marginRight: 10 }}>unit</Text> */}
+        {/* </View>
+                )}
+              </View>
+            ))}
+          </ScrollView> */}
+
         <TouchableOpacity
           style={styles.button}
           onPress={handlePrintPrescription}
@@ -204,10 +291,10 @@ const FollowupScreen = ({ route }) => {
         <TouchableOpacity
           style={[
             styles.button_mark_complete,
-            { backgroundColor: isAllFieldsSet ? "#2C79B6" : "#2797F0" },
+            { backgroundColor: isAllFieldsSet ? "#2797F0" : "#2C79B6" },
           ]}
           onPress={handleMarkComplete}
-          disabled={isAllFieldsSet}
+          disabled={!isAllFieldsSet}
         >
           <Text style={styles.buttonText}>Mark Complete</Text>
         </TouchableOpacity>
@@ -218,6 +305,24 @@ const FollowupScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  item: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  label: {
+    marginRight: 10,
+    width: 120,
+    fontSize: 16,
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "gray",
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
   container_Followup: {
     position: "relative",
     top: 20,
@@ -254,7 +359,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 8,
-    padding: 8,
+    padding: 10,
     marginTop: 8,
     minHeight: 100,
   },

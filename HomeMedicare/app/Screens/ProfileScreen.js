@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ImageBackground } from "react-native";
 import {
   View,
@@ -13,24 +13,68 @@ import ChangePINScreen from "./ChangePINScreen";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const FieldWorkerProfile = (props) => {
-  const [name, setName] = useState("Dev");
-  const [contactNumber, setContactNumber] = useState("9909397887");
-  const [email, setEmail] = useState("dev@email.com");
-  const [address, setAddress] = useState("IIITB");
-  const [password, setPassword] = useState("********");
-  const [pinChange, setPINChange] = useState(false);
-
-  const handleNameChange = (text) => setName(text);
-  const handleContactNumberChange = (text) => setContactNumber(text);
-  const handleEmailChange = (text) => setEmail(text);
-  const handleAddressChange = (text) => setAddress(text);
-  const handlePasswordChange = (text) => setPassword(text);
-
-  const handleContactNumberPress = () => console.log("Change Contact Number");
-  const handleEmailPress = () => console.log("Change Email");
-  const handleAddressPress = () => console.log("Change Address");
-  const handlePasswordPress = () => console.log("Change Password");
+const FieldWorkerProfile = ({ route }) => {
+  const { profileData } = route.params;
+  // const [profileData, setProfileData] = useState({});
+  // address
+  // :
+  // "fieldworker"
+  // authId
+  // :
+  // 102
+  // availableStatus
+  // :
+  // true
+  // contact
+  // :
+  // "9015346166"
+  // name
+  // :
+  // "fieldworker"
+  // password
+  // :
+  // "$2a$10$Z2vvuyMGuzRHXtCgIjtn7eLGMkHiluJOzPmhQQetU2iCGwWXI4a3."
+  // pincode
+  // :
+  // 201009
+  // role
+  // :
+  // "ROLE_FIELD_WORKER"
+  // supervisor
+  // :
+  // address
+  // :
+  // "Bangalore"
+  // authId
+  // :
+  // 4
+  // contact
+  // :
+  // "9874587458"
+  // name
+  // :
+  // "Supervisor Gupta"
+  // password
+  // :
+  // "$2a$10$GZAldqS/pY0c5CuHviu2vut954JaFw/6RhLKEfD3SZBZDxx0mjIlm"
+  // pincode
+  // :
+  // 560100
+  // role
+  // :
+  // "ROLE_SUPERVISOR"
+  // username
+  // :
+  // "supervisor"
+  // [[Prototype]]
+  // :
+  // Object
+  // username
+  // :
+  // "fieldworker"
+  // useEffect(async () => {
+  //   await
+  // }, []);
 
   const navigation = useNavigation();
 
@@ -53,26 +97,24 @@ const FieldWorkerProfile = (props) => {
       style={styles.container}
       source={require("../assets/bgimg.jpg")}
     >
-      <View style={styles.container_profile}>
+      <View style={styles.allfield_outer_view}>
         <View style={styles.allfield_view}>
-          <Text style={{ fontSize: 20 }}>Name:</Text>
-          <Text
-            style={styles.input}
-            onChangeText={handleNameChange}
-            placeholder="Email"
-          >
-            {name}
+          <Text style={styles.title}>Fieldworker ID:</Text>
+          <Text style={styles.input} placeholder="Fieldworker ID">
+            {profileData.supervisor.authId}
+          </Text>
+        </View>
+        <View style={styles.allfield_view}>
+          <Text style={styles.title}>Name:</Text>
+          <Text style={styles.input} placeholder="Email">
+            {profileData.name}
           </Text>
         </View>
 
         <View style={styles.allfield_view}>
-          <Text style={{ fontSize: 20 }}>Contact Number</Text>
-          <Text
-            style={styles.input}
-            onChangeText={handleContactNumberChange}
-            placeholder="Contact Number"
-          >
-            {contactNumber}
+          <Text style={styles.title}>Contact:</Text>
+          <Text style={styles.input} placeholder="Contact Number">
+            {profileData.contact}
           </Text>
           {/* <TouchableOpacity
             onPress={handleContactNumberPress}
@@ -82,13 +124,9 @@ const FieldWorkerProfile = (props) => {
           </TouchableOpacity> */}
         </View>
         <View style={styles.allfield_view}>
-          <Text style={{ fontSize: 20 }}>Email</Text>
-          <Text
-            style={styles.input}
-            onChangeText={handleEmailChange}
-            placeholder="Email"
-          >
-            {email}
+          <Text style={styles.title}>Address:</Text>
+          <Text style={styles.inputArea} placeholder="Address">
+            {profileData.address}
           </Text>
           {/* <TouchableOpacity onPress={handleEmailPress} style={styles.button}>
             <Text style={styles.buttonText}>Change Email</Text>
@@ -96,46 +134,31 @@ const FieldWorkerProfile = (props) => {
         </View>
 
         <View style={styles.allfield_view}>
-          <Text style={{ fontSize: 20 }}>Address</Text>
-          <Text
-            style={styles.input}
-            onChangeText={handleAddressChange}
-            placeholder="Address"
-          >
-            {address}
+          <Text style={styles.title}>Supervisor Name:</Text>
+          <Text style={styles.input} placeholder="Supervisor Name">
+            {profileData.supervisor.name}
           </Text>
-          {/* <TouchableOpacity onPress={handleAddressPress} style={styles.button}>
-            <Text style={styles.buttonText}>Change Address</Text>
-          </TouchableOpacity> */}
         </View>
-        {/* <View style={styles.allfield_view}>
-            <Text style={{ fontSize: 20 }}>Password</Text>
-            <TextInput
-              style={styles.input}
-              value={password}
-              onChangeText={handlePasswordChange}
-              placeholder="Password"
-              secureTextEntry
-            />
-            <TouchableOpacity
-              onPress={handlePasswordPress}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Change Password</Text>
-            </TouchableOpacity>
-          </View> */}
-        <View style={{ flexDirection: "row" }}>
-          {/* <Text style={styles.title}>Profile Settings</Text> */}
+        <View style={styles.allfield_view}>
+          <Text style={styles.title}>Supervisor Contact:</Text>
+          <Text style={styles.input} placeholder="Supervisor Contact">
+            {profileData.supervisor.contact}
+          </Text>
+        </View>
+        <View style={styles.allfield_view}>
+          <Text style={styles.title}>Supervisor Address:</Text>
+          <Text style={styles.input} placeholder="Supervisor Address">
+            {profileData.supervisor.address}
+          </Text>
+        </View>
 
+        <View style={styles.buttonView}>
           <TouchableOpacity
             onPress={handlePINPress}
             style={styles.buttonChangePIN}
           >
             <Text style={styles.buttonText}>Change PIN</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity onPress={logout} style={styles.buttonChangePIN}>
-            <Text style={styles.buttonText}>logout</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </ImageBackground>
@@ -146,54 +169,58 @@ const styles = StyleSheet.create({
     flex: 1,
 
     resizeMode: "cover",
-    justifyContent: "center",
   },
   container_profile: {
+    position: "absolute",
+    top: 0,
+    left: 0,
     flex: 1,
-    margin: 10,
-    padding: 10,
-
+    backgroundColor: "blue",
+    padding: 5,
+    alignContent: "center",
     borderRadius: 10,
   },
   title: {
-    fontSize: 24,
+    textAlign: "left",
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
-    flex: 1,
-    color: "#2B79E3",
+    color: "#295490",
   },
   input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    height: 35,
+    width: 200,
+    fontSize: 16,
+    padding: 5,
+    textAlign: "center",
     backgroundColor: "white",
   },
-  button: {
-    backgroundColor: "#2B79E3",
-    borderRadius: 5,
-    padding: 10,
+  inputArea: {
+    height: 70,
+    width: 200,
+    textAlign: "center",
+    padding: 5,
+
+    backgroundColor: "white",
+  },
+  buttonView: {
+    position: "absolute",
+    bottom: 40,
+    left: 10,
+    flex: 1,
+    width: "90%",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: "white",
-    shadowColor: "#000000",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 1,
   },
   buttonChangePIN: {
-    width: "40%",
+    width: "100%",
+    height: "100%",
     backgroundColor: "#AD0C1E",
-    borderRadius: 15,
-    padding: 10,
+
+    paddingVertical: 10,
     alignItems: "center",
-    marginTop: 10,
-    marginHorizontal: 20,
-    height: 40,
+
+    height: 50,
     elevation: 10,
     borderWidth: 1,
     borderColor: "white",
@@ -203,11 +230,35 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   buttonText: {
+    textAlign: "center",
+    fontSize: 16,
     color: "white",
     fontWeight: "bold",
   },
   allfield_view: {
-    marginVertical: 5,
+    marginTop: 9,
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    paddingHorizontal: 45,
+    alignItems: "center",
+    borderRadius: 2,
+    height: 90,
+    elevation: 5,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    borderRadius: 10,
+  },
+  allfield_outer_view: {
+    flex: 1,
+    position: "absolute",
+    height: "100%",
+    top: 10,
+    left: 0,
+    padding: 10,
   },
 });
 

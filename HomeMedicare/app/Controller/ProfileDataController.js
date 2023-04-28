@@ -14,7 +14,8 @@ const GetUserProfileDetails = async (props) => {
   }
   await GlobalServiceHandler.hitDataGetService({
     childURL:
-      APIURLUtilities.getFieldWorkerProfileDataAPIChildURLKeys() + +UserName,
+      APIURLUtilities.getFieldWorkerAPIChildURLKeys()
+        .fieldWorkerGetDetailsAPIKey + UserName,
 
     responseDataHandler: (profileServiceData) => {
       //Login respone parsing in case of Success...

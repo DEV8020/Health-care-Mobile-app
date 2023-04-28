@@ -11,6 +11,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ToastAndroid } from "react-native";
 import LoginController from "../Controller/LoginController";
+import ProfileDataController from "../Controller/ProfileDataController";
 
 const LoginScreen = ({ navigation }) => {
   var credentials = {};
@@ -39,6 +40,28 @@ const LoginScreen = ({ navigation }) => {
 
     checkLoggedInUser();
   }, []);
+
+  // sProfileDataFlag: false,
+  //         profileData: null,
+  //         errorMessage: profileServiceData.responseError.message,
+
+  const ProfileResponseHandler = (profileResponseData) => {
+    console.log(
+      "_______________________Profile details response handler______________________"
+    );
+    console.log(profileResponseData.profileData);
+    if (profileResponseData.isProfileDataFlag) {
+      console.log("Get ProfileData success................. ");
+      AsyncStorage.setItem(
+        "ProfileData",
+        JSON.stringify(profileResponseData.profileData)
+      )
+        .then(() => {
+          console.log("User profile data stored successfully!");
+        })
+        .catch((error) => console.log(error));
+    }
+  };
   const LoginResponseHandler = (loginResponseData) => {
     console.log("Login Response Data");
     console.log(loginResponseData.loggedInUserData);
@@ -51,6 +74,14 @@ const LoginScreen = ({ navigation }) => {
         JSON.stringify(loginResponseData.loggedInUserData)
       )
         .then(() => {
+          // LoginController.GetUserLoginData({
+          //   userData: userData,
+          //   userLoginResponseHandler: LoginResponseHandler,
+          // });
+          ProfileDataController.GetUserProfileDetails({
+            userProfileResponseHandler: ProfileResponseHandler,
+          });
+
           console.log("User login token stored successfully!");
         })
         .catch((error) => console.log(error));
@@ -128,7 +159,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: "absolute",
-    top: 150,
+    top: 90,
     borderRadius: 15,
     width: 380,
     height: 450,

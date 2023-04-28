@@ -193,7 +193,7 @@ const Application = () => {
             name="Profile"
             component={FieldWorkerProfile}
             options={{
-              title: "Profile Settings",
+              title: "User Profile",
             }}
           />
           <Stack.Screen

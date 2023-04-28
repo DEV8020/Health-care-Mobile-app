@@ -7,6 +7,7 @@ const getFieldWorkerAPIChildURLKeys = () => {
     fieldWorkerGetFollowupsAPIKey:
       "fieldworker/getFollowUpsForFieldWorkerMobile/",
     fieldWorkerPostFollowupAPIKey: "fieldworker/updateFollowUpsByFieldWorker",
+    fieldWorkerGetDetailsAPIKey: "fieldworker/getFieldWorker/",
   };
 };
 

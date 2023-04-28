@@ -29,6 +29,7 @@ import OTPPopUp from "../Utility/OTPPopUp";
 import IdleTimer from "react-native-idle-timer";
 import IdleTimerContainer from "../UtilityModules/IdleTimer";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const IDLE_SCREEN_TIME = 70000000;
 const HomeScreen = ({ navigation }) => {
@@ -76,8 +77,15 @@ const HomeScreen = ({ navigation }) => {
     return () => clearTimeout(timeout); // Clear the timeout if the component unmounts
   }, [navigation]);
 
-  const profileButtonHandler = () => {
-    navigation.navigate("Profile");
+  const profileButtonHandler = async () => {
+    var profileData;
+    await AsyncStorage.getItem("ProfileData")
+      .then((data) => {
+        profileData = JSON.parse(data);
+        // console.log(profileData);
+      })
+      .catch((error) => console.log(error));
+    navigation.navigate("Profile", { profileData: profileData });
   };
 
   useEffect(() => {

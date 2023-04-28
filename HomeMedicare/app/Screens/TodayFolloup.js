@@ -41,7 +41,18 @@ function TodayFolloup({
 
   const renderItem = ({ item }) => {
     const isSelected = item.followUpId === selectedId;
-    if (selectedStatus !== "All" && item.flag !== selectedStatus) {
+    if (
+      selectedStatus !== "All" &&
+      selectedStatus !== "synced" &&
+      item.flag !== selectedStatus
+    ) {
+      return null;
+    }
+    if (
+      selectedStatus !== "All" &&
+      selectedStatus === "synced" &&
+      item.isFollowUpSynced === false
+    ) {
       return null;
     }
     // const backgroundColor = item.followupId === selectedId ? "blue" : "white";

@@ -98,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
             <IconButton
               iconName="person"
               iconColor="white"
-              iconSize={24}
+              iconSize={28}
               onPress={profileButtonHandler}
             />
           );
@@ -196,6 +196,7 @@ const HomeScreen = ({ navigation }) => {
           l2="Today"
           l3="Upcoming"
           setFolloupTypeScreen={setFolloupTypeScreen}
+          folloupTypeScreen={folloupTypeScreen}
         />
       </View>
     </ImageBackground>
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
   container_list: {
     position: "relative",
     left: 0,
-    top: 20,
+    top: 0,
     flex: 10,
 
     alignItems: "center",

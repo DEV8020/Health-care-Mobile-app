@@ -2,26 +2,33 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 const BottomNavigationBar = (props) => {
+  const [activeButton, setActiveButton] = useState("Past");
+
   const BottomButtonHandler = (type) => {
+    setActiveButton(type);
     props.setFolloupTypeScreen(type);
+  };
+
+  const getButtonStyle = (buttonType) => {
+    return [styles.button, activeButton === buttonType && styles.activeButton];
   };
 
   return (
     <View style={styles.container_bottom}>
       <TouchableOpacity
-        style={styles.button}
+        style={getButtonStyle("Past")}
         onPress={() => BottomButtonHandler("Past")}
       >
         <Text style={styles.buttonText}>{props.l1}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.button}
+        style={getButtonStyle("Today")}
         onPress={() => BottomButtonHandler("Today")}
       >
         <Text style={styles.buttonText}>{props.l2}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.button}
+        style={getButtonStyle("Upcoming")}
         onPress={() => BottomButtonHandler("Upcoming")}
       >
         <Text style={styles.buttonText}>{props.l3}</Text>
@@ -36,37 +43,38 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 0,
-    paddingVertical: 5,
-    backgroundColor: "#2B79E3",
+
     position: "relative",
     bottom: 0,
     left: 0,
     right: 0,
-    elevation: 15,
-    borderWidth: 1,
-    borderTopStartRadius:20,
-    borderTopEndRadius:20,
-    borderColor:"white",
+    elevation: 10,
+
+    borderColor: "white",
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 2,
     width: "100%",
+    height: "90%",
+  },
+  activeButton: {
+    borderTopWidth: 3,
+    elevation: 2,
+    backgroundColor: "#2676E3",
   },
   button: {
     flex: 1,
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    height: 55,
-    backgroundColor: "White",
-    borderColor:"white",
-    borderRadius: 5,
-    marginHorizontal: 2,
+
+    backgroundColor: "#2B79E3",
+    borderColor: "white",
   },
   buttonText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

@@ -55,6 +55,22 @@ const FilterHeader = ({ selectedStatus, setSelectedStatus }) => {
           Completed
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.filterOption,
+          selectedStatus === "synced" && styles.selectedFilterOption,
+        ]}
+        onPress={() => handleFilterPress("synced")}
+      >
+        <Text
+          style={[
+            styles.filterOptionText,
+            selectedStatus === "synced" && styles.selectedFilterOptionText,
+          ]}
+        >
+          Synced
+        </Text>
+      </TouchableOpacity>
       {/* <TouchableOpacity
         style={[
           styles.filterOption,
@@ -81,12 +97,12 @@ styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 10,
     width: 400,
-    height: 65,
+    height: 70,
   },
   filterOption: {
-    width: 110,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    width: 95,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#2B79E3",

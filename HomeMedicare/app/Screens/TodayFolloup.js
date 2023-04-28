@@ -55,7 +55,7 @@ function TodayFolloup({
         break;
       case true:
         iconName = "check-circle";
-        iconColor = "green";
+        iconColor = item.isFollowUpSynced ? "green" : "#D68910";
         break;
       // case "cancelled":
       //   iconName = "cancel";
@@ -167,7 +167,7 @@ function TodayFolloup({
   return (
     <FlatList
       style={styles.list}
-      data={followupList}
+      data={followupList.sort((a, b) => a.flag - b.flag)}
       renderItem={renderItem}
       keyExtractor={(item) => item.followUpId}
       extraData={selectedId}

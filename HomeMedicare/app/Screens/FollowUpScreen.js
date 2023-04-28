@@ -8,6 +8,7 @@ import {
   ImageBackground,
   ToastAndroid,
   FlatList,
+  PermissionsAndroid,
 } from "react-native";
 import AppBar from "../Utility/AppBar";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +16,8 @@ import storeObj from "../Store/storeDataService";
 import UpcomingFolloup from "./UpcomingFollowup";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import PDFView from "react-native-pdf";
+// import RNFS from "react-native-fs";
 
 // import jsPDF from "jspdf";
 // import "jspdf-autotable";
@@ -42,15 +45,26 @@ const FollowupScreen = ({ route }) => {
   useEffect(() => {
     // value.replace(/\D/g, "");
     console.log("called%555555555555555555555555555555555");
-    const hasNumericValue = Object.entries(readingInputValues)
-      .map(([key, value]) => {
-        if (value === "False") {
-          return null;
-        }
-        const numericValue = parseFloat(value);
-        return isNaN(numericValue) ? null : numericValue;
-      })
-      .every((value) => typeof value === "number");
+    // const hasNumericValue = Object.entries(readingInputValues)
+    //   .map(([key, value]) => {
+    //     if (value === "FALSE" || value === "TRUE") {
+    //       return null;
+    //     }
+    //     console.log(typeof value);
+    //     const numericValue = parseFloat(value);
+    //     console.log(typeof numericValue);
+
+    //     return isNaN(numericValue) ? null : numericValue;
+    //   })
+    //   .every(
+    //     (value) =>
+    //       console.log(typeof value) &&
+    //       value !== null &&
+    //       typeof value === "number"
+    //   );
+    const hasNumericValue = Object.values(readingInputValues).every(
+      (value) => value === "FALSE" || !isNaN(parseFloat(value))
+    );
 
     console.log(hasNumericValue);
     if (fieldWorkerRemark !== "" && hasNumericValue) {
@@ -78,18 +92,42 @@ const FollowupScreen = ({ route }) => {
   // console.log(selectedFollowup);
 
   // setPatientID(props.selectedID);
-  const handlePrintPrescription = () => {
-    // const doc = new jsPDF();
-    // const jsonData = [
-    //   { id: 1, name: "John Doe", email: "example@example.com" },
-    //   { id: 2, name: "Jane Doe", email: "example@example.com" },
-    //   { id: 3, name: "Bob Smith", email: "example@example.com" },
-    // ];
-    // doc.autoTable({
-    //   head: [["ID", "Name", "Email"]],
-    //   body: jsonData.map(({ id, name, email }) => [id, name, email]),
+  const handlePrintPrescription = async () => {
+    // if (Platform.OS === "android") {
+    //   const granted = await PermissionsAndroid.request(
+    //     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    //     {
+    //       title: "Storage Permission Required",
+    //       message: "This app needs permission to save files to your device.",
+    //     }
+    //   );
+
+    //   if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+    //     // Permission not granted, exit the function
+    //     return;
+    //   }
+    // }
+    // const pdfData = await PDFView.convert({
+    //   html: `
+    //     <html>
+    //       <head>
+    //         <style>
+    //           /* Add any custom styles to your PDF */
+    //         </style>
+    //       </head>
+    //       <body>
+    //         ${Object.entries(readingInputValues)
+    //           .map(
+    //             ([word, definition]) => `<p><b>${word}</b>: ${definition}</p>`
+    //           )
+    //           .join("")}
+    //       </body>
+    //     </html>
+    //   `,
+    //   fileName: "prescription.pdf",
     // });
-    // doc.save("table.pdf");
+    // const filePath = `${RNFS.DocumentDirectoryPath}/dictionary.pdf`;
+    // await RNFS.writeFile(filePath, pdfData, "base64");
     ToastAndroid.show("Prescription downloaded", ToastAndroid.SHORT);
     // Add logic to print prescription here
   };
@@ -221,7 +259,7 @@ const FollowupScreen = ({ route }) => {
           keyExtractor={(item) => item[0]}
           renderItem={({ item }) => {
             const [field, value] = item;
-            if (value === "False") {
+            if (value === "FALSE") {
               return null;
             }
             return (

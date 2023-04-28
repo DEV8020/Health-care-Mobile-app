@@ -125,7 +125,7 @@ const FieldWorkerProfile = ({ route }) => {
         </View>
         <View style={styles.allfield_view}>
           <Text style={styles.title}>Address:</Text>
-          <Text style={styles.inputArea} placeholder="Address">
+          <Text style={styles.input} placeholder="Address">
             {profileData.address}
           </Text>
           {/* <TouchableOpacity onPress={handleEmailPress} style={styles.button}>
@@ -195,14 +195,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: "white",
   },
-  inputArea: {
-    height: 70,
-    width: 200,
-    textAlign: "center",
-    padding: 5,
 
-    backgroundColor: "white",
-  },
   buttonView: {
     position: "absolute",
     bottom: 40,

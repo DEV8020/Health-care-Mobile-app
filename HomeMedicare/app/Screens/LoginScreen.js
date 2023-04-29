@@ -94,6 +94,7 @@ const LoginScreen = ({ navigation }) => {
 
       setEmail("");
       setPassword("");
+      navigation.replace("PIN Change");
     } else {
       ToastAndroid.show(loginResponseData.errorMessage, ToastAndroid.SHORT);
       console.log(loginResponseData.errorMessage);

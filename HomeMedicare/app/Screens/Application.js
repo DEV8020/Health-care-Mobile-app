@@ -88,13 +88,13 @@ const Application = () => {
     // console.log("****************************");
 
     // console.log(followUpDownloadData);
-    setIsDataDownload((isDataDownload) => {
-      console.log(
-        "*******************followUpDownLoadResponseHandler******************************"
-      );
-      console.log(!isDataDownload);
-      return !isDataDownload;
-    });
+    // setIsDataDownload((isDataDownload) => {
+    //   console.log(
+    //     "*******************followUpDownLoadResponseHandler******************************"
+    //   );
+    //   console.log(!isDataDownload);
+    //   return !isDataDownload;
+    // });
     // console.log("inverted");
     // console.log(isDataDownload);
 
@@ -149,7 +149,7 @@ const Application = () => {
     //       setIsLoggedIn(true);
     //       console.log(isLoggedIn);
     //     }
-    //   } catch (e) {
+    //   } catch (e) {r
     //     console.log("Failed to load user token from AsyncStorage:", e);
     //   }
     //   // setIsLoading(false);

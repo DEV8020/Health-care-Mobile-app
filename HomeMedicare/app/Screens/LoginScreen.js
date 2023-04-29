@@ -88,7 +88,22 @@ const LoginScreen = ({ navigation }) => {
 
       setEmail("");
       setPassword("");
-      navigation.replace("PIN Change");
+      const checkPINset = async () => {
+        try {
+          const value = await AsyncStorage.getItem("isPinSet");
+          if (value !== null) {
+            // console.log(isLoggedIn);
+            navigation.replace("PIN Lock");
+          } else {
+            navigation.navigate("PIN Change");
+          }
+        } catch (e) {
+          console.log("Failed to load user token from AsyncStorage:", e);
+        }
+        // setIsLoading(false);
+      };
+
+      checkPINset();
     } else {
       ToastAndroid.show(loginResponseData.errorMessage, ToastAndroid.SHORT);
       console.log(loginResponseData.errorMessage);

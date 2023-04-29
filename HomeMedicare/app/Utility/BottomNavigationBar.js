@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    elevation: 10,
 
     borderColor: "white",
     shadowColor: "#000000",
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
   },
   activeButton: {
     borderTopWidth: 3,
-    elevation: 2,
+    elevation: 8,
     backgroundColor: "#2676E3",
   },
   button: {

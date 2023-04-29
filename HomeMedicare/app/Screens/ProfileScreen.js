@@ -12,69 +12,10 @@ import AppBar from "../Utility/AppBar";
 import ChangePINScreen from "./ChangePINScreen";
 import { StackActions, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EncryptionUtilityModule from "../UtilityModules/Encryption";
 
 const FieldWorkerProfile = ({ route }) => {
   const { profileData } = route.params;
-  // const [profileData, setProfileData] = useState({});
-  // address
-  // :
-  // "fieldworker"
-  // authId
-  // :
-  // 102
-  // availableStatus
-  // :
-  // true
-  // contact
-  // :
-  // "9015346166"
-  // name
-  // :
-  // "fieldworker"
-  // password
-  // :
-  // "$2a$10$Z2vvuyMGuzRHXtCgIjtn7eLGMkHiluJOzPmhQQetU2iCGwWXI4a3."
-  // pincode
-  // :
-  // 201009
-  // role
-  // :
-  // "ROLE_FIELD_WORKER"
-  // supervisor
-  // :
-  // address
-  // :
-  // "Bangalore"
-  // authId
-  // :
-  // 4
-  // contact
-  // :
-  // "9874587458"
-  // name
-  // :
-  // "Supervisor Gupta"
-  // password
-  // :
-  // "$2a$10$GZAldqS/pY0c5CuHviu2vut954JaFw/6RhLKEfD3SZBZDxx0mjIlm"
-  // pincode
-  // :
-  // 560100
-  // role
-  // :
-  // "ROLE_SUPERVISOR"
-  // username
-  // :
-  // "supervisor"
-  // [[Prototype]]
-  // :
-  // Object
-  // username
-  // :
-  // "fieldworker"
-  // useEffect(async () => {
-  //   await
-  // }, []);
 
   const navigation = useNavigation();
 

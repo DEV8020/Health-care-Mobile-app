@@ -118,7 +118,7 @@ styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "bold",
-    color: "#2B79E3",
+    color: "#295490",
   },
   selectedFilterOptionText: {
     fontSize: 16,

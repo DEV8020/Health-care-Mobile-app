@@ -17,13 +17,15 @@ import SendCompletedFollowups from "../Controller/FetchFollowupToSendController"
 // import axios from "axios";
 import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
+import { Ionicons } from "@expo/vector-icons";
 
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
+  const [isDataDownload, setIsDataDownload] = useState(false);
 
-  const sucessTimerDuration = 20000; // 20 seconds in case of success//50000000;
+  const sucessTimerDuration = 40000; // 20 seconds in case of success//50000000;
   const idleTimerDuration = 20000 * 3; // 60 seconds in case of failure or no data
 
   const sucessTimerUploadDuration = 30000; //1 Minute .... 60 * 1000 msec
@@ -86,6 +88,9 @@ const Application = () => {
       // isFollowUpListSuccessfully: true,
       //           followUpData: followUpData.responseData.data,
       //           errorMessage: null,
+      setIsDataDownload((prevIsDataDownload) => !prevIsDataDownload);
+      console.log("inverted");
+      console.log(isDataDownload);
       console.log("Data reciebe=ved in app.js");
       if (followUpDownloadData.followUpData.length === 5) {
         setTimer(sucessTimerDuration);
@@ -117,7 +122,7 @@ const Application = () => {
   // };
   var firstScreen;
   useEffect(() => {
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
     console.log("kkkkkkkkkkkkkkkkkkkk");
     // AsyncStorage.removeItem("LoggedInData");
 
@@ -154,6 +159,16 @@ const Application = () => {
           screenOptions={{
             headerStyle: { backgroundColor: "#2B79E3" },
             headerTintColor: "white",
+
+            // headerLeft: ({ onPress }) => (
+            //   <Ionicons
+            //     name="chevron-back-outline"
+            //     size={25}
+            //     color="white"
+            //     style={{ marginRight: 10 }}
+            //     onPress={onPress}
+            //   />
+            // ),
           }}
           initialRouteName="Login"
         >
@@ -181,6 +196,7 @@ const Application = () => {
             options={{
               title: "HomeMedicare",
             }}
+            initialParams={{ isDataDownload }}
           />
           <Stack.Screen
             name="Login"

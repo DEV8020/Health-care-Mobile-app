@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import FetchLastStoredFollowupId from "../UtilityModules/FetchLastStoredFollowup";
 import APIURLUtilities from "./APIUrlUtilities";
 import AppendUpdatedFlagInList from "../UtilityModules/AppendUpdatedFlag";
+import EncryptionUtilityModule from "../UtilityModules/Encryption";
 
 var responseHandler;
 
@@ -47,6 +48,15 @@ const GetFollowupsResponseHandler = (response) => {
         console.log("----------------------3");
         // convert the updated list back to a string
         const updatedListString = JSON.stringify(updatedList);
+        //Encryption-Decryption---------------------------------------------------
+        // const encryptedData = EncryptionUtilityModule.encryptData(DATA);
+        // AsyncStorage.setItem("data", encryptedData);
+
+        // AsyncStorage.getItem("data").then((encryptedData) => {
+        //   const decryptedData =
+        //     EncryptionUtilityModule.decryptData(encryptedData);
+        //   console.log(decryptedData); // This will log the original data object
+        // });
 
         // save the updated list to AsyncStorage
         AsyncStorage.setItem(

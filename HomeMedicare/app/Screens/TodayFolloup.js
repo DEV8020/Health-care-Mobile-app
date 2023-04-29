@@ -189,8 +189,9 @@ function TodayFolloup({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    width: "90%",
+    width: 410,
 
+    // backgroundColor: "#2B79E3",
     borderColor: "white",
   },
   item: {

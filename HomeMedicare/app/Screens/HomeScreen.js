@@ -30,14 +30,21 @@ import IdleTimer from "react-native-idle-timer";
 import IdleTimerContainer from "../UtilityModules/IdleTimer";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EncryptionUtilityModule from "../UtilityModules/Encryption";
 
 const IDLE_SCREEN_TIME = 70000000;
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
   const [showOTPPopUp, setShowOTPPopUp] = useState(false);
   const [followupData, setFollowupData] = useState({});
   const [followupList, setFollowupList] = useState([]);
+
+  const { isDataDownload } = route.params;
+  console.log(
+    "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+  );
+  console.log(isDataDownload);
   //....
   // const hasInteractedRef = useRef(false);
   // const timeoutRef = useRef();
@@ -82,9 +89,30 @@ const HomeScreen = ({ navigation }) => {
     await AsyncStorage.getItem("ProfileData")
       .then((data) => {
         profileData = JSON.parse(data);
+        // const key = CryptoJS.enc.Latin1.parse("1234567812345678");
+        // const iv = CryptoJS.enc.Latin1.parse("1234567812345678");
+        // const encryptedData = EncryptionUtilityModule.encryptData(
+        //   data,
+        //   key,
+        //   iv
+        // );
+        // console.log(encryptedData);
+        // AsyncStorage.setItem("dummydata", encryptedData);
+
+        // AsyncStorage.getItem("dummydata").then((encryptedData) => {
+        //   const key = CryptoJS.enc.Latin1.parse("1234567812345678");
+        //   const iv = CryptoJS.enc.Latin1.parse("1234567812345678");
+        //   const decryptedData = EncryptionUtilityModule.decryptData(
+        //     encryptedData,
+        //     key,
+        //     iv
+        //   );
+        //   console.log(decryptedData); // This will log the original data object
+        // });
         // console.log(profileData);
       })
       .catch((error) => console.log(error));
+
     navigation.navigate("Profile", { profileData: profileData });
   };
 
@@ -105,13 +133,13 @@ const HomeScreen = ({ navigation }) => {
         },
       });
     }
-  }, [folloupTypeScreen, navigation]);
+  }, [folloupTypeScreen, navigation, isDataDownload]);
 
   const Header = () => {
     return (
       <View style={styles.header}>
         <Text style={styles.headerText_Middle}> Followup List </Text>
-        <Text style={styles.headerText}> (click any to proceed)</Text>
+        <Text style={styles.headerText}> (tap on any followup to proceed)</Text>
         <View style={styles.header_row}>
           {/* <FilterFollowups selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/> */}
           <Text style={styles.headerText}> FID </Text>
@@ -211,12 +239,12 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
+    borderTopStartRadius: 30,
+    borderTopEndRadius: 30,
     borderColor: "white",
     backgroundColor: "#2B79E3",
     height: 100,
-    width: 400,
+    width: 410,
     padding: 5,
   },
   header_row: {

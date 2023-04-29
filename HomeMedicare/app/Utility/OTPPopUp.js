@@ -32,10 +32,12 @@ const OTPPopUp = ({ visible, setShowOTPPopUp, followupData, onVerify }) => {
   //handle verify button
   const handleVerifyOTP = () => {
     // Verify the OTP
-    // const ServerOTP = followupData.otp;
-    const ServerOTP = "1234";
+    const ServerOTP = followupData.otp;
+    console.log(ServerOTP);
+
+    // const ServerOTP = "1234";
     setOtpInputDefault(true);
-    if (ServerOTP === otp) {
+    if (ServerOTP === parseInt(otp)) {
       onVerify();
       navigation.navigate("Followup", { selectedFollowup: followupData });
 

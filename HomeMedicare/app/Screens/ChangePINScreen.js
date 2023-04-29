@@ -21,21 +21,6 @@ const ChangePINScreen = ({ route, navigation }) => {
   useEffect(() => {
     // AsyncStorage.removeItem("LoggedInData");
     console.log("kkkkkkkkkkkkkkkkkkkk");
-
-    const checkPINset = async () => {
-      try {
-        const value = await AsyncStorage.getItem("isPinSet");
-        if (value !== null) {
-          // console.log(isLoggedIn);
-          navigation.replace("PIN Lock");
-        }
-      } catch (e) {
-        console.log("Failed to load user token from AsyncStorage:", e);
-      }
-      // setIsLoading(false);
-    };
-
-    checkPINset();
   }, []);
 
   const handleChangePIN = () => {

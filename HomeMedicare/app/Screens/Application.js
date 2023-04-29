@@ -18,6 +18,7 @@ import SendCompletedFollowups from "../Controller/FetchFollowupToSendController"
 import checkNetworkConnection from "../UtilityModules/NetworkConnectionChecker";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
 import { Ionicons } from "@expo/vector-icons";
+import ScreenRefresher from "../UtilityModules/ScreenRefresher";
 
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
@@ -25,8 +26,8 @@ const Application = () => {
   const [isPinSet, setIsPinSet] = useState(null);
   const [isDataDownload, setIsDataDownload] = useState(false);
 
-  const sucessTimerDuration = 40000; // 20 seconds in case of success//50000000;
-  const idleTimerDuration = 20000 * 3; // 60 seconds in case of failure or no data
+  const sucessTimerDuration = 20000; // 20 seconds in case of success//50000000;
+  const idleTimerDuration = 20000; // 60 seconds in case of failure or no data
 
   const sucessTimerUploadDuration = 30000; //1 Minute .... 60 * 1000 msec
   const idleTimerUploadDuration = 60000 * 2; //5 Minute ....  5 * 60 * 1000 msec
@@ -60,6 +61,8 @@ const Application = () => {
     }
   };
 
+  console.log("%%%%%%%%%%%%%%view refreshed%%%%%%%%%%%%%%%%%%%%%%%%%");
+
   //Checks for network connection in every 30 sec and send followups to server...
   // var isAPICallActive = false;
   const [timer, setTimer] = useState(sucessTimerDuration);
@@ -81,17 +84,30 @@ const Application = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const followUpDownLoadResponseHandler = (followUpDownloadData) => {
-    console.log("****************************");
-    console.log(followUpDownloadData);
+  const followUpDownLoadResponseHandler = async (followUpDownloadData) => {
+    // console.log("****************************");
+
+    // console.log(followUpDownloadData);
+    setIsDataDownload((isDataDownload) => {
+      console.log(
+        "*******************followUpDownLoadResponseHandler******************************"
+      );
+      console.log(!isDataDownload);
+      return !isDataDownload;
+    });
+    // console.log("inverted");
+    // console.log(isDataDownload);
+
     if (followUpDownloadData.isFollowUpListSuccessfully === true) {
       // isFollowUpListSuccessfully: true,
       //           followUpData: followUpData.responseData.data,
       //           errorMessage: null,
-      setIsDataDownload((prevIsDataDownload) => !prevIsDataDownload);
-      console.log("inverted");
-      console.log(isDataDownload);
-      console.log("Data reciebe=ved in app.js");
+      // setIsDataDownload((isDataDownload) => {
+      //   return !isDataDownload;
+      // });
+      // console.log("inverted");
+      // console.log(isDataDownload);
+      console.log("Data recieved in app.js");
       if (followUpDownloadData.followUpData.length === 5) {
         setTimer(sucessTimerDuration);
       } else {
@@ -122,7 +138,7 @@ const Application = () => {
   // };
   var firstScreen;
   useEffect(() => {
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
     console.log("kkkkkkkkkkkkkkkkkkkk");
     // AsyncStorage.removeItem("LoggedInData");
 
@@ -196,8 +212,8 @@ const Application = () => {
             options={{
               title: "HomeMedicare",
             }}
-            initialParams={{ isDataDownload }}
-          />
+            isDataDownload={isDataDownload}
+          ></Stack.Screen>
           <Stack.Screen
             name="Login"
             component={LoginScreen}

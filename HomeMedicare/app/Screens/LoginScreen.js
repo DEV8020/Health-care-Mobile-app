@@ -29,8 +29,14 @@ const LoginScreen = ({ navigation }) => {
       try {
         const value = await AsyncStorage.getItem("LoggedInData");
         if (value !== null) {
-          // console.log(isLoggedIn);
-          navigation.replace("PIN Change");
+          AsyncStorage.getItem("isPinSet").then((value) => {
+            if (value !== null) {
+              console.log(value);
+              navigation.replace("PIN Lock");
+            } else {
+              navigation.replace("PIN Change");
+            }
+          });
         }
       } catch (e) {
         console.log("Failed to load user token from AsyncStorage:", e);
@@ -88,22 +94,6 @@ const LoginScreen = ({ navigation }) => {
 
       setEmail("");
       setPassword("");
-      const checkPINset = async () => {
-        try {
-          const value = await AsyncStorage.getItem("isPinSet");
-          if (value !== null) {
-            // console.log(isLoggedIn);
-            navigation.replace("PIN Lock");
-          } else {
-            navigation.navigate("PIN Change");
-          }
-        } catch (e) {
-          console.log("Failed to load user token from AsyncStorage:", e);
-        }
-        // setIsLoading(false);
-      };
-
-      checkPINset();
     } else {
       ToastAndroid.show(loginResponseData.errorMessage, ToastAndroid.SHORT);
       console.log(loginResponseData.errorMessage);

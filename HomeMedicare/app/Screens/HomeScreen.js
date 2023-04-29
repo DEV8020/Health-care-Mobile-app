@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
+  ToastAndroid,
 } from "react-native";
 import BottomNavigationBar from "../Utility/BottomNavigationBar";
 import TopAppBar from "../Utility/TopAppBar";
@@ -33,16 +34,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import EncryptionUtilityModule from "../UtilityModules/Encryption";
 
 const IDLE_SCREEN_TIME = 70000000;
-const HomeScreen = ({ navigation, route }) => {
+const HomeScreen = ({ navigation, route, isDataDownload }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
   const [showOTPPopUp, setShowOTPPopUp] = useState(false);
   const [followupData, setFollowupData] = useState({});
   const [followupList, setFollowupList] = useState([]);
-
-  const { isDataDownload } = route.params;
+  // const [refreshed, setRefreshed] = useState(true);
+  // setRefreshed(route.params);
   console.log(
-    "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    "---------------------------------------------------------------------------------"
   );
   console.log(isDataDownload);
   //....
@@ -117,6 +118,7 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    ToastAndroid.show("refreshed", ToastAndroid.SHORT);
     FetchFollowup(followupList, setFollowupList, folloupTypeScreen);
     if (navigation && navigation.setOptions) {
       navigation.setOptions({

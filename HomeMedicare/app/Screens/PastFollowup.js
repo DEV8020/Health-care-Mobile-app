@@ -12,6 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { ToastAndroid } from "react-native";
 import { useEffect } from "react";
 import moment from "moment";
+import { aesUtil } from "../UtilityModules/aesUtil";
 
 function PastFolloup({
   followupList,
@@ -69,6 +70,12 @@ function PastFolloup({
         break;
     }
 
+    const patientAdress = aesUtil.decrypt("password", item.patient.address);
+
+    const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
+
+    const patientContact = aesUtil.decrypt("password", item.patient.contact);
+
     return (
       <TouchableOpacity
         style={{
@@ -76,7 +83,7 @@ function PastFolloup({
           padding: 20,
 
           marginVertical: 4,
-          width: 400,
+          width: 410,
           height,
           borderRadius: 10,
         }}
@@ -123,45 +130,42 @@ function PastFolloup({
         {isSelected && (
           <View
             style={{
+              justifyContent: "space-between",
               backgroundColor: "wheat",
               borderRadius: 10,
-              marginTop: 7,
-              justifyContent: "flex-start",
-              flexDirection: "column",
-              padding: 15,
+              marginTop: 10,
             }}
           >
             <Text
               style={{
                 marginLeft: 15,
                 marginRight: 15,
-                fontSize: 14,
-                padding: 5,
+                fontSize: 16,
+                padding: 10,
               }}
             >
-              Address : {item.patient.address}
+              Address : {patientAdress}
             </Text>
             <Text
               style={{
                 marginLeft: 15,
                 marginRight: 15,
-                fontSize: 14,
-                padding: 5,
+                fontSize: 16,
+                padding: 10,
               }}
             >
-              pin code : {item.patient.pincode}
+              pin code : {patientPincode}
             </Text>
             <Text
               style={{
                 marginLeft: 15,
                 marginRight: 15,
-                fontSize: 14,
-                padding: 5,
+                fontSize: 16,
+                padding: 10,
               }}
             >
-              Contact No : {item.patient.contact}
+              Contact No : {patientContact}
             </Text>
-
             {/* additional fields... */}
           </View>
         )}

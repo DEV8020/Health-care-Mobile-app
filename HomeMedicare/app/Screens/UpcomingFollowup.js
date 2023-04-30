@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
+import { aesUtil } from "../UtilityModules/aesUtil";
 
 function UpcomingFolloup({
   navigation,
@@ -21,6 +22,13 @@ function UpcomingFolloup({
   followupList,
 }) {
   const [selectedId, setSelectedId] = useState(null);
+  // const [refreshing, setRefreshing] = useState(false);
+
+  // const onRefresh = () => {
+  //   setRefreshing(true);
+  //   fetchData();
+  //   setRefreshing(false);
+  // };
   // const SelectedPatientHandler = () => {
   //   // setPatientData(PatientSelectedID);
   //   ToastAndroid.show("Followup will be available on registered date");
@@ -86,6 +94,12 @@ function UpcomingFolloup({
         break;
     }
 
+    const patientAdress = aesUtil.decrypt("password", item.patient.address);
+
+    const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
+
+    const patientContact = aesUtil.decrypt("password", item.patient.contact);
+
     return (
       <>
         {item.flag === false && (
@@ -95,7 +109,7 @@ function UpcomingFolloup({
               padding: 20,
 
               marginVertical: 4,
-              width: 400,
+              width: 410,
               height,
               borderRadius: 10,
             }}
@@ -163,7 +177,7 @@ function UpcomingFolloup({
                     padding: 10,
                   }}
                 >
-                  Address : {item.patient.address}
+                  Address : {patientAdress}
                 </Text>
                 <Text
                   style={{
@@ -173,7 +187,7 @@ function UpcomingFolloup({
                     padding: 10,
                   }}
                 >
-                  pin code : {item.patient.pincode}
+                  pin code : {patientPincode}
                 </Text>
                 <Text
                   style={{
@@ -183,7 +197,7 @@ function UpcomingFolloup({
                     padding: 10,
                   }}
                 >
-                  Contact No : {item.patient.contact}
+                  Contact No : {patientContact}
                 </Text>
                 {/* additional fields... */}
               </View>

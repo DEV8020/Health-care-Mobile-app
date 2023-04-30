@@ -37,6 +37,8 @@ const LoginScreen = ({ navigation }) => {
               navigation.replace("PIN Change");
             }
           });
+        } else {
+          navigation.navigate("Home");
         }
       } catch (e) {
         console.log("Failed to load user token from AsyncStorage:", e);

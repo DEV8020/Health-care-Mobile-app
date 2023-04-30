@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StatusBar } from "react-native";
 import TopAppBar from "../Utility/TopAppBar";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,15 +22,16 @@ import ScreenRefresher from "../UtilityModules/ScreenRefresher";
 
 const Application = () => {
   // const [patientData, setPatientData] = useState("");
+  // const HomeComponent = useRef();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isPinSet, setIsPinSet] = useState(null);
   const [isDataDownload, setIsDataDownload] = useState(false);
 
-  const sucessTimerDuration = 20000; // 20 seconds in case of success//50000000;
-  const idleTimerDuration = 20000; // 60 seconds in case of failure or no data
+  const sucessTimerDuration = 10000; // 20 seconds in case of success//50000000;
+  const idleTimerDuration = 40000; // 60 seconds in case of failure or no data
 
-  const sucessTimerUploadDuration = 30000; //1 Minute .... 60 * 1000 msec
-  const idleTimerUploadDuration = 60000 * 2; //5 Minute ....  5 * 60 * 1000 msec
+  const sucessTimerUploadDuration = 20000; //1 Minute .... 60 * 1000 msec
+  const idleTimerUploadDuration = 50000; //5 Minute ....  5 * 60 * 1000 msec
 
   // Checks for network connection in every 20 sec and send followups to server...
   const [sendTimer, setSendTimer] = useState(sucessTimerUploadDuration);
@@ -84,14 +85,20 @@ const Application = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
+  const toggleRefresh = (isDataDownload) => {
+    return isDataDownload;
+  };
+
   const followUpDownLoadResponseHandler = async (followUpDownloadData) => {
     // console.log("****************************");
 
     // console.log(followUpDownloadData);
+
     // setIsDataDownload((isDataDownload) => {
-    //   console.log(
-    //     "*******************followUpDownLoadResponseHandler******************************"
-    //   );
+    console.log(
+      "*******************followUpDownLoadResponseHandler******************************"
+    );
+
     //   console.log(!isDataDownload);
     //   return !isDataDownload;
     // });
@@ -136,9 +143,9 @@ const Application = () => {
   //       return "PIN Change";
   //     });
   // };
-  var firstScreen;
+
   useEffect(() => {
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
     console.log("kkkkkkkkkkkkkkkkkkkk");
     // AsyncStorage.removeItem("LoggedInData");
 
@@ -196,7 +203,7 @@ const Application = () => {
             options={{
               title: "HomeMedicare",
             }}
-          />
+          ></Stack.Screen>
 
           <Stack.Screen
             name="PIN Change"
@@ -212,7 +219,6 @@ const Application = () => {
             options={{
               title: "HomeMedicare",
             }}
-            isDataDownload={isDataDownload}
           ></Stack.Screen>
           <Stack.Screen
             name="Login"

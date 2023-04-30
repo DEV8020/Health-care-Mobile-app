@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 const BottomNavigationBar = (props) => {
-  const [activeButton, setActiveButton] = useState("Past");
+  const [activeButton, setActiveButton] = useState("Today");
 
   const BottomButtonHandler = (type) => {
     setActiveButton(type);

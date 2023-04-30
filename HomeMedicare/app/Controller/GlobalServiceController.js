@@ -1,9 +1,9 @@
 import axios from "axios";
 import APIURLUtilities from "./APIUrlUtilities";
 
-// const serverURL = `http://192.168.219.225:9191/`;
+const serverURL = `http://192.168.219.225:9191/`;
 // http://localhost:9494/login/helloWorld
-const serverURL = `http://192.168.233.225:9191/`;
+// const serverURL = `http://192.168.233.225:9191/`;
 
 // const getHeaderConfigurationsList = async () => {
 //   var Token;

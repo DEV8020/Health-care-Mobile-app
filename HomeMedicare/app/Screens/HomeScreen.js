@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useImperativeHandle,
+} from "react";
 import {
   FlatList,
   View,
@@ -9,6 +15,7 @@ import {
   TextInput,
   ToastAndroid,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import BottomNavigationBar from "../Utility/BottomNavigationBar";
 import TopAppBar from "../Utility/TopAppBar";
 import AppBar from "../Utility/AppBar";
@@ -32,9 +39,11 @@ import IdleTimerContainer from "../UtilityModules/IdleTimer";
 import APIURLUtilities from "../Controller/APIUrlUtilities";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EncryptionUtilityModule from "../UtilityModules/Encryption";
+// import Application from "./Application";
 
 const IDLE_SCREEN_TIME = 70000000;
-const HomeScreen = ({ navigation, route, isDataDownload }) => {
+
+const HomeScreen = ({ navigation, route }) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
   const [showOTPPopUp, setShowOTPPopUp] = useState(false);
@@ -42,10 +51,19 @@ const HomeScreen = ({ navigation, route, isDataDownload }) => {
   const [followupList, setFollowupList] = useState([]);
   // const [refreshed, setRefreshed] = useState(true);
   // setRefreshed(route.params);
+  // const handleChildFunction = () => {
+  //   // Do something here
+  //   console.log("Child function executed from parent component!");
+  // };
+
+  // useImperativeHandle(ref, () => ({
+  //   handleChildFunction: handleChildFunction,
+  // }));
   console.log(
     "---------------------------------------------------------------------------------"
   );
-  console.log(isDataDownload);
+  // console.log(isDataDownload);
+
   //....
   // const hasInteractedRef = useRef(false);
   // const timeoutRef = useRef();
@@ -118,7 +136,8 @@ const HomeScreen = ({ navigation, route, isDataDownload }) => {
   };
 
   useEffect(() => {
-    ToastAndroid.show("refreshed", ToastAndroid.SHORT);
+    // console.log(route.params);
+    // ToastAndroid.show("refreshed", ToastAndroid.SHORT);
     FetchFollowup(followupList, setFollowupList, folloupTypeScreen);
     if (navigation && navigation.setOptions) {
       navigation.setOptions({
@@ -135,7 +154,11 @@ const HomeScreen = ({ navigation, route, isDataDownload }) => {
         },
       });
     }
-  }, [folloupTypeScreen, navigation, isDataDownload]);
+  }, [folloupTypeScreen, navigation]);
+
+  const fetchData = () => {
+    FetchFollowup(followupList, setFollowupList);
+  };
 
   const Header = () => {
     return (
@@ -155,81 +178,90 @@ const HomeScreen = ({ navigation, route, isDataDownload }) => {
   };
 
   return (
-    <ImageBackground
-      style={styles.container_Home}
-      source={require("../assets/bgimg.jpg")}
-    >
-      <OTPPopUp
-        visible={showOTPPopUp}
-        setShowOTPPopUp={setShowOTPPopUp}
-        onVerify={() => setShowOTPPopUp(false)}
-        followupData={followupData}
-        setFollowupData={setFollowupData}
-      />
+    <>
+      <ImageBackground
+        style={styles.container_Home}
+        source={require("../assets/bgimg.jpg")}
+      >
+        <OTPPopUp
+          visible={showOTPPopUp}
+          setShowOTPPopUp={setShowOTPPopUp}
+          onVerify={() => setShowOTPPopUp(false)}
+          followupData={followupData}
+          setFollowupData={setFollowupData}
+        />
 
-      {/* <AppBar
+        {/* <AppBar
         title="Home Medicare"
         handleLogout={LogoutHandler}
         navigation={navigation}
       /> */}
 
-      <View style={styles.container_list}>
-        <FilterHeader
-          selectedStatus={selectedStatus}
-          setSelectedStatus={setSelectedStatus}
-        />
+        <View style={styles.container_list}>
+          <FilterHeader
+            selectedStatus={selectedStatus}
+            setSelectedStatus={setSelectedStatus}
+          />
 
-        <Header />
-        {folloupTypeScreen === "Today" && (
-          <TodayFolloup
-            navigation={navigation}
-            // setUser={props.setUser}
-            // setPatientData={props.setPatientData}
-            followupList={followupList}
-            selectedStatus={selectedStatus}
-            showOTPPopUp={showOTPPopUp}
-            setFollowupData={setFollowupData}
-            followupData={followupData}
-            setShowOTPPopUp={setShowOTPPopUp}
+          <Header />
+          {folloupTypeScreen === "Today" && (
+            <TodayFolloup
+              navigation={navigation}
+              // setUser={props.setUser}
+              // setPatientData={props.setPatientData}
+              followupList={followupList}
+              selectedStatus={selectedStatus}
+              showOTPPopUp={showOTPPopUp}
+              setFollowupData={setFollowupData}
+              followupData={followupData}
+              setShowOTPPopUp={setShowOTPPopUp}
+              fetchData={fetchData}
+              folloupTypeScreen={folloupTypeScreen}
+              setFollowupList={setFollowupList}
+            />
+          )}
+          {folloupTypeScreen === "Past" && (
+            <PastFolloup
+              setFollowupList={setFollowupList}
+              fetchData={fetchData}
+              navigation={navigation}
+              // setUser={props.setUser}
+              // setPatientData={props.setPatientData}
+              followupList={followupList}
+              selectedStatus={selectedStatus}
+              showOTPPopUp={showOTPPopUp}
+              setFollowupData={setFollowupData}
+              followupData={followupData}
+              setShowOTPPopUp={setShowOTPPopUp}
+            />
+          )}
+          {folloupTypeScreen === "Upcoming" && (
+            <UpcomingFolloup
+              setFollowupList={setFollowupList}
+              fetchData={fetchData}
+              navigation={navigation}
+              // setUser={props.setUser}
+              // setPatientData={props.setPatientData}
+              followupList={followupList}
+              selectedStatus={selectedStatus}
+              showOTPPopUp={showOTPPopUp}
+              setFollowupData={setFollowupData}
+              followupData={followupData}
+              setShowOTPPopUp={setShowOTPPopUp}
+            />
+          )}
+        </View>
+        <View style={{ flex: 1, width: "100%" }}>
+          <BottomNavigationBar
+            l1="Past"
+            l2="Today"
+            l3="Upcoming"
+            setFolloupTypeScreen={setFolloupTypeScreen}
+            folloupTypeScreen={folloupTypeScreen}
           />
-        )}
-        {folloupTypeScreen === "Past" && (
-          <PastFolloup
-            navigation={navigation}
-            // setUser={props.setUser}
-            // setPatientData={props.setPatientData}
-            followupList={followupList}
-            selectedStatus={selectedStatus}
-            showOTPPopUp={showOTPPopUp}
-            setFollowupData={setFollowupData}
-            followupData={followupData}
-            setShowOTPPopUp={setShowOTPPopUp}
-          />
-        )}
-        {folloupTypeScreen === "Upcoming" && (
-          <UpcomingFolloup
-            navigation={navigation}
-            // setUser={props.setUser}
-            // setPatientData={props.setPatientData}
-            followupList={followupList}
-            selectedStatus={selectedStatus}
-            showOTPPopUp={showOTPPopUp}
-            setFollowupData={setFollowupData}
-            followupData={followupData}
-            setShowOTPPopUp={setShowOTPPopUp}
-          />
-        )}
-      </View>
-      <View style={{ flex: 1, width: "100%" }}>
-        <BottomNavigationBar
-          l1="Past"
-          l2="Today"
-          l3="Upcoming"
-          setFolloupTypeScreen={setFolloupTypeScreen}
-          folloupTypeScreen={folloupTypeScreen}
-        />
-      </View>
-    </ImageBackground>
+        </View>
+      </ImageBackground>
+    </>
   );
 };
 const styles = StyleSheet.create({
@@ -283,4 +315,5 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
 export default HomeScreen;

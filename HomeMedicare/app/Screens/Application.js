@@ -145,7 +145,7 @@ const Application = () => {
   // };
 
   useEffect(() => {
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
     console.log("kkkkkkkkkkkkkkkkkkkk");
     // AsyncStorage.removeItem("LoggedInData");
 

@@ -55,7 +55,8 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
-    "yet": "^0.1.0"
+    "yet": "^0.1.0",
+    "expo-updates": "~0.14.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

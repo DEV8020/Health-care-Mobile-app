@@ -28,10 +28,10 @@ const Application = () => {
   const [isDataDownload, setIsDataDownload] = useState(false);
 
   const sucessTimerDuration = 10000; // 20 seconds in case of success//50000000;
-  const idleTimerDuration = 40000; // 60 seconds in case of failure or no data
+  const idleTimerDuration = 10000; // 60 seconds in case of failure or no data
 
-  const sucessTimerUploadDuration = 20000; //1 Minute .... 60 * 1000 msec
-  const idleTimerUploadDuration = 50000; //5 Minute ....  5 * 60 * 1000 msec
+  const sucessTimerUploadDuration = 10000; //1 Minute .... 60 * 1000 msec
+  const idleTimerUploadDuration = 30000; //5 Minute ....  5 * 60 * 1000 msec
 
   // Checks for network connection in every 20 sec and send followups to server...
   const [sendTimer, setSendTimer] = useState(sucessTimerUploadDuration);
@@ -56,13 +56,19 @@ const Application = () => {
     console.log(isSuccessTimer);
 
     if (isSuccessTimer) {
+      setIsDataDownload((isDataDownload) => {
+        console.log(
+          "----------------------------send followups------------------------"
+        );
+        return !isDataDownload;
+      });
       setSendTimer(sucessTimerUploadDuration);
     } else {
       setSendTimer(idleTimerUploadDuration);
     }
   };
 
-  console.log("%%%%%%%%%%%%%%view refreshed%%%%%%%%%%%%%%%%%%%%%%%%%");
+  console.log("%%%%%%%%%%%%%% app .js view refreshed%%%%%%%%%%%%%%%%%%%%%%%%%");
 
   //Checks for network connection in every 30 sec and send followups to server...
   // var isAPICallActive = false;
@@ -85,9 +91,9 @@ const Application = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const toggleRefresh = (isDataDownload) => {
-    return isDataDownload;
-  };
+  // const toggleRefresh = (isDataDownload) => {
+  //   return isDataDownload;
+  // };
 
   const followUpDownLoadResponseHandler = async (followUpDownloadData) => {
     // console.log("****************************");
@@ -103,15 +109,19 @@ const Application = () => {
     //   return !isDataDownload;
     // });
     // console.log("inverted");
-    // console.log(isDataDownload);
 
     if (followUpDownloadData.isFollowUpListSuccessfully === true) {
+      // console.log(isDataDownload);
+      setIsDataDownload((isDataDownload) => {
+        console.log(
+          "----------------------------get followups------------------------"
+        );
+        return !isDataDownload;
+      });
       // isFollowUpListSuccessfully: true,
       //           followUpData: followUpData.responseData.data,
       //           errorMessage: null,
-      // setIsDataDownload((isDataDownload) => {
-      //   return !isDataDownload;
-      // });
+
       // console.log("inverted");
       // console.log(isDataDownload);
       console.log("Data recieved in app.js");
@@ -215,11 +225,14 @@ const Application = () => {
 
           <Stack.Screen
             name="Home"
-            component={HomeScreen}
             options={{
               title: "HomeMedicare",
             }}
-          ></Stack.Screen>
+          >
+            {(props) => (
+              <HomeScreen {...props} isDataDownload={isDataDownload} />
+            )}
+          </Stack.Screen>
           <Stack.Screen
             name="Login"
             component={LoginScreen}

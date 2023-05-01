@@ -12,6 +12,7 @@ import { ToastAndroid, RefreshControl } from "react-native";
 import { useEffect } from "react";
 import moment from "moment";
 import { aesUtil } from "../UtilityModules/aesUtil";
+import FetchFollowup from "../Controller/FetchFollowupByDateController";
 
 function TodayFolloup({
   followupList,
@@ -19,18 +20,19 @@ function TodayFolloup({
   selectedStatus,
   followupData,
   setFollowupData,
+  setFollowupList,
   showOTPPopUp,
   setShowOTPPopUp,
   fetchData,
 }) {
   const [selectedId, setSelectedId] = useState(null);
-  // const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // const onRefresh = () => {
-  //   setRefreshing(true);
-  //   fetchData();
-  //   setRefreshing(false);
-  // };
+  const onRefresh = () => {
+    setRefreshing(true);
+    FetchFollowup(followupList, setFollowupList, "Today");
+    setRefreshing(false);
+  };
 
   const SelectedPatientHandler = (item) => {
     // setPatientData(PatientSelectedID);
@@ -87,11 +89,17 @@ function TodayFolloup({
         break;
     }
 
-    const patientAdress = aesUtil.decrypt("password", item.patient.address);
+    // const patientAdress = aesUtil.decrypt("password", item.patient.address);
 
-    const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
+    // const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
 
-    const patientContact = aesUtil.decrypt("password", item.patient.contact);
+    // const patientContact = aesUtil.decrypt("password", item.patient.contact);
+
+    const patientAdress = item.patient.address;
+
+    const patientPincode = item.patient.pincode;
+
+    const patientContact = item.patient.contact;
 
     return (
       <TouchableOpacity
@@ -161,7 +169,7 @@ function TodayFolloup({
                 padding: 10,
               }}
             >
-              Address : {patientAdress}
+              Address : {item.patient.address}
             </Text>
             <Text
               style={{
@@ -171,7 +179,7 @@ function TodayFolloup({
                 padding: 10,
               }}
             >
-              pin code : {patientPincode}
+              pin code : {item.patient.pincode}
             </Text>
             <Text
               style={{
@@ -181,7 +189,7 @@ function TodayFolloup({
                 padding: 10,
               }}
             >
-              Contact No : {patientContact}
+              Contact No : {item.patient.contact}
             </Text>
             {/* additional fields... */}
           </View>
@@ -197,6 +205,9 @@ function TodayFolloup({
       renderItem={renderItem}
       keyExtractor={(item) => item.followUpId}
       extraData={selectedId}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 }

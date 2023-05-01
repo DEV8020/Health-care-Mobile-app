@@ -13,17 +13,28 @@ import { ToastAndroid } from "react-native";
 import { useEffect } from "react";
 import moment from "moment";
 import { aesUtil } from "../UtilityModules/aesUtil";
+import { RefreshControl } from "react-native";
+import FetchCompletedFollowups from "../UtilityModules/FetchCompletedFollowups";
+import FetchFollowup from "../Controller/FetchFollowupByDateController";
 
 function PastFolloup({
   followupList,
   navigation,
   selectedStatus,
   followupData,
-  setFollowupData,
+  setFollowupList,
   showOTPPopUp,
   setShowOTPPopUp,
+  setFollowupData,
 }) {
   const [selectedId, setSelectedId] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    FetchFollowup(followupList, setFollowupList, "Past");
+    setRefreshing(false);
+  };
 
   const SelectedPatientHandler = (item) => {
     // setPatientData(PatientSelectedID);
@@ -70,11 +81,16 @@ function PastFolloup({
         break;
     }
 
-    const patientAdress = aesUtil.decrypt("password", item.patient.address);
+    // const patientAdress = aesUtil.decrypt("password", item.patient.address);
 
-    const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
+    // const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
 
-    const patientContact = aesUtil.decrypt("password", item.patient.contact);
+    // const patientContact = aesUtil.decrypt("password", item.patient.contact);
+    const patientAdress = item.patient.address;
+
+    const patientPincode = item.patient.pincode;
+
+    const patientContact = item.patient.contact;
 
     return (
       <TouchableOpacity
@@ -180,6 +196,9 @@ function PastFolloup({
       renderItem={renderItem}
       keyExtractor={(item) => item.followUpId}
       extraData={selectedId}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 }
@@ -187,7 +206,7 @@ function PastFolloup({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    width: "90%",
+    width: 410,
 
     borderColor: "white",
   },

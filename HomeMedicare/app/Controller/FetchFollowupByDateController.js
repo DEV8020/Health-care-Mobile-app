@@ -6,31 +6,36 @@ import APIURLUtilities from "./APIUrlUtilities";
 
 const FetchFollowup = (followupList, setFollowupList, followupType) => {
   const today = moment(new Date()).format("YYYY-MM-DD");
+  console.log(
+    "---------------------------------Fetch Followup------------------------------------------------------------"
+  );
   const isUpdated = AsyncStorage.getItem(APIURLUtilities.getStorageKey()).then(
     (list) => {
       if (list !== null) {
         const data = JSON.parse(list);
-        console.log(data);
+        // console.log(data);
         switch (followupType) {
           case "Today":
             console.log("Today");
             // Code to execute if followupType is "Today"
             const todayFollowup = data.filter((item) => item.date === today);
-            console.log(todayFollowup);
+            // console.log(todayFollowup);
             setFollowupList(todayFollowup);
             return todayFollowup;
             break;
           case "Past":
             // Code to execute if followupType is "Past"
+            console.log("Past");
             const pastFollowup = data.filter((item) => item.date < today);
-            console.log(pastFollowup);
+            // console.log(pastFollowup);
             setFollowupList(pastFollowup);
             return pastFollowup;
             break;
           case "Upcoming":
+            console.log("Upcoming");
             // Code to execute if followupType is "Upcoming"
             const upcomingFollowup = data.filter((item) => item.date > today);
-            console.log(upcomingFollowup);
+            // console.log(upcomingFollowup);
             setFollowupList(upcomingFollowup);
             return upcomingFollowup;
             break;
@@ -42,6 +47,5 @@ const FetchFollowup = (followupList, setFollowupList, followupType) => {
       }
     }
   );
-  console.log(isUpdated);
 };
 export default FetchFollowup;

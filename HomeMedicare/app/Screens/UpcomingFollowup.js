@@ -6,11 +6,14 @@ import {
   ToastAndroid,
   View,
 } from "react-native";
+import { RefreshControl } from "react-native";
+
 //import { DATA } from "../data/dummy-data";
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import { aesUtil } from "../UtilityModules/aesUtil";
+import FetchFollowup from "../Controller/FetchFollowupByDateController";
 
 function UpcomingFolloup({
   navigation,
@@ -20,15 +23,17 @@ function UpcomingFolloup({
   showOTPPopUp,
   setShowOTPPopUp,
   followupList,
+  fetchData,
+  setFollowupList,
 }) {
   const [selectedId, setSelectedId] = useState(null);
-  // const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // const onRefresh = () => {
-  //   setRefreshing(true);
-  //   fetchData();
-  //   setRefreshing(false);
-  // };
+  const onRefresh = () => {
+    setRefreshing(true);
+    FetchFollowup(followupList, setFollowupList, "Upcoming");
+    setRefreshing(false);
+  };
   // const SelectedPatientHandler = () => {
   //   // setPatientData(PatientSelectedID);
   //   ToastAndroid.show("Followup will be available on registered date");
@@ -94,11 +99,16 @@ function UpcomingFolloup({
         break;
     }
 
-    const patientAdress = aesUtil.decrypt("password", item.patient.address);
+    // const patientAdress = aesUtil.decrypt("password", item.patient.address);
 
-    const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
+    // const patientPincode = aesUtil.decrypt("password", item.patient.pincode);
 
-    const patientContact = aesUtil.decrypt("password", item.patient.contact);
+    // const patientContact = aesUtil.decrypt("password", item.patient.contact);
+    const patientAdress = item.patient.address;
+
+    const patientPincode = item.patient.pincode;
+
+    const patientContact = item.patient.contact;
 
     return (
       <>
@@ -215,6 +225,9 @@ function UpcomingFolloup({
       renderItem={renderItem}
       keyExtractor={(item) => item.followUpId}
       extraData={selectedId}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 }
@@ -222,7 +235,7 @@ function UpcomingFolloup({
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    width: "90%",
+    width: 410,
   },
   item: {
     padding: 20,

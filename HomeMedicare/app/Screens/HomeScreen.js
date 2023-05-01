@@ -15,7 +15,7 @@ import {
   TextInput,
   ToastAndroid,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import BottomNavigationBar from "../Utility/BottomNavigationBar";
 import TopAppBar from "../Utility/TopAppBar";
 import AppBar from "../Utility/AppBar";
@@ -43,7 +43,7 @@ import EncryptionUtilityModule from "../UtilityModules/Encryption";
 
 const IDLE_SCREEN_TIME = 70000000;
 
-const HomeScreen = ({ navigation, route }) => {
+const HomeScreen = (props) => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [folloupTypeScreen, setFolloupTypeScreen] = useState("Today");
   const [showOTPPopUp, setShowOTPPopUp] = useState(false);
@@ -59,10 +59,13 @@ const HomeScreen = ({ navigation, route }) => {
   // useImperativeHandle(ref, () => ({
   //   handleChildFunction: handleChildFunction,
   // }));
+
   console.log(
-    "---------------------------------------------------------------------------------"
+    "--------------------------Home Screen refreshed-------------------------------------------------------"
   );
-  // console.log(isDataDownload);
+  const serverResponse = props.isDataDownload;
+  console.log(serverResponse);
+  const navigation = useNavigation();
 
   //....
   // const hasInteractedRef = useRef(false);
@@ -136,8 +139,10 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    // console.log(route.params);
-    // ToastAndroid.show("refreshed", ToastAndroid.SHORT);
+    console.log(
+      "----------------------List Refreshed on server response ---------------------------------"
+    );
+    ToastAndroid.show("refreshed", ToastAndroid.SHORT);
     FetchFollowup(followupList, setFollowupList, folloupTypeScreen);
     if (navigation && navigation.setOptions) {
       navigation.setOptions({
@@ -154,7 +159,7 @@ const HomeScreen = ({ navigation, route }) => {
         },
       });
     }
-  }, [folloupTypeScreen, navigation]);
+  }, [folloupTypeScreen, navigation, serverResponse]);
 
   const fetchData = () => {
     FetchFollowup(followupList, setFollowupList);
